@@ -12,6 +12,100 @@
         <link href='https://fonts.googleapis.com/css?family=Karla:400,400i%7CRoboto:100,300,400,700,900' rel='stylesheet' type='text/css'>		
         <link rel="stylesheet" type="text/css"  href='style.css' />
 
+        <style>
+            .responsive-margin {
+                margin-top: -250px;
+                padding-top: 0;
+            }
+            
+            @media (max-width: 1020px) {
+                .responsive-margin {
+                    margin-top: -100px;
+                    padding-top: 0;
+                }
+            }
+            
+            /* Dropdown scrollbar styling */
+            select {
+                scrollbar-width: thin;
+                scrollbar-color: #dc6041 #f1f1f1;
+            }
+            
+            select::-webkit-scrollbar {
+                width: 8px;
+            }
+            
+            select::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 4px;
+            }
+            
+            select::-webkit-scrollbar-thumb {
+                background: #dc6041;
+                border-radius: 4px;
+            }
+            
+            select::-webkit-scrollbar-thumb:hover {
+                background: #b84d33;
+            }
+            
+            /* Ensure dropdowns show scrollbars when needed */
+            select[size] {
+                overflow-y: auto;
+            }
+            
+            /* Custom validation styling */
+            .form-field {
+                position: relative;
+            }
+            
+            .error-message {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: #ff6b6b;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                margin-top: 5px;
+                max-width: 300px;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+            }
+            
+            .error-message.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .error-message::before {
+                content: '';
+                position: absolute;
+                top: -5px;
+                left: 15px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #ff6b6b;
+            }
+            
+            .field-error {
+                border-color: #ff6b6b !important;
+                box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2) !important;
+            }
+            
+            .field-success {
+                border-color: #51cf66 !important;
+                box-shadow: 0 0 0 2px rgba(81, 207, 102, 0.2) !important;
+            }
+        </style>
+
         <!--[if lt IE 9]>
                 <script src="js/html5shiv.js"></script>            
                 <script src="js/respond.min.js"></script>                   
@@ -29,8 +123,8 @@
             <header class="header-holder">             
                 <div class="menu-wrapper center-relative relative">             
                     <div class="header-logo">
-                        <a href="index.html">
-                            <img src="images/trustora-text-logo.svg" alt="Trustora">
+                        <a href="index.html" style="display: block; text-decoration: none; cursor: pointer;">
+                            <img src="images/trustora-text-logo.svg" alt="Trustora" style="pointer-events: none;">
                         </a>               
                     </div>
 
@@ -46,13 +140,10 @@
                         <nav id="header-main-menu">
                             <ul class="main-menu sm sm-clean">
                                 <li>
-                                    <a href="index.html">Home</a>
-                                </li>
-                                <li>
                                     <a href="index.html#services">Services</a>
                                 </li>
                                 <li>
-                                    <a href="index.html#portfolio">Success Stories</a>
+                                    <a href="index.html#portfolio">Success</a>
                                 </li>
                                 <li>
                                     <a href="index.html#clients">Clients</a>
@@ -111,7 +202,7 @@
                 </div> 
 
                 <!-- Opportunities Section -->
-                <div id="opportunities" class="section">                                 
+                <div id="opportunities" class="section responsive-margin">                                 
                     <div class="section-wrapper block content-1170 center-relative">                        
 
                         <div class="page-title-holder">
@@ -142,7 +233,7 @@
                                     <li>• Remote work flexibility across MENAP region</li>
                                 </ul>
                                 <br>
-                                <p><a href="https://ignitecuriosity.org" target="_blank" style="color: #dc6041; text-decoration: underline;">Learn more about our Ignite Curiosity partnership →</a></p>
+                                <p><a href="https://ignitecuriosity.org" target="_blank" style="display: inline-block; background-color: #dc6041; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: 500; transition: background-color 0.3s ease; margin-top: 15px;">Learn more about our Ignite Curiosity partnership →</a></p>
                             </div>
 
                             <div class="one_half last">
@@ -169,10 +260,9 @@
                             <div class="clear"></div>
                         </div>                        
                     </div>
-                </div> 
-
+                </div>
                 <!-- Application Section -->
-                <div id="application" class="section">                                 
+                <div id="application" class="section responsive-margin">                                 
                     <div class="section-wrapper block content-1170 center-relative">                        
 
                         <div class="page-title-holder">
@@ -188,101 +278,300 @@
                                 </p>
                                 <br>
                                 <p>
-                                    Whether you're a CRC intern or an experienced professional, we want to hear from you.
+                                    Whether you're an Ignite Curiosity intern or an experienced professional, we want to hear from you.
                                 </p>
+                                <br>
+                                <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 25px; border-radius: 8px; border-left: 4px solid #dc6041;">
+                                    <h4 style="color: #dc6041; margin-bottom: 15px; font-size: 18px;">Why Choose Trustora?</h4>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 24px; font-weight: bold; color: #dc6041;">50+</div>
+                                            <div style="font-size: 12px; color: #666;">Countries Served</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 24px; font-weight: bold; color: #dc6041;">95%</div>
+                                            <div style="font-size: 12px; color: #666;">Client Satisfaction</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 24px; font-weight: bold; color: #dc6041;">24/7</div>
+                                            <div style="font-size: 12px; color: #666;">Global Support</div>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 14px; line-height: 1.6; color: #555;">
+                                        <strong>Global Impact:</strong> Join a team that delivers solutions across MENAP, serving Fortune 500 companies and innovative startups alike. Our diverse workforce spans continents, bringing unique perspectives to every project.
+                                    </div>
+                                </div>
+                                <br>
+                                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                                    <div style="flex: 1; background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e1e1e1;">
+                                        <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 8px;">🚀 Growth Opportunities</div>
+                                        <div style="font-size: 13px; color: #666;">Rapid career advancement with mentorship programs and skill development</div>
+                                    </div>
+                                    <div style="flex: 1; background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e1e1e1;">
+                                        <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 8px;">🌍 Remote Flexibility</div>
+                                        <div style="font-size: 13px; color: #666;">Work from anywhere with our global remote-first culture</div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="two_third last">
                                 <div class="contact-form">
-                                    <p>
-                                        <input id="name" type="text" name="your-name" placeholder="FULL NAME" required>
-                                    </p>
-                                    <p>
-                                        <input id="contact-email" type="email" name="your-email" placeholder="EMAIL ADDRESS" required>
-                                    </p>
-                                    <p>
-                                        <select id="position-type" name="position-type" required>
-                                            <option value="">POSITION TYPE</option>
-                                            <option value="Internship">Internship (CRC Partnership)</option>
-                                            <option value="Full-Time">Full-Time Professional</option>
-                                            <option value="Contract">Contract/Freelance</option>
-                                            <option value="Part-Time">Part-Time</option>
-                                        </select>
-                                    </p>
-                                    <div style="margin-bottom: 35px;">
-                                        <label style="font-family: 'Roboto', sans-serif; font-size: 15px; color: #000; margin-bottom: 10px; display: block;">AREAS OF EXPERTISE (Select all that apply):</label>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 15px; margin-bottom: 5px;">
-                                                <input type="checkbox" name="expertise[]" value="AI/ML" style="margin-right: 8px;"> AI/ML & Context Engineering
+                                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                                        <div style="flex: 1;">
+                                            <input id="first-name" type="text" name="first-name" placeholder="FIRST NAME" required minlength="2" maxlength="50" pattern="[A-Za-z\s\-']+" title="Please enter a valid first name (letters, spaces, hyphens, and apostrophes only)" style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <input id="last-name" type="text" name="last-name" placeholder="LAST NAME" required minlength="2" maxlength="50" pattern="[A-Za-z\s\-']+" title="Please enter a valid last name (letters, spaces, hyphens, and apostrophes only)" style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                                        <div style="flex: 1;">
+                                            <input id="contact-email" type="email" name="your-email" placeholder="EMAIL ADDRESS" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address" style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <input id="whatsapp" type="tel" name="whatsapp" placeholder="WHATSAPP NUMBER (with country code)" pattern="[\+]?[0-9\s\-\(\)]{8,20}" title="Please enter a valid phone number with country code (e.g., +1234567890)" style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                                        <div style="flex: 1;">
+                                            <select id="position-type" name="position-type" required style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                                <option value="">POSITION TYPE</option>
+                                                <option value="Internship">Internship (Ignite Curiosity Program)</option>
+                                                <option value="Full-Time">Full-Time Professional</option>
+                                                <option value="Contract">Contract/Freelance</option>
+                                                <option value="Part-Time">Part-Time</option>
+                                            </select>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <select id="location" name="location" required style="width: 100%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                                <option value="">LOCATION</option>
+                                                <optgroup label="ASIA">
+                                                    <option value="Pakistan">Pakistan</option>
+                                                    <option value="India">India</option>
+                                                    <option value="Bangladesh">Bangladesh</option>
+                                                    <option value="Sri Lanka">Sri Lanka</option>
+                                                    <option value="Afghanistan">Afghanistan</option>
+                                                    <option value="Philippines">Philippines</option>
+                                                    <option value="Vietnam">Vietnam</option>
+                                                    <option value="Indonesia">Indonesia</option>
+                                                    <option value="Malaysia">Malaysia</option>
+                                                    <option value="Thailand">Thailand</option>
+                                                    <option value="Singapore">Singapore</option>
+                                                    <option value="Nepal">Nepal</option>
+                                                    <option value="Myanmar">Myanmar</option>
+                                                    <option value="Cambodia">Cambodia</option>
+                                                </optgroup>
+                                                <optgroup label="MIDDLE EAST">
+                                                    <option value="UAE">United Arab Emirates</option>
+                                                    <option value="Saudi Arabia">Saudi Arabia</option>
+                                                    <option value="Qatar">Qatar</option>
+                                                    <option value="Kuwait">Kuwait</option>
+                                                    <option value="Bahrain">Bahrain</option>
+                                                    <option value="Oman">Oman</option>
+                                                    <option value="Jordan">Jordan</option>
+                                                    <option value="Lebanon">Lebanon</option>
+                                                    <option value="Turkey">Turkey</option>
+                                                    <option value="Iran">Iran</option>
+                                                    <option value="Iraq">Iraq</option>
+                                                </optgroup>
+                                                <optgroup label="NORTH AFRICA">
+                                                    <option value="Egypt">Egypt</option>
+                                                    <option value="Morocco">Morocco</option>
+                                                    <option value="Tunisia">Tunisia</option>
+                                                    <option value="Algeria">Algeria</option>
+                                                    <option value="Libya">Libya</option>
+                                                    <option value="Sudan">Sudan</option>
+                                                    <option value="Nigeria">Nigeria</option>
+                                                    <option value="Ghana">Ghana</option>
+                                                    <option value="Kenya">Kenya</option>
+                                                    <option value="Ethiopia">Ethiopia</option>
+                                                    <option value="Uganda">Uganda</option>
+                                                    <option value="Tanzania">Tanzania</option>
+                                                    <option value="South Africa">South Africa</option>
+                                                    <option value="Cameroon">Cameroon</option>
+                                                    <option value="Senegal">Senegal</option>
+                                                    <option value="Ivory Coast">Ivory Coast</option>
+                                                    <option value="Mali">Mali</option>
+                                                    <option value="Burkina Faso">Burkina Faso</option>
+                                                    <option value="Niger">Niger</option>
+                                                    <option value="Chad">Chad</option>
+                                                    <option value="Mauritania">Mauritania</option>
+                                                    <option value="Somalia">Somalia</option>
+                                                    <option value="Djibouti">Djibouti</option>
+                                                    <option value="Eritrea">Eritrea</option>
+                                                    <option value="South Sudan">South Sudan</option>
+                                                    <option value="Central African Republic">Central African Republic</option>
+                                                    <option value="Gabon">Gabon</option>
+                                                    <option value="Congo">Congo</option>
+                                                    <option value="DR Congo">DR Congo</option>
+                                                    <option value="Angola">Angola</option>
+                                                    <option value="Zambia">Zambia</option>
+                                                    <option value="Zimbabwe">Zimbabwe</option>
+                                                    <option value="Botswana">Botswana</option>
+                                                    <option value="Namibia">Namibia</option>
+                                                    <option value="Mozambique">Mozambique</option>
+                                                    <option value="Madagascar">Madagascar</option>
+                                                    <option value="Mauritius">Mauritius</option>
+                                                    <option value="Seychelles">Seychelles</option>
+                                                    <option value="Comoros">Comoros</option>
+                                                    <option value="Cape Verde">Cape Verde</option>
+                                                    <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                                    <option value="Guinea">Guinea</option>
+                                                    <option value="Sierra Leone">Sierra Leone</option>
+                                                    <option value="Liberia">Liberia</option>
+                                                    <option value="Togo">Togo</option>
+                                                    <option value="Benin">Benin</option>
+                                                    <option value="Gambia">Gambia</option>
+                                                    <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                                    <option value="São Tomé and Príncipe">São Tomé and Príncipe</option>
+                                                </optgroup>
+                                                <optgroup label="OTHER">
+                                                    <option value="USA">USA</option>
+                                                    <option value="Other MENAP">Other MENAP Region</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 20px;">
+                                        <label style="font-family: 'Roboto', sans-serif; font-size: 15px; color: #000; margin-bottom: 8px; display: block;">AREAS OF EXPERTISE (Select all that apply):</label>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="AI/ML" style="margin-right: 6px;"> AI/ML & Context Engineering
                                             </label>
-                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 15px; margin-bottom: 5px;">
-                                                <input type="checkbox" name="expertise[]" value="Development" style="margin-right: 8px;"> Software Development
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Software Development" style="margin-right: 6px;"> Software Development
                                             </label>
-                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 15px; margin-bottom: 5px;">
-                                                <input type="checkbox" name="expertise[]" value="Project Management" style="margin-right: 8px;"> Project Management
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Project Management" style="margin-right: 6px;"> Project Management
                                             </label>
-                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 15px; margin-bottom: 5px;">
-                                                <input type="checkbox" name="expertise[]" value="BPO" style="margin-right: 8px;"> BPO & Call Center
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="BPO" style="margin-right: 6px;"> BPO & Call Center Services
                                             </label>
-                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 15px; margin-bottom: 5px;">
-                                                <input type="checkbox" name="expertise[]" value="Security" style="margin-right: 8px;"> Security & Compliance
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="CMMC Security" style="margin-right: 6px;"> CMMC Security & Compliance
                                             </label>
-                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 15px; margin-bottom: 5px;">
-                                                <input type="checkbox" name="expertise[]" value="Other" style="margin-right: 8px;"> Other
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Business Consulting" style="margin-right: 6px;"> Business Consulting
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Technology Consulting" style="margin-right: 6px;"> Technology Consulting
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="EOR Services" style="margin-right: 6px;"> Employer of Record (EOR)
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Performance Management" style="margin-right: 6px;"> Performance Management
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Microsoft Azure" style="margin-right: 6px;"> Microsoft Azure & Cloud
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Enterprise Tools" style="margin-right: 6px;"> Enterprise Tools (Jira, Azure DevOps)
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Customer Support" style="margin-right: 6px;"> Customer Support & Service
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Data Analytics" style="margin-right: 6px;"> Data Analytics & Insights
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Digital Transformation" style="margin-right: 6px;"> Digital Transformation
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Process Optimization" style="margin-right: 6px;"> Process Optimization
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Financial Management" style="margin-right: 6px;"> Financial Management & Analysis
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="International Business" style="margin-right: 6px;"> International Business & Trade
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Regulatory Compliance" style="margin-right: 6px;"> Regulatory Compliance
+                                            </label>
+                                            <label style="display: flex; align-items: center; font-size: 14px; margin-right: 12px; margin-bottom: 3px;">
+                                                <input type="checkbox" name="expertise[]" value="Other" style="margin-right: 6px;"> Other
                                             </label>
                                         </div>
                                     </div>
+                                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                                        <div style="flex: 1;">
+                                            <select id="experience" name="experience" required style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                                <option value="">YEARS OF EXPERIENCE</option>
+                                                <option value="0-1">0-1 years (Entry Level)</option>
+                                                <option value="1-3">1-3 years (Junior)</option>
+                                                <option value="3-5">3-5 years (Mid-Level)</option>
+                                                <option value="5-8">5-8 years (Senior)</option>
+                                                <option value="8-12">8-12 years (Lead/Manager)</option>
+                                                <option value="12+">12+ years (Director/Executive)</option>
+                                            </select>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <select id="referral" name="referral" style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                                <option value="">REFERRAL</option>
+                                                <option value="Ignite Curiosity">Ignite Curiosity</option>
+                                                <option value="Advertisement">Advertisement</option>
+                                                <option value="College Professor">College Professor</option>
+                                                <option value="Friend">Friend</option>
+                                                <option value="LinkedIn">LinkedIn</option>
+                                                <option value="Facebook">Facebook</option>
+                                                <option value="Instagram">Instagram</option>
+                                                <option value="Twitter">Twitter</option>
+                                                <option value="Job Board">Job Board</option>
+                                                <option value="University Career Center">University Career Center</option>
+                                                <option value="Professional Network">Professional Network</option>
+                                                <option value="Company Website">Company Website</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                            <input id="referral-other" type="text" name="referral-other" placeholder="Please specify who referred you" style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000; display: none; margin-top: 10px;">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                                        <div style="flex: 2;">
+                                            <input id="expected-salary" type="number" name="expected-salary" placeholder="EXPECTED SALARY" min="0" max="9999999" step="0.01" title="Please enter a valid salary amount" style="width: 90%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <select id="currency" name="currency" style="width: 100%; height: 50px; padding: 0 20px; border: 1px solid #e1e1e1; background-color: #fff; font-family: 'Roboto', sans-serif; font-size: 15px; color: #000;">
+                                                <option value="">CURRENCY</option>
+                                                <option value="USD">USD ($)</option>
+                                                <option value="PKR">PKR (₨)</option>
+                                                <option value="PHP">PHP (₱)</option>
+                                                <option value="NGN">NGN (₦)</option>
+                                                <option value="EUR">EUR (€)</option>
+                                                <option value="GBP">GBP (£)</option>
+                                                <option value="AED">AED (د.إ)</option>
+                                                <option value="SAR">SAR (ر.س)</option>
+                                                <option value="QAR">QAR (ر.ق)</option>
+                                                <option value="KWD">KWD (د.ك)</option>
+                                                <option value="BHD">BHD (د.ب)</option>
+                                                <option value="OMR">OMR (ر.ع)</option>
+                                                <option value="JOD">JOD (د.أ)</option>
+                                                <option value="LBP">LBP (ل.ل)</option>
+                                                <option value="TRY">TRY (₺)</option>
+                                                <option value="EGP">EGP (ج.م)</option>
+                                                <option value="MAD">MAD (د.م)</option>
+                                                <option value="TND">TND (د.ت)</option>
+                                                <option value="DZD">DZD (د.ج)</option>
+                                                <option value="LYD">LYD (د.ل)</option>
+                                                <option value="SDG">SDG (ج.س)</option>
+                                                <option value="INR">INR (₹)</option>
+                                                <option value="BDT">BDT (৳)</option>
+                                                <option value="LKR">LKR (රු)</option>
+                                                <option value="AFN">AFN (؋)</option>
+                                                <option value="VND">VND (₫)</option>
+                                                <option value="IDR">IDR (Rp)</option>
+                                                <option value="MYR">MYR (RM)</option>
+                                                <option value="THB">THB (฿)</option>
+                                                <option value="SGD">SGD (S$)</option>
+                                                <option value="NPR">NPR (₨)</option>
+                                                <option value="MMK">MMK (K)</option>
+                                                <option value="KHR">KHR (៛)</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <p>
-                                        <select id="location" name="location" required>
-                                            <option value="">LOCATION</option>
-                                            <optgroup label="MIDDLE EAST">
-                                                <option value="UAE">United Arab Emirates</option>
-                                                <option value="Saudi Arabia">Saudi Arabia</option>
-                                                <option value="Qatar">Qatar</option>
-                                                <option value="Kuwait">Kuwait</option>
-                                                <option value="Bahrain">Bahrain</option>
-                                                <option value="Oman">Oman</option>
-                                                <option value="Jordan">Jordan</option>
-                                                <option value="Lebanon">Lebanon</option>
-                                                <option value="Turkey">Turkey</option>
-                                                <option value="Iran">Iran</option>
-                                                <option value="Iraq">Iraq</option>
-                                            </optgroup>
-                                            <optgroup label="NORTH AFRICA">
-                                                <option value="Egypt">Egypt</option>
-                                                <option value="Morocco">Morocco</option>
-                                                <option value="Tunisia">Tunisia</option>
-                                                <option value="Algeria">Algeria</option>
-                                                <option value="Libya">Libya</option>
-                                                <option value="Sudan">Sudan</option>
-                                            </optgroup>
-                                            <optgroup label="ASIA">
-                                                <option value="Pakistan">Pakistan</option>
-                                                <option value="India">India</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Sri Lanka">Sri Lanka</option>
-                                                <option value="Afghanistan">Afghanistan</option>
-                                                <option value="Philippines">Philippines</option>
-                                                <option value="Vietnam">Vietnam</option>
-                                                <option value="Indonesia">Indonesia</option>
-                                                <option value="Malaysia">Malaysia</option>
-                                                <option value="Thailand">Thailand</option>
-                                                <option value="Singapore">Singapore</option>
-                                                <option value="Nepal">Nepal</option>
-                                                <option value="Myanmar">Myanmar</option>
-                                                <option value="Cambodia">Cambodia</option>
-                                            </optgroup>
-                                            <optgroup label="OTHER">
-                                                <option value="USA">USA</option>
-                                                <option value="Other MENAP">Other MENAP Region</option>
-                                            </optgroup>
-                                        </select>
-                                    </p>
-                                    <p>
-                                        <input id="experience" type="text" name="experience" placeholder="YEARS OF EXPERIENCE" required>
-                                    </p>
-                                    <p>
-                                        <textarea id="message" name="your-message" placeholder="TELL US ABOUT YOUR BACKGROUND, SKILLS, AND WHY YOU WANT TO JOIN TRUSTORA..." required></textarea>
+                                        <textarea id="message" name="your-message" placeholder="TELL US ABOUT YOUR BACKGROUND, SKILLS, AND WHY YOU WANT TO JOIN TRUSTORA..." required minlength="50" maxlength="2000" title="Please provide a detailed response (minimum 50 characters)" style="border: 1px solid #e1e1e1; width: 100%; height: 120px; padding: 15px; font-family: 'Roboto', sans-serif; font-size: 15px; resize: vertical;"></textarea>
                                     </p>
                                     <p class="contact-submit-holder">
                                         <input type="submit" value="SUBMIT APPLICATION">
@@ -336,5 +625,248 @@
         <script src='js/isotope.pkgd.js'></script>                                                 
         <script src='js/owl.carousel.min.js'></script>                                                         
         <script src='js/main.js'></script>
+        
+        <script>
+        // Custom form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure logo link works
+            const logoLink = document.querySelector('.header-logo a');
+            if (logoLink) {
+                logoLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'index.html';
+                });
+            }
+            const form = document.querySelector('.contact-form');
+            const fields = form.querySelectorAll('input, select, textarea');
+            
+            // Referral dropdown functionality
+            const referralSelect = document.getElementById('referral');
+            const referralOther = document.getElementById('referral-other');
+            
+            // Define which options need additional input
+            const optionsNeedingInput = {
+                'Advertisement': 'Which Ad?',
+                'College Professor': 'Which Professor?',
+                'Friend': 'Which Friend?',
+                'LinkedIn': 'Which LinkedIn Connection?',
+                'Facebook': 'Which Facebook Contact?',
+                'Instagram': 'Which Instagram Contact?',
+                'Twitter': 'Which Twitter Contact?',
+                'Job Board': 'Which Job Board?',
+                'University Career Center': 'Which University?',
+                'Professional Network': 'Which Network/Contact?',
+                'Other': 'Please specify who referred you'
+            };
+            
+            referralSelect.addEventListener('change', function() {
+                const selectedValue = this.value;
+                
+                if (optionsNeedingInput[selectedValue]) {
+                    referralOther.style.display = 'block';
+                    referralOther.required = true;
+                    referralOther.placeholder = optionsNeedingInput[selectedValue];
+                } else {
+                    referralOther.style.display = 'none';
+                    referralOther.required = false;
+                    referralOther.value = '';
+                }
+            });
+            
+            // Validation rules
+            const validationRules = {
+                'first-name': {
+                    required: true,
+                    minLength: 2,
+                    maxLength: 50,
+                    pattern: /^[A-Za-z\s\-']+$/,
+                    message: 'Please enter a valid first name (2-50 characters, letters only)'
+                },
+                'last-name': {
+                    required: true,
+                    minLength: 2,
+                    maxLength: 50,
+                    pattern: /^[A-Za-z\s\-']+$/,
+                    message: 'Please enter a valid last name (2-50 characters, letters only)'
+                },
+                'your-email': {
+                    required: true,
+                    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: 'Please enter a valid email address'
+                },
+                'whatsapp': {
+                    required: false,
+                    pattern: /^[\+]?[0-9\s\-\(\)]{8,20}$/,
+                    message: 'Please enter a valid phone number with country code'
+                },
+                'expected-salary': {
+                    required: false,
+                    min: 0,
+                    max: 9999999,
+                    message: 'Please enter a valid salary amount (0-9,999,999)'
+                },
+                'your-message': {
+                    required: true,
+                    minLength: 50,
+                    maxLength: 2000,
+                    message: 'Please provide a detailed response (minimum 50 characters)'
+                },
+                'referral-other': {
+                    required: false,
+                    minLength: 2,
+                    maxLength: 100,
+                    pattern: /^[A-Za-z0-9\s\-'.,]+$/,
+                    message: 'Please enter a valid referral name (2-100 characters)'
+                }
+            };
+            
+            // Create error message element
+            function createErrorMessage(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                return errorDiv;
+            }
+            
+            // Show error message
+            function showError(field, message) {
+                // Remove existing error
+                hideError(field);
+                
+                // Add error styling
+                field.classList.add('field-error');
+                field.classList.remove('field-success');
+                
+                // Create and show error message
+                const errorDiv = createErrorMessage(message);
+                field.parentNode.style.position = 'relative';
+                field.parentNode.appendChild(errorDiv);
+                
+                // Animate in
+                setTimeout(() => errorDiv.classList.add('show'), 10);
+            }
+            
+            // Hide error message
+            function hideError(field) {
+                const existingError = field.parentNode.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+            }
+            
+            // Show success
+            function showSuccess(field) {
+                field.classList.remove('field-error');
+                field.classList.add('field-success');
+                hideError(field);
+            }
+            
+            // Validate field
+            function validateField(field) {
+                const fieldName = field.name;
+                const rules = validationRules[fieldName];
+                
+                if (!rules) return true;
+                
+                const value = field.value.trim();
+                
+                // Special handling for referral-other field
+                if (fieldName === 'referral-other') {
+                    const referralSelect = document.getElementById('referral');
+                    const optionsNeedingInput = ['Advertisement', 'College Professor', 'Friend', 'LinkedIn', 'Facebook', 'Instagram', 'Twitter', 'Job Board', 'University Career Center', 'Professional Network', 'Other'];
+                    
+                    if (!optionsNeedingInput.includes(referralSelect.value)) {
+                        showSuccess(field);
+                        return true;
+                    }
+                    // If an option requiring input is selected, make it required
+                    if (!value) {
+                        const placeholderText = field.placeholder || 'Please specify who referred you';
+                        showError(field, placeholderText);
+                        return false;
+                    }
+                }
+                
+                // Check if required
+                if (rules.required && !value) {
+                    showError(field, rules.message);
+                    return false;
+                }
+                
+                // Skip validation for empty optional fields
+                if (!rules.required && !value) {
+                    showSuccess(field);
+                    return true;
+                }
+                
+                // Check min length
+                if (rules.minLength && value.length < rules.minLength) {
+                    showError(field, rules.message);
+                    return false;
+                }
+                
+                // Check max length
+                if (rules.maxLength && value.length > rules.maxLength) {
+                    showError(field, rules.message);
+                    return false;
+                }
+                
+                // Check pattern
+                if (rules.pattern && !rules.pattern.test(value)) {
+                    showError(field, rules.message);
+                    return false;
+                }
+                
+                // Check min/max for numbers
+                if (rules.min !== undefined && parseFloat(value) < rules.min) {
+                    showError(field, rules.message);
+                    return false;
+                }
+                
+                if (rules.max !== undefined && parseFloat(value) > rules.max) {
+                    showError(field, rules.message);
+                    return false;
+                }
+                
+                // All validations passed
+                showSuccess(field);
+                return true;
+            }
+            
+            // Add event listeners
+            fields.forEach(field => {
+                // Validate on blur (when leaving field)
+                field.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                // Remove error styling on focus
+                field.addEventListener('focus', function() {
+                    this.classList.remove('field-error', 'field-success');
+                    hideError(this);
+                });
+            });
+            
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                fields.forEach(field => {
+                    if (!validateField(field)) {
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    // Scroll to first error
+                    const firstError = form.querySelector('.field-error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+        });
+        </script>
     </body>
 </html>
