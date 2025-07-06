@@ -234,7 +234,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ### Get in Touch
 
 - **Website**: [trustora.net](https://trustora.net)
-- **Email**: [contact@trustora.net](mailto:contact@trustora.net)
+- **Email**: [info@trustora.net](mailto:info@trustora.net)
 - **Careers**: [trustora.net/careers](https://trustora.net/careers)
 
 ### Business Inquiries
