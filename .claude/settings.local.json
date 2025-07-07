@@ -10,7 +10,8 @@
       "Bash(# Update blog.html with Trustora branding and business content\nsed -i ''s/Meelo - Corporate One Page HTML Template/Trustora Business Blog - Insights and Trends/g;\ns/Template by CocoBasic/Business consulting insights and industry trends from Trustora/g;\ns/HTML, CSS, JavaScript, PHP/business consulting, technology trends, professional services, EOR insights/g;\ns/CocoBasic/Trustora/g;\ns/Meelo/Trustora/g;\ns/+123.456.789/Delaware • Asia/g;\ns/hello@cocobasic.com/info@trustora.net/g'' /mnt/x/Repos/trustora/blog.html)",
       "Bash(# Update single.html with Trustora branding and business content\nsed -i ''s/Meelo - Corporate One Page HTML Template/Digital Transformation Strategies - Trustora/g;\ns/Template by CocoBasic/Comprehensive guide to digital transformation strategies for modern businesses/g;\ns/HTML, CSS, JavaScript, PHP/digital transformation, business strategy, technology consulting, change management/g;\ns/CocoBasic/Trustora/g;\ns/Meelo/Trustora/g;\ns/+123.456.789/Delaware • Asia/g;\ns/hello@cocobasic.com/info@trustora.net/g'' /mnt/x/Repos/trustora/single.html)",
       "Bash(rg:*)",
-      "WebFetch(domain:demo.cocobasic.com)"
+      "WebFetch(domain:demo.cocobasic.com)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

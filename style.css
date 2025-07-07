@@ -42,6 +42,10 @@ version 1.1
     2. Global CSS
 ====================================== */
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Karla', sans-serif;
     font-size: 16px;
@@ -96,6 +100,7 @@ body pre {
 .content-1170 {
     width: 1170px;    
     max-width: 95%;
+    margin: 0 auto;
 }
 
 .content-740 {
@@ -752,7 +757,7 @@ body .sm-clean li.current_page_item > a {
 }
 
 .home-full-width-background {
-    background-image: url(images/main_img_01.jpg);
+    background-image: url(images/custom/team1.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
@@ -2242,6 +2247,53 @@ body .social a:hover {
 
 }
 
+@media screen and (max-width: 1515px) and (min-width: 1021px) {
+    #portfolio-wrapper {
+        width: 100% !important;
+        margin-left: 0 !important;
+        max-width: 100%;
+    }
+    
+    .site-wrapper {
+        width: 100%;
+    }
+    
+    .site-content {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .content-1170 {
+        width: 100%;
+        max-width: 95%;
+        margin: 0 auto;
+    }
+    
+    .section-wrapper {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding-left: 2.5%;
+        padding-right: 2.5%;
+        box-sizing: border-box;
+    }
+    
+    .content-wrapper {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .section {
+        overflow-x: hidden;
+    }
+    
+    body {
+        overflow-x: hidden;
+    }
+}
+
 @media screen and (max-width: 1360px) { 
 
     .blog-item-holder.has-post-thumbnail .entry-holder {
@@ -2352,6 +2404,29 @@ body .social a:hover {
         width: 95%;
     }
 
+    /* Fix for blank space on the right */
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .site-wrapper {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .site-content {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .content-1170 {
+        width: 100%;
+        max-width: 95%;
+        margin: 0 auto;
+    }
+
     .main-menu ul {
         width: 12em;
     }        
@@ -2434,12 +2509,33 @@ body .social a:hover {
 
     .section-wrapper {     
         padding: 70px 0;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .section {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     .blog-item-holder {
         width: 100%;
         padding: 35px 0;
         float: none;
+    }
+
+    .content-wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .home-full-width {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     .blog-item-wrapper {
