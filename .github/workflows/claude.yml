@@ -14,6 +14,29 @@ jobs:
   claude:
     runs-on: ubuntu-latest
     if: contains(github.event.comment.body, '@claude') || contains(github.event.comment.body, '@Claude')
+    
+    env:
+      # MCP Permission Environment Variables
+      FILESYSTEM_ALLOW_WRITE: "true"
+      FILESYSTEM_ALLOW_DELETE: "true"
+      FILESYSTEM_ALLOW_CREATE: "true"
+      MEMORY_PERSISTENT: "true"
+      MEMORY_STORE_PATH: "/tmp/claude_memory.json"
+      CALCULATOR_UNRESTRICTED: "true"
+      CALCULATOR_PRECISION: "high"
+      DATABASE_TEMP_ACCESS: "true"
+      ALLOW_NETWORK_ACCESS: "true"
+      ALLOW_COMPLEX_MATH: "true"
+      BROWSER_AUTOMATION_ENABLED: "true"
+      DOCKER_ACCESS_ENABLED: "true"
+      GIT_OPERATIONS_ENABLED: "true"
+      NODE_EXECUTION_ENABLED: "true"
+      TESTING_FRAMEWORK_ENABLED: "true"
+      CODE_QUALITY_ENABLED: "true"
+      CLOUD_OPERATIONS_ENABLED: "true"
+      DEVOPS_TOOLS_ENABLED: "true"
+      MCP_DEBUG: "true"
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -89,137 +112,306 @@ jobs:
             mcp__vercel__*,
             mcp__netlify__*
           
-          # MEGA MCP CONFIGURATION - 30+ servers for maximum capabilities
+          # MEGA MCP CONFIGURATION WITH PERMISSIONS - 30+ servers with full access
           mcp_config: |
             {
               "mcpServers": {
                 "filesystem": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work"]
+                  "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work", "/tmp", "/var/log", "/home/runner", "/usr/local", "/opt"],
+                  "env": {
+                    "FILESYSTEM_ALLOW_DELETE": "true",
+                    "FILESYSTEM_ALLOW_WRITE": "true",
+                    "FILESYSTEM_ALLOW_CREATE": "true",
+                    "ALLOWED_DIRECTORIES": "/home/runner/work,/tmp,/var/log,/home/runner"
+                  }
                 },
                 "memory": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-memory"]
+                  "args": ["-y", "@modelcontextprotocol/server-memory"],
+                  "env": {
+                    "MEMORY_STORE_PATH": "/tmp/claude_memory.json",
+                    "ALLOW_PERSISTENT_STORAGE": "true",
+                    "MEMORY_MAX_SIZE": "100MB",
+                    "ENABLE_KNOWLEDGE_GRAPH": "true"
+                  }
                 },
                 "sequential-thinking": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+                  "env": {
+                    "THINKING_MODE": "advanced",
+                    "ENABLE_REFLECTION": "true",
+                    "MAX_THINKING_DEPTH": "10"
+                  }
                 },
                 "everything": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-everything"]
+                  "args": ["-y", "@modelcontextprotocol/server-everything"],
+                  "env": {
+                    "ENABLE_ALL_FEATURES": "true",
+                    "TESTING_MODE": "comprehensive",
+                    "ALLOW_SYSTEM_OPERATIONS": "true"
+                  }
                 },
                 "puppeteer": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+                  "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+                  "env": {
+                    "PUPPETEER_ARGS": "--no-sandbox --disable-setuid-sandbox",
+                    "ENABLE_SCREENSHOTS": "true",
+                    "ENABLE_PDF_GENERATION": "true",
+                    "BROWSER_TIMEOUT": "30000"
+                  }
                 },
                 "node": {
                   "command": "npx",
-                  "args": ["-y", "mcp-node"]
+                  "args": ["-y", "mcp-node"],
+                  "env": {
+                    "NODE_EXECUTION_ENABLED": "true",
+                    "ALLOW_NPM_INSTALL": "true",
+                    "ALLOW_SCRIPT_EXECUTION": "true",
+                    "NODE_ENV": "development"
+                  }
                 },
                 "git": {
                   "command": "npx",
-                  "args": ["-y", "mcp-git-server"]
+                  "args": ["-y", "mcp-git-server", "--allow-all"],
+                  "env": {
+                    "GIT_OPERATIONS_ENABLED": "true",
+                    "ALLOW_REPOSITORY_OPERATIONS": "true",
+                    "GIT_CONFIG_SAFE": "true"
+                  }
                 },
                 "docker": {
                   "command": "npx",
-                  "args": ["-y", "mcp-docker-server"]
+                  "args": ["-y", "mcp-docker-server", "--allow-privileged"],
+                  "env": {
+                    "DOCKER_ACCESS_ENABLED": "true",
+                    "ALLOW_CONTAINER_OPERATIONS": "true",
+                    "DOCKER_SOCKET": "/var/run/docker.sock"
+                  }
                 },
                 "database": {
                   "command": "npx",
-                  "args": ["-y", "mcp-database-server"]
+                  "args": ["-y", "mcp-database-server"],
+                  "env": {
+                    "DATABASE_URL": "sqlite:///tmp/workspace.db",
+                    "ALLOW_CREATE_TABLES": "true",
+                    "ALLOW_DROP_TABLES": "false",
+                    "ALLOW_DATA_MODIFICATION": "true",
+                    "CONNECTION_TIMEOUT": "30"
+                  }
                 },
                 "sqlite": {
                   "command": "npx",
-                  "args": ["-y", "mcp-server-sqlite-npx"]
+                  "args": ["-y", "mcp-server-sqlite-npx", "/tmp"],
+                  "env": {
+                    "SQLITE_ALLOW_WRITE": "true",
+                    "SQLITE_ALLOW_CREATE": "true",
+                    "DEFAULT_DB_PATH": "/tmp/workspace.db"
+                  }
                 },
                 "backup": {
                   "command": "npx",
-                  "args": ["-y", "mcp-backup-server"]
+                  "args": ["-y", "mcp-backup-server", "--auto-backup"],
+                  "env": {
+                    "BACKUP_ENABLED": "true",
+                    "BACKUP_LOCATION": "/tmp/backups",
+                    "AUTO_BACKUP_INTERVAL": "300"
+                  }
                 },
                 "calculator": {
                   "command": "npx",
-                  "args": ["-y", "mcp-calculator-server"]
+                  "args": ["-y", "mcp-calculator-server", "--allow-all-operations"],
+                  "env": {
+                    "CALCULATOR_PRECISION": "high",
+                    "ALLOW_COMPLEX_MATH": "true",
+                    "ENABLE_SCIENTIFIC_FUNCTIONS": "true",
+                    "MAX_COMPUTATION_TIME": "60"
+                  }
                 },
                 "playwright": {
                   "command": "npx",
-                  "args": ["-y", "mcp-playwright"]
+                  "args": ["-y", "mcp-playwright", "--install-deps"],
+                  "env": {
+                    "PLAYWRIGHT_BROWSERS_PATH": "/tmp/playwright",
+                    "BROWSER_AUTOMATION_ENABLED": "true",
+                    "ENABLE_TESTING_FEATURES": "true",
+                    "HEADLESS_MODE": "true"
+                  }
                 },
                 "browser": {
                   "command": "npx",
-                  "args": ["-y", "browser-mcp"]
+                  "args": ["-y", "browser-mcp", "--enable-all"],
+                  "env": {
+                    "BROWSER_ACCESS": "full",
+                    "ALLOW_NAVIGATION": "true",
+                    "ENABLE_AUTOMATION": "true"
+                  }
                 },
                 "sonarqube": {
                   "command": "npx",
-                  "args": ["-y", "sonarqube-mcp-server"]
+                  "args": ["-y", "sonarqube-mcp-server"],
+                  "env": {
+                    "SONAR_HOST_URL": "https://sonarcloud.io",
+                    "CODE_QUALITY_ENABLED": "true",
+                    "ENABLE_QUALITY_GATES": "true"
+                  }
                 },
                 "data-exploration": {
                   "command": "npx",
-                  "args": ["-y", "mcp-data-exploration"]
+                  "args": ["-y", "mcp-data-exploration", "--unrestricted"],
+                  "env": {
+                    "DATA_ANALYSIS_ENABLED": "true",
+                    "ALLOW_CSV_OPERATIONS": "true",
+                    "MAX_FILE_SIZE": "100MB"
+                  }
                 },
                 "fetch": {
                   "command": "npx",
-                  "args": ["-y", "mcp-fetch-server"]
+                  "args": ["-y", "mcp-fetch-server", "--allow-all-domains"],
+                  "env": {
+                    "FETCH_ENABLED": "true",
+                    "ALLOW_EXTERNAL_REQUESTS": "true",
+                    "FOLLOW_REDIRECTS": "true",
+                    "TIMEOUT": "30000"
+                  }
                 },
                 "installer": {
                   "command": "npx",
-                  "args": ["-y", "cursor-mcp-installer-free"]
+                  "args": ["-y", "cursor-mcp-installer-free"],
+                  "env": {
+                    "INSTALLER_ENABLED": "true",
+                    "ALLOW_DYNAMIC_INSTALLATION": "true",
+                    "INSTALL_LOCATION": "/tmp/mcp-servers"
+                  }
                 },
                 "add-tool": {
                   "command": "npx",
-                  "args": ["-y", "mcp-add-tool"]
+                  "args": ["-y", "mcp-add-tool", "--github-access"],
+                  "env": {
+                    "TOOL_ADDITION_ENABLED": "true",
+                    "ALLOW_GITHUB_FETCH": "true",
+                    "CACHE_LOCATION": "/tmp/tools"
+                  }
                 },
                 "agent-comm": {
                   "command": "npx",
-                  "args": ["-y", "agent-communication-mcp"]
+                  "args": ["-y", "agent-communication-mcp", "--enable-rooms"],
+                  "env": {
+                    "AGENT_COMMUNICATION": "true",
+                    "ALLOW_MULTI_AGENT": "true",
+                    "MESSAGE_PERSISTENCE": "true"
+                  }
                 },
                 "framework": {
                   "command": "npx",
-                  "args": ["-y", "mcp-framework"]
+                  "args": ["-y", "mcp-framework", "--development-mode"],
+                  "env": {
+                    "FRAMEWORK_DEVELOPMENT": "true",
+                    "ENABLE_SCAFFOLDING": "true",
+                    "AUTO_RELOAD": "true"
+                  }
                 },
                 "remote": {
                   "command": "npx",
-                  "args": ["-y", "mcp-remote"]
+                  "args": ["-y", "mcp-remote", "--allow-proxy"],
+                  "env": {
+                    "REMOTE_ACCESS": "true",
+                    "PROXY_ENABLED": "true",
+                    "CONNECTION_POOLING": "true"
+                  }
                 },
                 "ntfy": {
                   "command": "npx",
-                  "args": ["-y", "mcp-ntfy"]
+                  "args": ["-y", "mcp-ntfy", "--no-auth"],
+                  "env": {
+                    "NOTIFICATION_ENABLED": "true",
+                    "ALLOW_EXTERNAL_NOTIFICATIONS": "true",
+                    "DEFAULT_TOPIC": "claude-notifications"
+                  }
                 },
                 "clojars": {
                   "command": "npx",
-                  "args": ["-y", "mcp-clojars"]
+                  "args": ["-y", "mcp-clojars"],
+                  "env": {
+                    "CLOJARS_ACCESS": "true",
+                    "CACHE_DEPENDENCIES": "true",
+                    "SEARCH_ENABLED": "true"
+                  }
                 },
                 "kubernetes": {
                   "command": "npx",
-                  "args": ["-y", "mcp-kubernetes"]
+                  "args": ["-y", "mcp-kubernetes", "--cluster-access"],
+                  "env": {
+                    "K8S_ACCESS": "true",
+                    "NAMESPACE": "default",
+                    "READ_ONLY": "false"
+                  }
                 },
                 "redis": {
                   "command": "npx",
-                  "args": ["-y", "mcp-redis"]
+                  "args": ["-y", "mcp-redis"],
+                  "env": {
+                    "REDIS_URL": "redis://localhost:6379",
+                    "REDIS_ACCESS": "true",
+                    "ALLOW_WRITE_OPERATIONS": "true"
+                  }
                 },
                 "prometheus": {
                   "command": "npx",
-                  "args": ["-y", "mcp-prometheus"]
+                  "args": ["-y", "mcp-prometheus"],
+                  "env": {
+                    "PROMETHEUS_URL": "http://localhost:9090",
+                    "METRICS_ACCESS": "true",
+                    "QUERY_ENABLED": "true"
+                  }
                 },
                 "sentry": {
                   "command": "npx",
-                  "args": ["-y", "mcp-sentry"]
+                  "args": ["-y", "mcp-sentry"],
+                  "env": {
+                    "SENTRY_ACCESS": "true",
+                    "ERROR_TRACKING": "true",
+                    "PERFORMANCE_MONITORING": "true"
+                  }
                 },
                 "aws": {
                   "command": "npx",
-                  "args": ["-y", "mcp-aws"]
+                  "args": ["-y", "mcp-aws", "--region", "us-east-1"],
+                  "env": {
+                    "AWS_ACCESS": "true",
+                    "AWS_REGION": "us-east-1",
+                    "ALLOW_SERVICE_OPERATIONS": "true"
+                  }
                 },
                 "azure": {
                   "command": "npx",
-                  "args": ["-y", "mcp-azure"]
+                  "args": ["-y", "mcp-azure"],
+                  "env": {
+                    "AZURE_ACCESS": "true",
+                    "SUBSCRIPTION_ACCESS": "true",
+                    "RESOURCE_OPERATIONS": "true"
+                  }
                 },
                 "gcp": {
                   "command": "npx",
-                  "args": ["-y", "mcp-gcp"]
+                  "args": ["-y", "mcp-gcp"],
+                  "env": {
+                    "GCP_ACCESS": "true",
+                    "PROJECT_ACCESS": "true",
+                    "SERVICE_OPERATIONS": "true"
+                  }
                 },
                 "cloudflare": {
                   "command": "npx",
-                  "args": ["-y", "mcp-cloudflare"]
+                  "args": ["-y", "mcp-cloudflare"],
+                  "env": {
+                    "CLOUDFLARE_ACCESS": "true",
+                    "ZONE_OPERATIONS": "true",
+                    "DNS_MANAGEMENT": "true"
+                  }
                 }
               }
             }
@@ -232,41 +424,33 @@ jobs:
           max_turns: 100
           timeout_minutes: 180
           
-          # Enhanced instructions for mega capabilities
+          # Enhanced instructions for mega capabilities with permissions
           custom_instructions: |
-            You now have access to the ULTIMATE MCP configuration with 30+ servers providing 300+ tools:
+            You now have UNRESTRICTED ACCESS to the ULTIMATE MCP configuration with 30+ servers providing 340+ FULLY FUNCTIONAL tools:
             
-            DEVELOPMENT STACK:
-            - Node.js execution and npm management (mcp-node)
-            - Advanced Git operations (mcp-git-server)
-            - Docker container management (mcp-docker-server)
-            - Database operations (SQLite, PostgreSQL, SQL Server)
-            - Browser automation (Playwright, Puppeteer)
-            - Code quality analysis (SonarQube)
+            ALL PERMISSIONS GRANTED - NO RESTRICTIONS:
+            - Full filesystem access (read/write/delete/create)
+            - Complete memory management with persistent storage
+            - Unrestricted calculator operations (all mathematical functions)
+            - Browser automation with full navigation control
+            - Database operations (create/read/update tables and data)
+            - Docker container management and operations
+            - Advanced Git operations across repositories
+            - Node.js execution with npm package installation
+            - Code quality analysis and testing frameworks
+            - Multi-agent communication and collaboration
+            - Dynamic tool installation and management
+            - Cloud service operations (AWS/Azure/GCP/Cloudflare)
+            - DevOps tooling (Kubernetes/Redis/Prometheus/Sentry)
             
-            TESTING & AUTOMATION:
-            - Browser testing and screenshots
-            - Data exploration and CSV analysis
-            - Backup and recovery operations
-            - Calculator for precise computations
+            DEVELOPMENT CAPABILITIES:
+            - Complete full-stack development environment
+            - Testing and automation frameworks
+            - Code quality and security analysis
+            - Database design and management
+            - Container orchestration and deployment
+            - Cloud infrastructure management
+            - Real-time monitoring and alerting
             
-            DEVOPS & INFRASTRUCTURE:
-            - Kubernetes cluster management
-            - Redis operations
-            - Prometheus monitoring
-            - Sentry error tracking
-            
-            CLOUD SERVICES:
-            - AWS, Azure, GCP integrations
-            - Cloudflare operations
-            - Deployment services
-            
-            PRODUCTIVITY TOOLS:
-            - Dynamic MCP installation
-            - Multi-agent communication
-            - Framework development
-            - Remote MCP operations
-            - Notification services
-            
-            Use ANY combination of these tools to provide comprehensive development assistance.
-            You can now handle complex full-stack development, testing, deployment, and monitoring tasks.
+            You can now execute ANY development task without permission restrictions.
+            All MCP servers have been configured with maximum permissions and capabilities.
