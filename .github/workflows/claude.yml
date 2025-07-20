@@ -50,21 +50,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Fetch full history for complete context
-          fetch-depth: 0
-          # Include submodules
-          submodules: recursive
+          # Basic checkout - matching successful run
+          repository: WorldEnterpriseGroup/trustora
         
       - name: Claude Code Action
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@main  # Changed from @v1 to @main
         with:
           # Authentication - OAuth only, no github_token!
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          
-          # Let it use the default model (claude-sonnet-4)
-          # model: claude-3-5-sonnet-20241022
-          # anthropic_model: claude-3-5-sonnet-20241022
-          # fallback_model: claude-3-5-haiku-20241022
           
           # Maximum conversation capability
           max_turns: 30
@@ -79,7 +72,7 @@ jobs:
           direct_prompt: ${{ github.event.inputs.prompt }}
           
           # Branch configuration
-          base_branch: ${{ github.event.repository.default_branch }}
+          base_branch: gh-pages  # Explicitly set to gh-pages like successful run
           branch_prefix: "claude/"
           
           # COMPLETE TOOL ACCESS - All possible tools
@@ -200,9 +193,9 @@ jobs:
             security-events: write
             statuses: write
           
-          # Enable all features
+          # Enable features - but not signing to avoid conflicts
           use_sticky_comment: true
-          use_commit_signing: true
+          use_commit_signing: false  # Changed to false to match successful run
           
           # Settings for enhanced capabilities
           settings: |
