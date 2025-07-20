@@ -1,81 +1,29 @@
-name: Claude AI Assistant - Ultimate Configuration
+name: Claude
 on:
-  # Trigger on ALL possible events
   issue_comment:
-    types: [created]
-  pull_request_review_comment:
-    types: [created]
-  issues:
-    types: [opened, edited, labeled, assigned]
-  pull_request:
-    types: [opened, edited, labeled, assigned, synchronize]
-  pull_request_review:
-    types: [submitted, edited]
-  
-  # Also allow manual triggers
-  workflow_dispatch:
-    inputs:
-      prompt:
-        description: 'Direct prompt for Claude'
-        required: false
-        type: string
+    types:
+      - created
 
 permissions:
   contents: write
   issues: write
   pull-requests: write
   id-token: write
-  actions: write
-  checks: write
-  discussions: write
-  packages: write
-  pages: write
-  repository-projects: write
-  security-events: write
-  statuses: write
 
 jobs:
   claude:
     runs-on: ubuntu-latest
-    # Enhanced trigger conditions including manual dispatch
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issue_comment' && (contains(github.event.comment.body, '@claude') || contains(github.event.comment.body, '@Claude'))) ||
-      (github.event_name == 'pull_request_review_comment' && (contains(github.event.comment.body, '@claude') || contains(github.event.comment.body, '@Claude'))) ||
-      (github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'claude') || github.event.action == 'assigned')) ||
-      (github.event_name == 'pull_request' && (contains(github.event.pull_request.labels.*.name, 'claude') || github.event.action == 'assigned')) ||
-      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude'))
-    
+    if: contains(github.event.comment.body, '@claude') || contains(github.event.comment.body, '@Claude')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          # Basic checkout - matching successful run
-          repository: WorldEnterpriseGroup/trustora
         
       - name: Claude Code Action
-        uses: anthropics/claude-code-action@main  # Changed from @v1 to @main
+        uses: anthropics/claude-code-action@main
         with:
-          # Authentication - OAuth only, no github_token!
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           
-          # Maximum conversation capability
-          max_turns: 30
-          timeout_minutes: 90
-          
-          # All trigger methods
-          trigger_phrase: "@claude"
-          label_trigger: "claude"
-          assignee_trigger: true
-          
-          # Direct prompt for workflow dispatch
-          direct_prompt: ${{ github.event.inputs.prompt }}
-          
-          # Branch configuration
-          base_branch: gh-pages  # Explicitly set to gh-pages like successful run
-          branch_prefix: "claude/"
-          
-          # COMPLETE TOOL ACCESS - All possible tools
+          # Adding more tools beyond the basic 14
           allowed_tools: |
             Edit,
             MultiEdit,
@@ -92,163 +40,15 @@ jobs:
             exit_plan_mode,
             Task,
             Bash(*),
-            mcp_github_comment__update_claude_comment,
-            mcp__sequential-thinking__sequentialthinking,
-            mcp__memory__create_memory,
-            mcp__memory__retrieve_memory,
-            mcp__memory__search_memories,
-            mcp__memory__list_memories,
-            mcp__memory__delete_memory,
-            mcp__memory__delete_all_memories,
-            mcp__memory__count_memories,
-            mcp__filesystem__read_file,
-            mcp__filesystem__write_file,
-            mcp__filesystem__list_directory,
-            mcp__filesystem__delete_file,
-            mcp__filesystem__move_file,
-            mcp__filesystem__make_directory,
-            mcp__filesystem__file_info
+            mcp_github_comment__update_claude_comment
           
-          # Minimal restrictions - only prevent system destruction
-          disallowed_tools: |
-            Bash(rm -rf /),
-            Bash(rm -rf /*),
-            Bash(:(){ :|:& };:),
-            Bash(dd if=/dev/zero of=/dev/sda)
-          
-          # Comprehensive instructions
-          custom_instructions: |
-            You are Claude with ULTIMATE access to the WorldEnterpriseGroup repositories.
-            
-            YOU HAVE COMPLETE ACCESS TO:
-            - All Bash commands and system utilities
-            - Package installation and management
-            - File system operations (create, read, update, delete)
-            - Network operations (API calls, downloads, web scraping)
-            - Database operations
-            - Docker and containerization
-            - Build and deployment scripts
-            - Testing frameworks
-            - Code analysis tools
-            - Web search and documentation lookup
-            - Task planning and todo management
-            - Jupyter notebooks
-            - Sequential thinking for complex problems
-            
-            AVAILABLE COMMANDS (not exhaustive):
-            - Package managers: npm, yarn, pnpm, pip, pip3, pipenv, poetry, cargo, go, gem, bundle, composer, apt-get, yum, brew
-            - Build tools: make, cmake, gradle, maven, ant, webpack, rollup, parcel, vite
-            - Testing: jest, mocha, pytest, unittest, go test, cargo test, rspec, phpunit, junit
-            - Linting/Formatting: eslint, prettier, black, autopep8, rustfmt, gofmt, rubocop
-            - Version control: git (all commands)
-            - Containers: docker, docker-compose, podman
-            - Cloud CLIs: aws, gcloud, azure, heroku
-            - Databases: mysql, psql, mongosh, redis-cli, sqlite3
-            - HTTP: curl, wget, httpie
-            - Process: ps, top, kill, systemctl
-            - Search: find, grep, ag, rg
-            - Archive: tar, zip, unzip, gzip
-            - Text processing: sed, awk, jq, yq
-            - And many more...
-            
-            GUIDELINES:
-            1. Be proactive - install dependencies, run tests, fix issues
-            2. Use Task tool for complex multi-step operations
-            3. Create detailed todo lists for tracking progress
-            4. Search the web when you need current documentation
-            5. Always verify your changes work by running tests
-            6. Add tests for new features and bug fixes
-            7. Follow the project's existing patterns and conventions
-            8. Document your changes appropriately
-            9. Consider performance and security implications
-            10. Use sequential thinking for complex architectural decisions
-            
-            REMEMBER: You have sudo-like capabilities. Use them wisely and safely.
-          
-          # Enhanced environment
-          claude_env: |
-            ORGANIZATION=WorldEnterpriseGroup
-            FULL_ACCESS=true
-            CI=true
-            NODE_ENV=development
-            PYTHONUNBUFFERED=1
-            CARGO_TERM_COLOR=always
-            FORCE_COLOR=1
-            NO_COLOR=0
-            TERM=xterm-256color
-          
-          # Grant all additional permissions
-          additional_permissions: |
-            actions: write
-            checks: write
-            contents: write
-            deployments: write
-            id-token: write
-            issues: write
-            discussions: write
-            packages: write
-            pages: write
-            pull-requests: write
-            repository-projects: write
-            security-events: write
-            statuses: write
-          
-          # Enable features - but not signing to avoid conflicts
-          use_sticky_comment: true
-          use_commit_signing: false  # Changed to false to match successful run
-          
-          # Settings for enhanced capabilities
-          settings: |
-            {
-              "enhanced_context": true,
-              "auto_install_dependencies": true,
-              "verbose_errors": true,
-              "experimental_features": true
-            }
-          
-          # Allow access to documentation sites
-          experimental_allowed_domains: |
-            github.com
-            githubusercontent.com
-            stackoverflow.com
-            stackexchange.com
-            npmjs.com
-            pypi.org
-            crates.io
-            rubygems.org
-            packagist.org
-            godoc.org
-            pkg.go.dev
-            hexdocs.pm
-            hex.pm
-            docs.rs
-            docs.microsoft.com
-            developer.mozilla.org
-            devdocs.io
-            readthedocs.io
-            medium.com
-            dev.to
-            hashnode.dev
-            reddit.com
-            hackernews.com
-            lobste.rs
-            news.ycombinator.com
-          
-          # MCP servers for maximum capability
+          # Basic MCP configuration
           mcp_config: |
             {
               "mcpServers": {
                 "filesystem": {
                   "command": "npx",
                   "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work"]
-                },
-                "memory": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-memory"]
-                },
-                "sequential-thinking": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
                 }
               }
             }
