@@ -23,7 +23,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           
-          # Adding more tools beyond the basic 14
+          # Adding all tools and MCP tools
           allowed_tools: |
             Edit,
             MultiEdit,
@@ -40,15 +40,44 @@ jobs:
             exit_plan_mode,
             Task,
             Bash(*),
-            mcp_github_comment__update_claude_comment
+            mcp_github_comment__update_claude_comment,
+            mcp__sequential-thinking__sequentialthinking,
+            mcp__memory__create_memory,
+            mcp__memory__retrieve_memory,
+            mcp__memory__search_memories,
+            mcp__memory__list_memories,
+            mcp__memory__delete_memory,
+            mcp__memory__delete_all_memories,
+            mcp__memory__count_memories,
+            mcp__filesystem__read_file,
+            mcp__filesystem__write_file,
+            mcp__filesystem__list_directory,
+            mcp__filesystem__delete_file,
+            mcp__filesystem__move_file,
+            mcp__filesystem__make_directory,
+            mcp__filesystem__file_info
           
-          # Basic MCP configuration
+          # Multiple MCP servers for maximum tools
           mcp_config: |
             {
               "mcpServers": {
                 "filesystem": {
                   "command": "npx",
                   "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work"]
+                },
+                "memory": {
+                  "command": "npx",
+                  "args": ["-y", "@modelcontextprotocol/server-memory"]
+                },
+                "sequential-thinking": {
+                  "command": "npx",
+                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
                 }
               }
             }
+          
+          # Additional configurations for reliability
+          trigger_phrase: "@claude"
+          base_branch: gh-pages
+          branch_prefix: "claude/"
+          use_commit_signing: false
