@@ -101,7 +101,21 @@ jobs:
             Task,
             Bash(*),
             mcp_github_comment__update_claude_comment,
-            mcp__sequential-thinking__sequentialthinking
+            mcp__sequential-thinking__sequentialthinking,
+            mcp__memory__create_memory,
+            mcp__memory__retrieve_memory,
+            mcp__memory__search_memories,
+            mcp__memory__list_memories,
+            mcp__memory__delete_memory,
+            mcp__memory__delete_all_memories,
+            mcp__memory__count_memories,
+            mcp__filesystem__read_file,
+            mcp__filesystem__write_file,
+            mcp__filesystem__list_directory,
+            mcp__filesystem__delete_file,
+            mcp__filesystem__move_file,
+            mcp__filesystem__make_directory,
+            mcp__filesystem__file_info
           
           # Minimal restrictions - only prevent system destruction
           disallowed_tools: |
@@ -234,37 +248,15 @@ jobs:
               "mcpServers": {
                 "filesystem": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"],
-                  "env": {}
-                },
-                "github": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-github"],
-                  "env": {
-                    "GITHUB_PERSONAL_ACCESS_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
-                  }
+                  "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work"]
                 },
                 "memory": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-memory"],
-                  "env": {}
+                  "args": ["-y", "@modelcontextprotocol/server-memory"]
                 },
-                "puppeteer": {
+                "sequential-thinking": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
-                  "env": {}
-                },
-                "brave-search": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-                  "env": {
-                    "BRAVE_API_KEY": "${{ secrets.BRAVE_API_KEY }}"
-                  }
-                },
-                "fetch": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-fetch"],
-                  "env": {}
+                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
                 }
               }
             }
