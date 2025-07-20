@@ -3,6 +3,13 @@ on:
   issue_comment:
     types:
       - created
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  id-token: write
+
 jobs:
   claude:
     runs-on: ubuntu-latest
@@ -11,4 +18,4 @@ jobs:
       - name: Claude Code Action
         uses: anthropics/claude-code-action@main
         with:
-          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
