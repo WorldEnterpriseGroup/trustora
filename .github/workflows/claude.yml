@@ -56,11 +56,10 @@ jobs:
           submodules: recursive
         
       - name: Claude Code Action
-        uses: anthropics/claude-code-action@beta
+        uses: anthropics/claude-code-action@main
         with:
-          # Authentication
+          # Authentication - OAuth only, no github_token!
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           
           # Let it use the default model (claude-sonnet-4)
           # model: claude-3-5-sonnet-20241022
