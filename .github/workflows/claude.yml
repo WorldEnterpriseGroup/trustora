@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.comment.body, '@claude') || contains(github.event.comment.body, '@Claude')
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Claude Code Action
         uses: anthropics/claude-code-action@main
         with:
