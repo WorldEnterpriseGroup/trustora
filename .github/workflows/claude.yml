@@ -23,7 +23,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           
-          # Adding all tools and MCP tools
+          # Maximum tools - all available tools and MCP tools
           allowed_tools: |
             Edit,
             MultiEdit,
@@ -55,9 +55,13 @@ jobs:
             mcp__filesystem__delete_file,
             mcp__filesystem__move_file,
             mcp__filesystem__make_directory,
-            mcp__filesystem__file_info
+            mcp__filesystem__file_info,
+            mcp__everything__*,
+            mcp__puppeteer__*,
+            mcp__postgres__*,
+            mcp__github__*
           
-          # Multiple MCP servers for maximum tools
+          # All available MCP servers
           mcp_config: |
             {
               "mcpServers": {
@@ -72,12 +76,42 @@ jobs:
                 "sequential-thinking": {
                   "command": "npx",
                   "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+                },
+                "everything": {
+                  "command": "npx",
+                  "args": ["-y", "@modelcontextprotocol/server-everything"]
+                },
+                "puppeteer": {
+                  "command": "npx",
+                  "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
                 }
               }
             }
           
-          # Additional configurations for reliability
+          # Additional configurations
           trigger_phrase: "@claude"
           base_branch: gh-pages
           branch_prefix: "claude/"
           use_commit_signing: false
+          
+          # Enable all experimental features
+          experimental_enabled: true
+          use_plan_mode: true
+          
+          # Maximum capabilities
+          max_turns: 50
+          timeout_minutes: 120
+          
+          # Enhanced instructions
+          custom_instructions: |
+            You have access to ALL available tools and MCP servers including:
+            - Filesystem operations with advanced features
+            - Memory management with knowledge graphs
+            - Sequential thinking for complex problems
+            - Browser automation with Puppeteer
+            - Everything server for testing all MCP features
+            - Web search and fetching capabilities
+            - Full bash access with all commands
+            - Notebook editing capabilities
+            
+            Use all available tools to provide the most comprehensive assistance possible.
