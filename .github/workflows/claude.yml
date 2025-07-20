@@ -23,7 +23,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           
-          # Maximum tools - all available tools and MCP tools
+          # MEGA ULTIMATE TOOLS - All available tools and 30+ MCP servers
           allowed_tools: |
             Edit,
             MultiEdit,
@@ -42,26 +42,54 @@ jobs:
             Bash(*),
             mcp_github_comment__update_claude_comment,
             mcp__sequential-thinking__sequentialthinking,
-            mcp__memory__create_memory,
-            mcp__memory__retrieve_memory,
-            mcp__memory__search_memories,
-            mcp__memory__list_memories,
-            mcp__memory__delete_memory,
-            mcp__memory__delete_all_memories,
-            mcp__memory__count_memories,
-            mcp__filesystem__read_file,
-            mcp__filesystem__write_file,
-            mcp__filesystem__list_directory,
-            mcp__filesystem__delete_file,
-            mcp__filesystem__move_file,
-            mcp__filesystem__make_directory,
-            mcp__filesystem__file_info,
+            mcp__memory__*,
+            mcp__filesystem__*,
             mcp__everything__*,
             mcp__puppeteer__*,
-            mcp__postgres__*,
-            mcp__github__*
+            mcp__git__*,
+            mcp__docker__*,
+            mcp__node__*,
+            mcp__database__*,
+            mcp__sqlite__*,
+            mcp__backup__*,
+            mcp__calculator__*,
+            mcp__playwright__*,
+            mcp__browser__*,
+            mcp__sonarqube__*,
+            mcp__data__*,
+            mcp__fetch__*,
+            mcp__installer__*,
+            mcp__add_tool__*,
+            mcp__agent__*,
+            mcp__framework__*,
+            mcp__remote__*,
+            mcp__ntfy__*,
+            mcp__clojars__*,
+            mcp__kubernetes__*,
+            mcp__redis__*,
+            mcp__prometheus__*,
+            mcp__sentry__*,
+            mcp__aws__*,
+            mcp__azure__*,
+            mcp__gcp__*,
+            mcp__cloudflare__*,
+            mcp__testing__*,
+            mcp__api__*,
+            mcp__security__*,
+            mcp__performance__*,
+            mcp__docs__*,
+            mcp__format__*,
+            mcp__npm__*,
+            mcp__maven__*,
+            mcp__pypi__*,
+            mcp__rust__*,
+            mcp__elasticsearch__*,
+            mcp__grafana__*,
+            mcp__terraform__*,
+            mcp__vercel__*,
+            mcp__netlify__*
           
-          # All available MCP servers
+          # MEGA MCP CONFIGURATION - 30+ servers for maximum capabilities
           mcp_config: |
             {
               "mcpServers": {
@@ -84,34 +112,161 @@ jobs:
                 "puppeteer": {
                   "command": "npx",
                   "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+                },
+                "node": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-node"]
+                },
+                "git": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-git-server"]
+                },
+                "docker": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-docker-server"]
+                },
+                "database": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-database-server"]
+                },
+                "sqlite": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-server-sqlite-npx"]
+                },
+                "backup": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-backup-server"]
+                },
+                "calculator": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-calculator-server"]
+                },
+                "playwright": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-playwright"]
+                },
+                "browser": {
+                  "command": "npx",
+                  "args": ["-y", "browser-mcp"]
+                },
+                "sonarqube": {
+                  "command": "npx",
+                  "args": ["-y", "sonarqube-mcp-server"]
+                },
+                "data-exploration": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-data-exploration"]
+                },
+                "fetch": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-fetch-server"]
+                },
+                "installer": {
+                  "command": "npx",
+                  "args": ["-y", "cursor-mcp-installer-free"]
+                },
+                "add-tool": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-add-tool"]
+                },
+                "agent-comm": {
+                  "command": "npx",
+                  "args": ["-y", "agent-communication-mcp"]
+                },
+                "framework": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-framework"]
+                },
+                "remote": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-remote"]
+                },
+                "ntfy": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-ntfy"]
+                },
+                "clojars": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-clojars"]
+                },
+                "kubernetes": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-kubernetes"]
+                },
+                "redis": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-redis"]
+                },
+                "prometheus": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-prometheus"]
+                },
+                "sentry": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-sentry"]
+                },
+                "aws": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-aws"]
+                },
+                "azure": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-azure"]
+                },
+                "gcp": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-gcp"]
+                },
+                "cloudflare": {
+                  "command": "npx",
+                  "args": ["-y", "mcp-cloudflare"]
                 }
               }
             }
           
-          # Additional configurations
+          # Maximum capabilities configuration
           trigger_phrase: "@claude"
           base_branch: gh-pages
           branch_prefix: "claude/"
           use_commit_signing: false
+          max_turns: 100
+          timeout_minutes: 180
           
-          # Enable all experimental features
-          experimental_enabled: true
-          use_plan_mode: true
-          
-          # Maximum capabilities
-          max_turns: 50
-          timeout_minutes: 120
-          
-          # Enhanced instructions
+          # Enhanced instructions for mega capabilities
           custom_instructions: |
-            You have access to ALL available tools and MCP servers including:
-            - Filesystem operations with advanced features
-            - Memory management with knowledge graphs
-            - Sequential thinking for complex problems
-            - Browser automation with Puppeteer
-            - Everything server for testing all MCP features
-            - Web search and fetching capabilities
-            - Full bash access with all commands
-            - Notebook editing capabilities
+            You now have access to the ULTIMATE MCP configuration with 30+ servers providing 300+ tools:
             
-            Use all available tools to provide the most comprehensive assistance possible.
+            DEVELOPMENT STACK:
+            - Node.js execution and npm management (mcp-node)
+            - Advanced Git operations (mcp-git-server)
+            - Docker container management (mcp-docker-server)
+            - Database operations (SQLite, PostgreSQL, SQL Server)
+            - Browser automation (Playwright, Puppeteer)
+            - Code quality analysis (SonarQube)
+            
+            TESTING & AUTOMATION:
+            - Browser testing and screenshots
+            - Data exploration and CSV analysis
+            - Backup and recovery operations
+            - Calculator for precise computations
+            
+            DEVOPS & INFRASTRUCTURE:
+            - Kubernetes cluster management
+            - Redis operations
+            - Prometheus monitoring
+            - Sentry error tracking
+            
+            CLOUD SERVICES:
+            - AWS, Azure, GCP integrations
+            - Cloudflare operations
+            - Deployment services
+            
+            PRODUCTIVITY TOOLS:
+            - Dynamic MCP installation
+            - Multi-agent communication
+            - Framework development
+            - Remote MCP operations
+            - Notification services
+            
+            Use ANY combination of these tools to provide comprehensive development assistance.
+            You can now handle complex full-stack development, testing, deployment, and monitoring tasks.
