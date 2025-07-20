@@ -9,6 +9,6 @@ jobs:
     if: contains(github.event.comment.body, '@claude') || contains(github.event.comment.body, '@Claude')
     steps:
       - name: Claude Code Action
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@main
         with:
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
