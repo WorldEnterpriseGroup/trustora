@@ -62,10 +62,10 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           
-          # Use latest and most capable model
-          model: claude-3-5-sonnet-20241022
-          anthropic_model: claude-3-5-sonnet-20241022
-          fallback_model: claude-3-5-haiku-20241022
+          # Let it use the default model (claude-sonnet-4)
+          # model: claude-3-5-sonnet-20241022
+          # anthropic_model: claude-3-5-sonnet-20241022
+          # fallback_model: claude-3-5-haiku-20241022
           
           # Maximum conversation capability
           max_turns: 30
