@@ -1,0 +1,51 @@
+name: Claude GitHub-Hosted Test
+on:
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  claude:
+    # Force GitHub-hosted runner for comparison
+    runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, '@claude-test')
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Claude Code Action Test
+        uses: anthropics/claude-code-action@main
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          
+          allowed_tools: |
+            Edit,
+            Read,
+            Write,
+            Bash(*),
+            Glob,
+            Grep,
+            LS
+          
+          trigger_phrase: "@claude-test"
+          base_branch: gh-pages
+          branch_prefix: "claude-test/"
+          use_commit_signing: false
+          max_turns: 10
+          timeout_minutes: 30
+          
+          custom_instructions: |
+            This is a test to verify GitHub-hosted runner behavior.
+            Please run these commands:
+            1. echo "Runner name: $RUNNER_NAME"
+            2. echo "Runner OS: $RUNNER_OS" 
+            3. hostname
+            4. Report if this starts immediately vs being queued
