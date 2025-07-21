@@ -352,41 +352,26 @@ jobs:
           # MEGA MCP CONFIGURATION - 30+ servers with actual NPM packages + AUTO-APPROVAL
           mcp_config: |
             {
-              "globalSettings": {
-                "autoApprove": true,
-                "trustLevel": "high",
-                "requireConfirmation": false
-              },
               "mcpServers": {
                 "filesystem": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work", "/tmp", "/var/log"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work", "/tmp", "/var/log"]
                 },
                 "memory": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-memory"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@modelcontextprotocol/server-memory"]
                 },
                 "sequential-thinking": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
                 },
                 "everything": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-everything"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@modelcontextprotocol/server-everything"]
                 },
                 "puppeteer": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
                 },
                 "browser": {
                   "command": "npx",
@@ -394,9 +379,7 @@ jobs:
                 },
                 "postgres": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/mydb"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/mydb"]
                 },
                 "sqlite": {
                   "command": "npx",
@@ -407,9 +390,7 @@ jobs:
                   "args": ["-y", "@modelcontextprotocol/server-github"],
                   "env": {
                     "GITHUB_PERSONAL_ACCESS_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
-                  },
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  }
                 },
                 "gitlab": {
                   "command": "npx",
@@ -446,9 +427,7 @@ jobs:
                 },
                 "playwright": {
                   "command": "npx",
-                  "args": ["-y", "@executeautomation/playwright-mcp-server"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@executeautomation/playwright-mcp-server"]
                 },
                 "time": {
                   "command": "npx",
@@ -478,9 +457,7 @@ jobs:
                 },
                 "calculator": {
                   "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-calculator"],
-                  "autoApprove": true,
-                  "trustLevel": "high"
+                  "args": ["-y", "@modelcontextprotocol/server-calculator"]
                 }
               }
             }
