@@ -354,110 +354,110 @@ jobs:
             {
               "mcpServers": {
                 "filesystem": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/runner/work", "/tmp", "/var/log"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-filesystem/dist/index.js", "/home/runner/work", "/tmp", "/var/log"]
                 },
                 "memory": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-memory"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-memory/dist/index.js"]
                 },
                 "sequential-thinking": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-sequential-thinking/dist/index.js"]
                 },
                 "everything": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-everything"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-everything/dist/index.js"]
                 },
                 "puppeteer": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-puppeteer/dist/index.js"]
                 },
                 "browser": {
-                  "command": "npx",
-                  "args": ["-y", "@cloudflare/mcp-server-cloudflare", "browser"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@cloudflare/mcp-server-cloudflare/dist/index.js", "browser"]
                 },
                 "postgres": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/mydb"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-postgres/dist/index.js", "postgresql://localhost/mydb"]
                 },
                 "sqlite": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-sqlite", "/tmp/test.db"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-sqlite/dist/index.js", "/tmp/test.db"]
                 },
                 "github": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-github"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-github/dist/index.js"],
                   "env": {
                     "GITHUB_PERSONAL_ACCESS_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
                   }
                 },
                 "gitlab": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-gitlab"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-gitlab/dist/index.js"],
                   "env": {
                     "GITLAB_PERSONAL_ACCESS_TOKEN": "${{ secrets.GITLAB_TOKEN || '' }}"
                   }
                 },
                 "slack": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-slack"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-slack/dist/index.js"],
                   "env": {
                     "SLACK_BOT_TOKEN": "${{ secrets.SLACK_TOKEN || '' }}"
                   }
                 },
                 "google-drive": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-gdrive"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-gdrive/dist/index.js"],
                   "env": {
                     "GOOGLE_DRIVE_CLIENT_ID": "${{ secrets.GOOGLE_CLIENT_ID || '' }}",
                     "GOOGLE_DRIVE_CLIENT_SECRET": "${{ secrets.GOOGLE_CLIENT_SECRET || '' }}"
                   }
                 },
                 "brave-search": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-brave-search/dist/index.js"],
                   "env": {
                     "BRAVE_API_KEY": "${{ secrets.BRAVE_API_KEY || '' }}"
                   }
                 },
                 "fetch": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-fetch"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-fetch/dist/index.js"]
                 },
                 "playwright": {
-                  "command": "npx",
-                  "args": ["-y", "@executeautomation/playwright-mcp-server"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@executeautomation/playwright-mcp-server/dist/index.js"]
                 },
                 "time": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-time"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-time/dist/index.js"]
                 },
                 "everart": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-everart"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-everart/dist/index.js"],
                   "env": {
                     "EVERART_API_KEY": "${{ secrets.EVERART_API_KEY || '' }}"
                   }
                 },
                 "tmdb": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-tmdb"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-tmdb/dist/index.js"],
                   "env": {
                     "TMDB_API_KEY": "${{ secrets.TMDB_API_KEY || '' }}"
                   }
                 },
                 "aws": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-aws"],
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-aws/dist/index.js"],
                   "env": {
                     "AWS_ACCESS_KEY_ID": "${{ secrets.AWS_ACCESS_KEY_ID || '' }}",
                     "AWS_SECRET_ACCESS_KEY": "${{ secrets.AWS_SECRET_ACCESS_KEY || '' }}"
                   }
                 },
                 "calculator": {
-                  "command": "npx",
-                  "args": ["-y", "@modelcontextprotocol/server-calculator"]
+                  "command": "node",
+                  "args": ["/usr/local/lib/node_modules/@modelcontextprotocol/server-calculator/dist/index.js"]
                 }
               }
             }
