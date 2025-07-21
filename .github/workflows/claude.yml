@@ -107,6 +107,7 @@ jobs:
             mcp__netlify__*
           
           # MEGA MCP CONFIGURATION - 30+ servers
+          # Note: Auto-approve server is automatically added by the action
           mcp_config: |
             {
               "mcpServers": {
