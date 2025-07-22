@@ -30,7 +30,7 @@ Trustora is a static HTML corporate one-page template called "Meelo" hosted on G
 ### Leadership Team
 - **CEO:** Abdul Rehman, business professional with global consulting experience
 - **COO:** Zarafshta Akhtar, strategic operations and business development
-- **CFO:** Aroofa Mahmood, Masters in Finance, financial strategy and compliance
+- **CFO:** Zaryaba Ayub, Masters in Finance, financial strategy and compliance
 
 ### Government Contracting Information
 - **NAICS Codes:** Include relevant codes for consulting services (541611, 541612, 541618, 541990)
@@ -122,7 +122,7 @@ Trustora is a static HTML corporate one-page template called "Meelo" hosted on G
 - **Content:** Updated with actual leadership team:
   - **CEO:** Abdul Rehman, business professional with global consulting experience
   - **COO:** Zarafshta Akhtar, strategic operations and business development
-  - **CFO:** Aroofa Mahmood, Masters in Finance, financial strategy and compliance
+  - **CFO:** Zaryaba Ayub, Masters in Finance, financial strategy and compliance
 - **Focus:** Professional profiles emphasizing global workforce management expertise
 - **Social:** LinkedIn-focused professional presence
 - **Status:** Team information has been updated with current roles and descriptions
@@ -352,7 +352,7 @@ Claude Code has permission to improvise in the following areas to enhance corpor
 - **Government Focus:** Include relevant NAICS, SIC codes for future opportunities
 - **Contact Form:** Enhanced with MENAP location dropdown (30+ countries)
 - **Geographic Reference:** Use "USA • MENAP" or "Middle East, Asia, and North Africa"
-- **Team Updates:** Leadership team updated (Abdul Rehman CEO, Zarafshta Akhtar COO, Aroofa Mahmood CFO)
+- **Team Updates:** Leadership team updated (Abdul Rehman CEO, Zarafshta Akhtar COO, Zaryaba Ayub CFO)
 - **Company Focus:** Founded 2025, partnered with Curiosity Research Corporation
 - **Microsoft Partnership:** Providing workforce TO Microsoft Partners (not being partners)
 - **Careers Integration:** careers.html page with internship and professional opportunities
