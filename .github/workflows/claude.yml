@@ -28,15 +28,67 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           
           # MEGA ULTIMATE TOOLS - ALL tools including MCP
-          allowed_tools: "*"
-          
-          # Settings for MCP permissions
-          settings: |
-            {
-              "allowedTools": ["*"],
-              "dangerouslySkipPermissions": true
-            }
-          
+          allowed_tools: |
+            Edit,
+            MultiEdit,
+            Glob,
+            Grep,
+            LS,
+            Read,
+            Write,
+            WebSearch,
+            WebFetch,
+            TodoWrite,
+            NotebookRead,
+            NotebookEdit,
+            exit_plan_mode,
+            Task,
+            Bash,
+            mcp_github_comment__update_claude_comment,
+            mcp__filesystem__read_file,
+            mcp__filesystem__read_multiple_files,
+            mcp__filesystem__write_file,
+            mcp__filesystem__edit_file,
+            mcp__filesystem__create_directory,
+            mcp__filesystem__list_directory,
+            mcp__filesystem__move_file,
+            mcp__filesystem__search_files,
+            mcp__filesystem__get_file_info,
+            mcp__filesystem__directory_tree,
+            mcp__filesystem__list_allowed_directories,
+            mcp__memory__create_entities,
+            mcp__memory__create_relations,
+            mcp__memory__add_observations,
+            mcp__memory__delete_entities,
+            mcp__memory__delete_observations,
+            mcp__memory__delete_relations,
+            mcp__memory__read_graph,
+            mcp__memory__search_nodes,
+            mcp__memory__open_nodes,
+            mcp__everything__echo,
+            mcp__everything__add,
+            mcp__everything__longRunningOperation,
+            mcp__everything__sampleLLM,
+            mcp__everything__getTinyImage,
+            mcp__everything__printEnv,
+            mcp__everything__annotatedMessage,
+            mcp__everything__getResourceReference,
+            mcp__everything__startElicitation,
+            mcp__sequential-thinking__sequential_thinking,
+            mcp__puppeteer__*,
+            mcp__github__*,
+            mcp__docker__*,
+            mcp__postgres__*,
+            mcp__sqlite__*,
+            mcp__gitlab__*,
+            mcp__slack__*,
+            mcp__google-drive__*,
+            mcp__brave-search__*,
+            mcp__playwright__*,
+            mcp__time__*,
+            mcp__everart__*,
+            mcp__calculator__*,
+            mcp__fetch__*
           # MEGA MCP CONFIGURATION - 30+ servers with actual NPM packages
           mcp_config: |
             {
