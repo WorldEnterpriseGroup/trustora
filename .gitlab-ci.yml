@@ -26,6 +26,7 @@ verify:
   stage: verify
   script:
     - pnpm run check
+    - pnpm run build
     - pnpm run test
 
 build:
