@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/editorial/SectionLabel.astro';
+import Field from '../components/primitives/Field.astro';
+---
+
+<Layout title="EoR with Employee Intelligence | Trustora" description="Talk with Trustora about employing specialist people in AI, ML, quantum, physics, sciences, and software across the EU, Australia, and USA." currentPath="/eor/" darkHeader conversion>
+  <section class="conversion-page">
+    <div class="measure conversion-grid">
+      <div class="conversion-copy"><SectionLabel light>EoR with Employee Intelligence</SectionLabel><h1>Employ the people who can move the work forward.</h1><p>Trustora helps companies employ specialist people across the EU, Australia, and USA through a clear Employer of Record model. Our network includes experts in AI, ML, quantum, physics, sciences, and software who have shipped successful apps and products.</p><ul class="conversion-list"><li>Specialist technical and scientific talent</li><li>Local employment coordination</li><li>Payroll, benefits, and onboarding</li><li>A named path for employees and teams</li></ul></div>
+      <div class="conversion-panel"><h2>Tell us what is taking shape.</h2><p>We will come back with the questions that matter first. No sales script required.</p><form class="form-stack" action="mailto:info@trustora.net" method="post" enctype="text/plain"><Field id="name" label="Your name" required placeholder="Jane Smith" /><Field id="work-email" label="Work email" type="email" required placeholder="jane@company.com" /><Field id="country" label="Hiring country" required placeholder="Where will the person work?" /><div class="field"><label for="role">Role or team</label><input id="role" name="role" type="text" placeholder="e.g. first product hire" /></div><div class="field"><label for="context">What are you trying to do?</label><textarea id="context" name="context" placeholder="A sentence or two is enough."></textarea></div><p class="form-note" id="form-note">By submitting, you are asking Trustora to contact you about your inquiry. Please do not include sensitive personal information.</p><button class="button" type="submit">Start the conversation <span aria-hidden="true">↗</span></button></form></div>
+    </div>
+    <p class="conversion-footnote">Trustora provides employment administration and coordination. Country-specific legal, tax, immigration, and employment advice may require qualified local professionals.</p>
+  </section>
+</Layout>

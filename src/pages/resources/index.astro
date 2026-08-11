@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import { briefings } from '../../data/briefings';
+import { getPublishedArticles } from '../../utils/articles';
+
+const articles = (await getPublishedArticles()).slice(0, 6);
+---
+
+<Layout title="Resources | Trustora" description="Trustora’s Employer of Record briefings, guides, comparisons, and research-led perspectives for global teams." currentPath="/resources/">
+  <section class="page-hero"><div class="measure page-hero-grid"><div class="page-hero-copy"><SectionLabel>Trustora resources</SectionLabel><h1>Working material for global employment decisions.</h1><p>Briefings, comparisons, country perspectives, and practical guides for the moment when a hiring question needs more than a generic answer.</p></div><div class="page-hero-note">EoR fundamentals · frontier workforce · corridors · trust</div></div></section>
+  <section class="section cream-field"><div class="measure"><div class="section-head"><div><SectionLabel>Executive briefs</SectionLabel><h2 class="mt-2">Take a better question into the room.</h2></div><p>Each brief is a structured starting point, not a substitute for qualified local legal, tax, immigration, or employment advice.</p></div><div class="briefing-grid">{briefings.map((brief) => <a class="briefing-card" data-accent={brief.accent} href={`/briefings/${brief.slug}/`}><span class="briefing-card-top">{brief.format}</span><h3>{brief.title}</h3><p>{brief.dek}</p><span class="briefing-card-link">Access the brief <span aria-hidden="true">↗</span></span></a>)}</div></div></section>
+  <section class="section blue-field"><div class="measure"><div class="section-head"><div><SectionLabel>Latest thinking</SectionLabel><h2 class="mt-2">Opinions with the caveats left in.</h2></div><p>Trustora’s editorial position is built from evidence, operating experience, and clearly marked conjecture.</p></div><div class="resource-article-list">{articles.map((article) => <a href={`/insights/${article.id}/`}><span>{article.data.category}</span><h3>{article.data.title}</h3><p>{article.data.lede}</p><span aria-hidden="true">↗</span></a>)}</div></div></section>
+  <section class="section dark-field"><div class="measure intro-slab"><div><SectionLabel light>Need a more direct answer?</SectionLabel><h2 class="mt-2">Start with the country, role, and timeline.</h2></div><div class="intro-body"><p>We will help you understand which capability or local conversation belongs next.</p><a class="button button-light" href="/contact/">Talk to Trustora <span aria-hidden="true">↗</span></a></div></div></section>
+</Layout>

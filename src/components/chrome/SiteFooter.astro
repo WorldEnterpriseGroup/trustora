@@ -1,0 +1,23 @@
+---
+import { footerNavigation, site } from '../../data/site';
+---
+
+<footer class="site-footer">
+  <div class="measure footer-top">
+    <div class="footer-brand">
+      <a href="/" aria-label="Trustora home"><img src="/images/trustora-text-logo.svg" alt="Trustora" width="180" height="42" /></a>
+      <p>Employer of Record services with the specialist employee intelligence behind ambitious global hiring.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      {footerNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <div class="footer-contact">
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <p>EU · Australia · USA</p>
+    </div>
+  </div>
+  <div class="measure footer-bottom">
+    <span>© {new Date().getFullYear()} Trustora. EoR with Employee Intelligence.</span>
+    <span><a href="/legal/privacy/">Privacy</a> · <a href="/legal/terms/">Terms</a></span>
+  </div>
+</footer>

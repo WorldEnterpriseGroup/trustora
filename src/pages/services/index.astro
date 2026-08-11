@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { services } from '../../data/services';
+---
+
+<Layout title="EoR capabilities for specialist teams | Trustora" description="Explore Trustora's Employer of Record, employee intelligence, global payroll, contractor transition, mobility, and people-operations capabilities." currentPath="/services/">
+  <section class="page-hero service-hero">
+    <div class="measure page-hero-grid">
+      <div class="page-hero-copy"><SectionLabel>The Trustora capability map</SectionLabel><h1>EoR for work that moves the frontier.</h1><p>We combine a dependable local employment layer with specialist employee intelligence for companies building across AI, ML, quantum, physics, sciences, and software.</p></div>
+      <div class="page-hero-media"><MediaFrame src={media['conference-speaker']} alt={mediaManifest['conference-speaker'].alt} caption="Market context matters when employment crosses borders." credit={mediaManifest['conference-speaker'].credit} sizes="(max-width: 900px) 100vw, 38vw" position="50% 45%" priority /></div>
+    </div>
+  </section>
+
+  <section class="section cream-field">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel>One connected system</SectionLabel><h2 class="mt-2">Start with the employment model. Build from there.</h2></div><p>EoR is the center of gravity. Employee intelligence, payroll, mobility, and people operations are the supporting practices that keep the model useful over time.</p></div>
+      <div class="service-index"><div class="service-index-aside">17 capabilities / 01 point of view</div><div class="service-list">{services.map((service) => <a class="service-row" href={`/services/${service.slug}/`}><span class="service-row-number">{service.number}</span><h3>{service.title}</h3><p>{service.description}</p><span class="service-row-arrow" aria-hidden="true">↗</span></a>)}</div></div>
+    </div>
+  </section>
+
+  <section class="section dark-field"><div class="measure split-argument"><h2>The right capability makes the next decision easier.</h2><div class="prose"><p>We do not believe in adding services to make a menu look complete. Each capability answers a different operating question: who employs the person, what expertise does the work require, how do they get paid, and where does a human go for help?</p><p>Explore one capability in detail or <a href="/contact/">bring us the full situation</a>. We can start with the part that is most urgent.</p></div></div></section>
+</Layout>

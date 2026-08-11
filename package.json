@@ -1,0 +1,26 @@
+{
+  "name": "trustora",
+  "version": "1.0.0",
+  "description": "Trustora — an editorial EoR and global employment services website.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node scripts/route-smoke.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.developerdojo.org/WorldEnterpriseGroup/trustora.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "astro": "^7.2.0",
+    "sharp": "^0.35.3",
+    "typescript": "^5.9.3"
+  }
+}
