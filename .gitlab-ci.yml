@@ -19,7 +19,7 @@ before_script:
   - mkdir -p "$CI_PROJECT_DIR/.corepack/bin"
   - corepack enable --install-directory "$CI_PROJECT_DIR/.corepack/bin"
   - export PATH="$CI_PROJECT_DIR/.corepack/bin:$PATH"
-  - corepack prepare pnpm@9.15.5 --activate
+  - corepack prepare pnpm@11.21.0 --activate
   - pnpm install --frozen-lockfile
 
 verify:
