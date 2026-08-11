@@ -20,7 +20,6 @@ before_script:
   - corepack enable --install-directory "$CI_PROJECT_DIR/.corepack/bin"
   - export PATH="$CI_PROJECT_DIR/.corepack/bin:$PATH"
   - corepack prepare pnpm@9.15.5 --activate
-  - pnpm config set store-dir "$CI_PROJECT_DIR/.pnpm-store"
   - pnpm install --frozen-lockfile
 
 verify:
