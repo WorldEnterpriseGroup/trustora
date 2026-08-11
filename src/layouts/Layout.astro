@@ -1,0 +1,88 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/chrome/SiteHeader.astro';
+import SiteFooter from '../components/chrome/SiteFooter.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  currentPath?: string;
+  darkHeader?: boolean;
+  conversion?: boolean;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  image?: string;
+}
+
+const {
+  title,
+  description,
+  currentPath = Astro.url.pathname,
+  darkHeader = false,
+  conversion = false,
+  noindex = false,
+  type = 'website',
+  publishedAt,
+  updatedAt,
+  image = site.socialImage,
+} = Astro.props;
+
+const canonical = new URL(currentPath, site.url).toString();
+const structuredData = type === 'article'
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description,
+      mainEntityOfPage: canonical,
+      datePublished: publishedAt?.toISOString(),
+      dateModified: (updatedAt ?? publishedAt)?.toISOString(),
+      author: { '@type': 'Organization', name: site.name, url: site.url },
+      publisher: { '@type': 'Organization', name: site.name, url: site.url },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'ProfessionalService',
+      name: site.name,
+      url: site.url,
+      description: site.description,
+      email: site.email,
+      areaServed: ['European Union', 'Australia', 'United States'],
+      serviceType: 'Employer of Record and specialist talent services',
+    };
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content={darkHeader || conversion ? '#0b2740' : '#f5f6f7'} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, site.url).toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <title>{title}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+  </head>
+  <body class:list={{ 'conversion-page': conversion, 'home-page': currentPath === '/' }}>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <SiteHeader currentPath={currentPath} dark={darkHeader || conversion} conversion={conversion} />
+    <main id="main-content"><slot /></main>
+    {!conversion && <SiteFooter />}
+  </body>
+</html>

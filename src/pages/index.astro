@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MediaFrame from '../components/editorial/MediaFrame.astro';
+import SectionLabel from '../components/editorial/SectionLabel.astro';
+import ArticleCard from '../components/editorial/ArticleCard.astro';
+import TrustMark from '../components/primitives/TrustMark.astro';
+import { media } from '../data/media';
+import { services } from '../data/services';
+import { intelligenceAreas, trustoraPrinciples } from '../data/site';
+import { mediaManifest } from '../data/site';
+import { getPublishedArticles } from '../utils/articles';
+
+const articles = (await getPublishedArticles()).slice(0, 3);
+---
+
+<Layout
+  title="Trustora — EoR with Employee Intelligence"
+  description="Trustora combines Employer of Record services with specialist employee intelligence across AI, ML, quantum, physics, sciences, and shipped software."
+  currentPath="/"
+>
+  <section class="hero-home">
+    <div class="measure hero-home-grid">
+      <div class="hero-home-copy">
+        <SectionLabel>Employer of Record · Employee intelligence</SectionLabel>
+        <h1>Put specialist talent to work, <em>everywhere.</em></h1>
+        <p class="hero-home-lede">Trustora is an Employer of Record partner for companies building with AI, machine learning, quantum, physics, and the applied sciences. We make it easier to employ expert people across the EU, Australia, and the USA with a clear local operating layer.</p>
+        <div class="hero-actions">
+          <a class="button" href="/contact/">Discuss a specialist hire <span aria-hidden="true">↗</span></a>
+          <a class="button button-quiet" href="/what-is-eor/">How EoR works <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-meta"><span>EU · Australia · USA</span><span>EoR + specialist talent</span></div>
+      </div>
+      <div class="hero-media">
+        <MediaFrame src={media['technical-standup']} alt={mediaManifest['technical-standup'].alt} caption="The employment layer behind high-consequence work." credit={mediaManifest['technical-standup'].credit} priority sizes="(max-width: 900px) 100vw, 50vw" position="50% 42%" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section cream-field">
+    <div class="measure intro-slab">
+      <div><SectionLabel>Why Trustora</SectionLabel><h2 class="mt-2">The employment layer should make growth feel lighter.</h2></div>
+      <div class="intro-body">
+        <p>Hiring in another country brings more than a contract. It brings local employment rules, payroll, benefits, documentation, timing, and the everyday questions a real person will ask. Trustora joins that operating layer to a network of specialists who can contribute in the fields where your next product or discovery depends on expertise.</p>
+        <a class="inline-link" href="/about/">See how we work <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section blue-field">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel>Employee intelligence</SectionLabel><h2 class="mt-2">EoR for work that needs to be understood.</h2></div><p>Our network includes experts who move between deep technical work and practical delivery—from scientific research to successful apps shipped into the world.</p></div>
+      <div class="expertise-grid">
+        {intelligenceAreas.map((area) => <div class="expertise-item"><span>{area.number}</span><h3>{area.title}</h3><p>{area.body}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cream-field" id="services">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel>Capabilities</SectionLabel><h2 class="mt-2">One employment layer. Several ways to make it useful.</h2></div><p>Start with EoR. Add specialist talent, payroll, mobility, or people operations as the work takes shape.</p></div>
+      <div class="service-index">
+        <div class="service-index-aside">Trustora / service index</div>
+        <div class="service-list">
+          {services.map((service) => (
+            <a class="service-row" href={`/services/${service.slug}/`}>
+              <span class="service-row-number">{service.number}</span>
+              <h3>{service.title}</h3>
+              <p>{service.short}</p>
+              <span class="service-row-arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark-field">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel light>The Trustora standard</SectionLabel><h2 class="mt-2">Expertise is only useful when the employment layer is sound.</h2></div><p>We bring the same discipline to people and operations: clear ownership, local context, and a real answer when a question arrives.</p></div>
+      <div class="proof-band">
+        <TrustMark label="Specialists across technical disciplines" value="Deep work" />
+        <TrustMark label="Strong working relationships across three regions" value="EU · AU · US" />
+        <TrustMark label="A network that understands delivery" value="Shipped work" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section cream-field">
+    <div class="measure story-grid">
+      <MediaFrame src={media['conference-networking']} alt={mediaManifest['conference-networking'].alt} caption="Trust is built in the operating details: who answers, what happens next, and what is documented." credit={mediaManifest['conference-networking'].credit} sizes="(max-width: 900px) 100vw, 55vw" position="50% 54%" />
+      <div class="story-copy"><SectionLabel>Our point of view</SectionLabel><h2 class="mt-2">Good global hiring is not a handoff. It is a relationship.</h2><p>We believe an EoR partner should be clear about what it owns, what it coordinates, what it cannot advise on, and how a worker gets help. That clarity is not a limitation. It is the beginning of trust.</p><a class="inline-link" href="/about/">Read our principles <span aria-hidden="true">↗</span></a></div>
+    </div>
+  </section>
+
+  <section class="section-tight orange-field">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel light>How we show up</SectionLabel><h2 class="mt-2">Practical, local, accountable.</h2></div><p>Three principles that keep a service relationship legible as it grows.</p></div>
+      <div class="principle-list">
+        {trustoraPrinciples.map((principle) => <div class="principle-row"><span class="number">{principle.number}</span><h3>{principle.title}</h3><p>{principle.body}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cream-field" id="insights">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel>From the Trustora desk</SectionLabel><h2 class="mt-2">The questions behind the acronym.</h2></div><p>Short, useful reading for leaders thinking about EoR, employee intelligence, and cross-border employment.</p></div>
+      <div class="article-grid">{articles.map((article) => <ArticleCard article={article} showImage={false} />)}</div>
+    </div>
+  </section>
+
+  <section class="section dark-field">
+    <div class="measure intro-slab"><div><SectionLabel light>Ready when you are</SectionLabel><h2 class="mt-2">Bring us the country, the role, and the question.</h2></div><div class="intro-body"><p>Tell us what you are building, where the person will work, and what expertise you need around the team. We will start with the employment model and the facts.</p><div class="hero-actions"><a class="button button-light" href="/contact/">Start with Trustora <span aria-hidden="true">↗</span></a><a class="button" href="/eor/">Explore EoR <span aria-hidden="true">↗</span></a></div></div></div>
+  </section>
+</Layout>

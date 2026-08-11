@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import { industries } from '../../data/industries';
+import { services } from '../../data/services';
+
+export function getStaticPaths() { return industries.map((industry) => ({ params: { slug: industry.slug }, props: { industry } })); }
+interface Props { industry: (typeof industries)[number]; }
+const { industry } = Astro.props;
+const capabilityTitles = new Map(services.map((service) => [service.slug, service.title]));
+---
+
+<Layout title={`${industry.title} | Trustora`} description={industry.short} currentPath={`/industries/${industry.slug}/`}>
+  <section class="page-hero industry-hero"><div class="measure page-hero-grid"><div class="page-hero-copy"><SectionLabel>{industry.number} / Industry context</SectionLabel><h1>{industry.thesis}</h1><p>{industry.body}</p><div class="hero-actions"><a class="button" href="/eor-brief/">Get the EoR brief <span aria-hidden="true">↗</span></a><a class="button button-quiet" href="/contact/">Talk through the role <span aria-hidden="true">↗</span></a></div></div><div class="page-hero-note">{industry.title}<br />Trustora Employee Intelligence</div></div></section>
+  <section class="section cream-field"><div class="measure"><div class="section-head"><div><SectionLabel>Questions to surface</SectionLabel><h2 class="mt-2">The country is part of the role.</h2></div><p>These are operating questions, not legal advice. The right local specialists should be involved when the facts require them.</p></div><div class="question-grid">{industry.questions.map((question, index) => <div class="question-card"><span>0{index + 1}</span><p>{question}</p></div>)}</div></div></section>
+  <section class="section blue-field"><div class="measure"><div class="section-head"><div><SectionLabel>Relevant capabilities</SectionLabel><h2 class="mt-2">Build the layer around the work.</h2></div><p>Choose the employment and support capabilities that match the current stage of the team.</p></div><div class="capability-links">{industry.capabilities.map((slug, index) => <a href={`/services/${slug}/`}><span>0{index + 1}</span><strong>{capabilityTitles.get(slug)}</strong><span aria-hidden="true">↗</span></a>)}</div></div></section>
+  <section class="section dark-field"><div class="measure intro-slab"><div><SectionLabel light>Next conversation</SectionLabel><h2 class="mt-2">Put the country, role, and capability on one page.</h2></div><div class="intro-body"><p>Use the brief as a starting point, or tell us what the team is trying to build. We will help identify what the EoR model needs to carry.</p><div class="hero-actions"><a class="button button-light" href="/eor-brief/">Access the brief <span aria-hidden="true">↗</span></a><a class="button" href="/contact/">Contact Trustora <span aria-hidden="true">↗</span></a></div></div></div></section>
+</Layout>

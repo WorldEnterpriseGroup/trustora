@@ -1,0 +1,6 @@
+---
+interface Props { light?: boolean; }
+const { light = false } = Astro.props;
+---
+
+<span class:list={['section-label', { 'is-light': light }]}><slot /></span>

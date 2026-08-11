@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+
+const questions = [
+  ['What is an Employer of Record?', 'An Employer of Record is a local employment structure that employs a person on behalf of a client company while the client directs the day-to-day work. The exact responsibilities, permissions, and limits depend on the country and the facts.'],
+  ['Why would a company use an EoR?', 'An EoR can help a company employ a person in a country where it does not yet have the relevant local structure. It can be useful for a defined hire, a staged market entry, or a team that needs time to learn before building an entity.'],
+  ['Does Trustora manage the employee’s work?', 'The client company remains responsible for the role, priorities, supervision, performance, and quality of the work. Trustora’s role is to help make the employment layer, local administration, and employee-support path clear.'],
+  ['Does Trustora replace legal or tax advice?', 'No. An EoR conversation should surface when qualified local legal, tax, immigration, payroll, or employment advice is required. Trustora helps organize the operating questions and the handoffs.'],
+  ['Can Trustora support technical and scientific roles?', 'Trustora is designed around specialist roles in AI, machine learning, quantum, physics, sciences, engineering, software, and applied product work. The useful starting point is the work the person needs to do and the context around it.'],
+  ['Which regions are central to Trustora?', 'Trustora is positioned around the European Union, Australia, and the United States. “Region” is only a starting point: the specific country, state, role, worker, and employing facts shape the answer.'],
+  ['When should we consider an entity instead?', 'An entity conversation becomes more relevant as the market commitment, team size, activity, control requirements, and local operating need become durable. The decision should be reviewed against evidence rather than treated as permanent on day one.'],
+  ['Can an EoR relationship support contractors?', 'Contractor and employee models are different questions. A contractor-to-employee review should examine the practical relationship, local classification rules, dependence, direction, duration, and the protections the person needs.'],
+  ['What does Employee Intelligence mean here?', 'It means domain-aware workforce judgment: understanding the technical or scientific work, the role context, and the employee experience that lets the person do it well. It is not employee surveillance and it is not a claim that every role is interchangeable.'],
+  ['How do we start?', 'Bring the role, country, timing, and the question you are trying to answer. You can request the Employer of Record Operating Brief or contact Trustora for a focused conversation.'],
+] as const;
+---
+
+<Layout title="EoR FAQ | Trustora" description="Answers to common Employer of Record, specialist employment, Employee Intelligence, and cross-border hiring questions." currentPath="/faq/">
+  <section class="page-hero"><div class="measure page-hero-grid"><div class="page-hero-copy"><SectionLabel>Questions, made legible</SectionLabel><h1>An EoR should create clarity, not a new fog.</h1><p>These answers explain Trustora’s operating position. Country-specific legal, tax, immigration, and employment questions still need qualified local advice.</p></div><div class="page-hero-note">The employment relationship is a system of responsibilities.</div></div></section>
+  <section class="section cream-field"><div class="measure faq-layout"><div class="faq-intro"><SectionLabel>Frequently asked</SectionLabel><h2 class="mt-2">Start with the question behind the question.</h2><p class="text-muted mt-3">Good EoR decisions are specific about the work, the country, the employee, and the responsibilities that remain with the client company.</p><a class="inline-link" href="/eor-brief/">Request the operating brief <span aria-hidden="true">↗</span></a></div><div class="faq-list">{questions.map(([question, answer], index) => <details><summary><span>0{index + 1}</span>{question}<b aria-hidden="true">＋</b></summary><p>{answer}</p></details>)}</div></div></section>
+  <section class="section dark-field"><div class="measure intro-slab"><div><SectionLabel light>Still deciding?</SectionLabel><h2 class="mt-2">Put the live role on the page.</h2></div><div class="intro-body"><p>Tell us what you are trying to employ and where the person will work. We will help map the next questions.</p><a class="button button-light" href="/contact/">Talk to Trustora <span aria-hidden="true">↗</span></a></div></div></section>
+</Layout>

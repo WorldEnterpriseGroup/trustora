@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import { comparisons } from '../../data/comparisons';
+
+export function getStaticPaths() {
+  return comparisons.map((comparison) => ({ params: { slug: comparison.slug }, props: { comparison } }));
+}
+
+interface Props { comparison: (typeof comparisons)[number]; }
+const { comparison } = Astro.props;
+---
+
+<Layout title={`${comparison.title} | Trustora`} description={comparison.description} currentPath={`/compare/${comparison.slug}/`}>
+  <section class="page-hero comparison-hero">
+    <div class="measure page-hero-grid">
+      <div class="page-hero-copy">
+        <SectionLabel>{comparison.eyebrow}</SectionLabel>
+        <h1>{comparison.title}</h1>
+        <p>{comparison.description}</p>
+      </div>
+      <div class="page-hero-note">A decision frame, not legal, tax, immigration, or employment advice.</div>
+    </div>
+  </section>
+  <section class="section cream-field">
+    <div class="measure comparison-detail">
+      <div class="comparison-thesis">
+        <SectionLabel>Trustora’s view</SectionLabel>
+        <h2 class="mt-2">{comparison.thesis}</h2>
+      </div>
+      <div class="comparison">
+        <table>
+          <caption>Questions to put beside the decision</caption>
+          <thead><tr><th scope="col">Question</th><th scope="col">Employer of Record</th><th scope="col">Alternative model</th></tr></thead>
+          <tbody>{comparison.rows.map((row) => <tr><th scope="row">{row[0]}</th><td>{row[1]}</td><td>{row[2]}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <aside class="comparison-callout"><span>Boundary worth keeping</span><p>{comparison.prompt}</p></aside>
+    </div>
+  </section>
+  <section class="section blue-field">
+    <div class="measure intro-slab">
+      <div><SectionLabel>Next step</SectionLabel><h2 class="mt-2">Put the live role and country beside the model.</h2></div>
+      <div class="intro-body"><p>The right answer depends on the facts. Trustora can help you organize the EoR, employee-experience, and local operating questions before you commit to a path.</p><div class="hero-actions"><a class="button" href="/eor-brief/">Get the EoR brief <span aria-hidden="true">↗</span></a><a class="button button-quiet" href="/contact/">Talk to Trustora <span aria-hidden="true">↗</span></a></div></div>
+    </div>
+  </section>
+</Layout>

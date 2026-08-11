@@ -1,0 +1,41 @@
+---
+interface Props { kind: 'eor' | 'journey'; label?: string; }
+const { kind, label = kind === 'eor' ? 'Employer of Record operating model' : 'Employee experience journey' } = Astro.props;
+---
+
+<figure class="diagram-card" aria-label={label}>
+  {kind === 'eor' ? (
+    <svg class="operating-diagram" viewBox="0 0 920 280" role="img" aria-labelledby="eor-diagram-title eor-diagram-desc">
+      <title id="eor-diagram-title">The EoR operating model</title>
+      <desc id="eor-diagram-desc">The company directs the work, Trustora coordinates the employment layer, the employee contributes expertise, and the country sets the local context.</desc>
+      <path class="diagram-line" d="M220 140H318M602 140H700" />
+      <path class="diagram-line diagram-line--soft" d="M460 80V48M460 232V200" />
+      <path class="diagram-arrow" d="M305 131l13 9-13 9M687 131l13 9-13 9" />
+      <rect class="diagram-node diagram-node--paper" x="24" y="84" width="196" height="112" rx="4" />
+      <rect class="diagram-node diagram-node--accent" x="318" y="80" width="284" height="120" rx="4" />
+      <rect class="diagram-node diagram-node--paper" x="700" y="84" width="196" height="112" rx="4" />
+      <rect class="diagram-node diagram-node--mist" x="340" y="8" width="240" height="40" rx="4" />
+      <rect class="diagram-node diagram-node--mist" x="340" y="232" width="240" height="40" rx="4" />
+      <circle class="diagram-dot" cx="58" cy="119" r="12" /><circle class="diagram-dot diagram-dot--light" cx="352" cy="115" r="12" /><circle class="diagram-dot" cx="734" cy="119" r="12" />
+      <text class="diagram-kicker" x="82" y="122">COMPANY</text><text class="diagram-kicker" x="376" y="118">TRUSTORA</text><text class="diagram-kicker" x="758" y="122">EMPLOYEE</text>
+      <text class="diagram-title" x="48" y="157">Directs the work</text><text class="diagram-title diagram-title--light" x="376" y="153">Coordinates employment</text><text class="diagram-title" x="724" y="157">Contributes expertise</text>
+      <text class="diagram-small" x="48" y="178">Manager · priorities · outcomes</text><text class="diagram-small diagram-small--light" x="376" y="177">Contract · payroll · support</text><text class="diagram-small" x="724" y="178">Role · team · working context</text>
+      <text class="diagram-kicker diagram-kicker--center" x="460" y="33">COUNTRY CONTEXT</text><text class="diagram-small diagram-small--center" x="460" y="257">Local rules · benefits · working location</text>
+    </svg>
+  ) : (
+    <svg class="operating-diagram" viewBox="0 0 920 240" role="img" aria-labelledby="journey-diagram-title journey-diagram-desc">
+      <title id="journey-diagram-title">The employee experience journey</title>
+      <desc id="journey-diagram-desc">Five connected stages: offer, day one, pay and benefits, work environment, and support and growth.</desc>
+      <path class="journey-line" d="M86 96H834" />
+      {[
+        { x: 90, n: '01', title: 'Offer', sub: 'Know the relationship' },
+        { x: 278, n: '02', title: 'Day one', sub: 'Start with context' },
+        { x: 466, n: '03', title: 'Pay + benefits', sub: 'Make it legible' },
+        { x: 654, n: '04', title: 'Workplace', sub: 'Enable the work' },
+        { x: 842, n: '05', title: 'Support + growth', sub: 'Keep the trust' },
+      ].map((node) => <g><circle class="journey-dot" cx={node.x} cy="96" r="18" /><text class="journey-number" x={node.x} y="101">{node.n}</text><text class="journey-title" x={node.x} y="151">{node.title}</text><text class="journey-sub" x={node.x} y="171">{node.sub}</text></g>)}
+      <path class="journey-arrow" d="M820 88l14 8-14 8" />
+    </svg>
+  )}
+  <figcaption>{label}. A clear diagram is a useful starting point; the actual responsibilities follow the country, agreement, and facts.</figcaption>
+</figure>

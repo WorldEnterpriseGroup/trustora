@@ -20,5 +20,6 @@ node_modules/
 vendor/
 
 # Build outputs
+.astro/
 dist/
 build/

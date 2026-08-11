@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import Field from '../../components/primitives/Field.astro';
+---
+
+<Layout title="Talk to Trustora about EoR and specialist talent" description="Start a practical conversation about Employer of Record services and specialist employee intelligence across the EU, Australia, or USA." currentPath="/contact/">
+  <section class="section cream-field">
+    <div class="measure contact-grid">
+      <div class="contact-copy">
+        <SectionLabel>Start with the situation</SectionLabel>
+        <h1>Bring us the country, the role, and the question.</h1>
+        <p>We can talk about an EoR model, a specialist AI, ML, quantum, physics, science, or software role, a contractor transition, or the people-operations detail getting in the way.</p>
+        <div class="contact-details">
+          <div class="contact-detail"><span>Direct email</span><a href="mailto:info@trustora.net">info@trustora.net</a></div>
+          <div class="contact-detail"><span>Working across</span><strong>European Union · Australia · United States</strong></div>
+          <div class="contact-detail"><span>Good to include</span><strong>Countries, time zones, headcount, roles, budget range, and decision deadline.</strong></div>
+        </div>
+        <div class="contact-intake-note"><span>Why we ask</span><p>The more operating context we have, the more prepared the first Trustora conversation can be. Estimates are welcome; do not include sensitive employee or payroll data.</p></div>
+      </div>
+
+      <div class="conversion-panel intake-panel">
+        <h2>Prepare the first conversation.</h2>
+        <p>Share the shape of the work. We will use it to bring the right EoR, talent, payroll, workplace, and local-context questions to the opening call.</p>
+        <form class="form-stack intake-form" action="mailto:info@trustora.net" method="post" enctype="text/plain">
+          <fieldset class="intake-section">
+            <legend>01 / Your organization</legend>
+            <div class="intake-grid">
+              <Field id="name" name="name" label="Your name" required placeholder="Your name" />
+              <Field id="email" name="email" label="Work email" type="email" required placeholder="you@company.com" />
+              <Field id="company" name="company" label="Company" required placeholder="Company name" />
+              <Field id="title" name="title" label="Your role or title" placeholder="Founder, VP People, hiring manager…" />
+            </div>
+          </fieldset>
+
+          <fieldset class="intake-section">
+            <legend>02 / Where the work happens</legend>
+            <div class="intake-grid">
+              <div class="field"><label for="primary-region">Primary employment region</label><select id="primary-region" name="primary-region"><option value="european-union">European Union</option><option value="australia">Australia</option><option value="united-states">United States</option><option value="multiple-regions">More than one region</option><option value="other">Another country / region</option></select></div>
+              <div class="field"><label for="countries">Countries where staff will work</label><input id="countries" name="countries" placeholder="e.g. Germany, Australia, California" /></div>
+              <div class="field"><label for="work-timezone">Primary time zone for work completed</label><select id="work-timezone" name="work-timezone"><option value="us-eastern">US Eastern / UTC−5 to UTC−4</option><option value="us-central">US Central / UTC−6 to UTC−5</option><option value="us-pacific">US Pacific / UTC−8 to UTC−7</option><option value="europe-west">Western Europe / UTC+0 to UTC+1</option><option value="europe-central">Central Europe / UTC+1 to UTC+2</option><option value="australia-east">Eastern Australia / UTC+10 to UTC+11</option><option value="mixed">Mixed or distributed time zones</option></select></div>
+              <div class="field"><label for="collaboration-window">Important collaboration window</label><input id="collaboration-window" name="collaboration-window" placeholder="e.g. 09:00–13:00 New York time" /></div>
+            </div>
+            <p class="field-help">If work crosses regions, include the time zone where the core team or customer is based.</p>
+          </fieldset>
+
+          <fieldset class="intake-section">
+            <legend>03 / Team shape</legend>
+            <div class="intake-grid">
+              <div class="field"><label for="staff-count">Number of staff needed</label><select id="staff-count" name="staff-count"><option>1</option><option>2–5</option><option>6–15</option><option>16–50</option><option>51–100</option><option>100+</option><option>Not decided yet</option></select></div>
+              <div class="field"><label for="team-stage">Team stage</label><select id="team-stage" name="team-stage"><option>First international hire</option><option>Expanding an existing team</option><option>Replacing or regularizing contractors</option><option>Launching a new country team</option><option>Scaling an established workforce</option><option>Exploring options</option></select></div>
+            </div>
+            <div class="field"><span class="field-label">Roles needed <span aria-hidden="true">*</span></span><div class="check-grid"><label class="check-option"><input type="checkbox" name="roles" value="ai-ml" /> AI / ML specialists</label><label class="check-option"><input type="checkbox" name="roles" value="software" /> Software / product engineers</label><label class="check-option"><input type="checkbox" name="roles" value="quantum" /> Quantum / physics</label><label class="check-option"><input type="checkbox" name="roles" value="science" /> Applied sciences / research</label><label class="check-option"><input type="checkbox" name="roles" value="design" /> Product / design</label><label class="check-option"><input type="checkbox" name="roles" value="go-to-market" /> Sales / go-to-market</label><label class="check-option"><input type="checkbox" name="roles" value="operations" /> People / operations</label><label class="check-option"><input type="checkbox" name="roles" value="legal-finance" /> Legal / finance</label><label class="check-option"><input type="checkbox" name="roles" value="other" /> Other specialist roles</label></div></div>
+            <div class="field"><label for="saas-team">Do you need an entire SaaS team?</label><select id="saas-team" name="saas-team"><option>No, one or more individual specialists</option><option>Yes, a full product and engineering pod</option><option>Yes, a complete SaaS team from product through operations</option><option>Yes, multiple SaaS teams</option><option>Possibly—we want help shaping the team</option><option>Not applicable</option></select></div>
+          </fieldset>
+
+          <fieldset class="intake-section">
+            <legend>04 / Commercial shape</legend>
+            <div class="intake-grid">
+              <div class="field"><label for="budget">Indicative budget</label><select id="budget" name="budget"><option>$25,000</option><option>$50,000</option><option>$100,000</option><option selected>$250,000</option><option>$500,000</option><option>$1 million</option><option>$2 million</option><option>$5 million</option><option>$10 million</option><option>Other</option></select></div>
+              <div class="field"><label for="budget-basis">Budget basis</label><select id="budget-basis" name="budget-basis"><option>Total project / setup budget</option><option>Monthly operating budget</option><option>Annual employment budget</option><option>Per-employee budget</option><option>Not sure yet</option></select></div>
+              <div class="field"><label for="timeline">Timeline or deadline</label><select id="timeline" name="timeline"><option>Within 2 weeks</option><option>Within 30 days</option><option>1–3 months</option><option>3–6 months</option><option>6+ months</option><option>Researching / no deadline yet</option></select></div>
+              <Field id="target-date" name="target-date" label="Target start or decision date" placeholder="e.g. 15 October 2026" />
+            </div>
+          </fieldset>
+
+          <fieldset class="intake-section">
+            <legend>05 / Operating requirements</legend>
+            <div class="intake-grid">
+              <div class="field"><label for="employment-model">Employment model under consideration</label><select id="employment-model" name="employment-model"><option>Employer of Record</option><option>EoR versus local entity</option><option>Contractor-to-employee transition</option><option>PEO or co-employment comparison</option><option>Global payroll only</option><option>Not sure—help us choose</option></select></div>
+              <div class="field"><label for="entity-status">Do you already have a local entity?</label><select id="entity-status" name="entity-status"><option>No local entity</option><option>Yes, in some target countries</option><option>Yes, in all target countries</option><option>Entity formation is underway</option><option>Not sure</option></select></div>
+              <div class="field"><label for="workplace-model">Primary workplace model</label><select id="workplace-model" name="workplace-model"><option>Remote from home</option><option>Hybrid</option><option>Serviced office / coworking</option><option>Dedicated office</option><option>Lab / specialist facility</option><option>Production / studio environment</option><option>Still to be decided</option></select></div>
+              <div class="field"><label for="employee-support">Employee support priorities</label><select id="employee-support" name="employee-support"><option>Payroll and benefits clarity</option><option>Onboarding and first-day readiness</option><option>Equipment and IT setup</option><option>Office or home-work recommendations</option><option>Manager and performance support</option><option>All of the above</option></select></div>
+            </div>
+            <div class="field"><span class="field-label">Additional capabilities that may be useful</span><div class="check-grid"><label class="check-option"><input type="checkbox" name="capabilities" value="payroll" /> Payroll and benefits</label><label class="check-option"><input type="checkbox" name="capabilities" value="mobility" /> Mobility / work authorization coordination</label><label class="check-option"><input type="checkbox" name="capabilities" value="hris" /> HRIS and people data</label><label class="check-option"><input type="checkbox" name="capabilities" value="talent-search" /> Specialist talent search</label><label class="check-option"><input type="checkbox" name="capabilities" value="compliance" /> Workforce compliance review</label><label class="check-option"><input type="checkbox" name="capabilities" value="workspace" /> Workspace and setup recommendations</label></div></div>
+          </fieldset>
+
+          <fieldset class="intake-section">
+            <legend>06 / The conversation</legend>
+            <div class="field"><label for="decision">What decision are you trying to make?</label><textarea id="decision" name="decision" placeholder="What is happening now, what needs to happen next, and what would make the first conversation useful?"></textarea></div>
+            <div class="field"><label for="constraints">Known constraints or risks</label><textarea id="constraints" name="constraints" placeholder="Country rules, candidate timing, budget limits, security, workplace, existing contractors, or internal approvals."></textarea></div>
+            <div class="field"><label for="questions">Questions you want Trustora to prepare for</label><textarea id="questions" name="questions" placeholder="List the questions, concerns, or comparisons you want addressed."></textarea></div>
+          </fieldset>
+
+          <p class="form-note" id="form-note">Please do not include passport numbers, payroll records, health information, or other sensitive personal information. This static intake opens an email draft to the Trustora team; estimates are welcome and can be refined together.</p>
+          <label class="check-option check-option-wide"><input type="checkbox" name="safe-to-contact" value="yes" required /> I confirm this outline does not contain sensitive personal information and may be used to prepare an initial Trustora conversation.</label>
+          <button class="button" type="submit">Send intake to Trustora <span aria-hidden="true">↗</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Layout>

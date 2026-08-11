@@ -1,0 +1,21 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleCard from '../../components/editorial/ArticleCard.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { getPublishedArticles } from '../../utils/articles';
+
+const articles = await getPublishedArticles();
+const featured = articles[0];
+const rest = articles.slice(1);
+const featuredImageKey = 'insights-corporate-editorial' as const;
+---
+
+<Layout title="EoR insights for global teams | Trustora" description="Trustora's practical essays about Employer of Record services, global employment, worker classification, payroll, and integrity." currentPath="/insights/">
+  <section class="page-hero"><div class="measure page-hero-grid"><div class="page-hero-copy"><SectionLabel>Trustora insights</SectionLabel><h1>Read the fine print. Then make it useful.</h1><p>Short essays about the questions that sit underneath global employment—written for people who have to make the call.</p></div><div class="page-hero-note">EoR 101 · operating model · trust & integrity · comparison</div></div></section>
+  {featured && <section class="section cream-field"><div class="measure story-grid"><MediaFrame src={media[featuredImageKey]} alt={mediaManifest[featuredImageKey].alt} caption="A working library needs room for different questions, disciplines, and decisions." credit={mediaManifest[featuredImageKey].credit} sizes="(max-width: 900px) 100vw, 55vw" /><div class="story-copy"><SectionLabel>Featured reading</SectionLabel><span class="article-card-meta mt-2">{featured.data.category} · {featured.data.readTime}</span><h2 class="mt-2">{featured.data.title}</h2><p>{featured.data.lede}</p><a class="button button-quiet mt-3" href={`/insights/${featured.id}/`}>Read the article <span aria-hidden="true">↗</span></a></div></div></section>}
+  <section class="section cream-field"><div class="measure"><div class="section-head"><div><SectionLabel>The index</SectionLabel><h2 class="mt-2">Questions worth keeping close.</h2></div><p>Global hiring is not one decision. It is a sequence of smaller decisions with people attached to them.</p></div><div class="article-grid">{rest.map((article) => <ArticleCard article={article} showImage={false} />)}</div></div></section>
+  <section class="section dark-field"><div class="measure intro-slab"><div><SectionLabel light>Have a question we have not covered?</SectionLabel><h2 class="mt-2">Bring the real situation.</h2></div><div class="intro-body"><p>Country, role, timeline, contractor, entity, payroll—start wherever the question is most alive.</p><a class="button button-light" href="/contact/">Talk to Trustora <span aria-hidden="true">↗</span></a></div></div></section>
+</Layout>

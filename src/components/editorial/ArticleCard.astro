@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { articlePath } from '../../utils/articles';
+import { media } from '../../data/media';
+import MediaFrame from './MediaFrame.astro';
+
+interface Props { article: CollectionEntry<'articles'>; showImage?: boolean; }
+const { article, showImage = true } = Astro.props;
+const image = media[article.data.imageKey];
+---
+
+<a class="article-card" href={articlePath(article.id)}>
+  {showImage && <div class="article-card-media">
+    <MediaFrame src={image} alt={article.data.imageAlt} caption="" credit="" sizes="(max-width: 900px) 100vw, 33vw" />
+  </div>}
+  <div class="article-card-body">
+    <span class="article-card-meta">{article.data.category} · {article.data.readTime}</span>
+    <h3>{article.data.title}</h3>
+    <p>{article.data.description}</p>
+    <span class="read-more">Read the piece <span aria-hidden="true">↗</span></span>
+  </div>
+</a>

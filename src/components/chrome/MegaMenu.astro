@@ -1,0 +1,53 @@
+---
+import { navigationPanel } from '../../data/site';
+
+interface Props { mobile?: boolean; }
+const { mobile = false } = Astro.props;
+---
+
+{mobile ? (
+  <div class="mobile-mega-directory">
+    <p class="mega-kicker">Capabilities</p>
+    <div class="mobile-mega-links">{navigationPanel.capabilities.map((item) => <a href={item.href}>{item.title}</a>)}</div>
+    <p class="mega-kicker">Adjacent options</p>
+    <div class="mobile-mega-links mobile-mega-links--two">{navigationPanel.adjacent.map((item) => <a href={item.href}>{item.title}</a>)}</div>
+    <p class="mega-kicker">Industries</p>
+    <div class="mobile-mega-links mobile-mega-links--two">{navigationPanel.industries.map((item) => <a href={item.href}>{item.title}</a>)}</div>
+    <p class="mega-kicker">Explore & company</p>
+    <div class="mobile-mega-links mobile-mega-links--two">
+      {navigationPanel.explore.map((item) => <a href={item.href}>{item.label}</a>)}
+      {navigationPanel.company.map((item) => <a href={item.href}>{item.label}</a>)}
+    </div>
+  </div>
+) : (
+  <details class="mega-menu">
+    <summary class="mega-trigger">Explore <span aria-hidden="true">⌄</span></summary>
+    <div class="mega-panel">
+      <div class="mega-panel-grid measure">
+        <div class="mega-panel-column">
+          <p class="mega-kicker">Navigate the system</p>
+          <div class="mega-directory-list">
+            {navigationPanel.explore.map((item) => <a href={item.href}><span><strong>{item.label}</strong><small>{item.description}</small></span><span aria-hidden="true">↗</span></a>)}
+          </div>
+          <p class="mega-kicker mega-kicker--spaced">Company</p>
+          <div class="mega-plain-grid">{navigationPanel.company.map((item) => <a href={item.href}>{item.label}<span aria-hidden="true">↗</span></a>)}</div>
+        </div>
+        <div class="mega-panel-column mega-panel-column--rule">
+          <div class="mega-panel-heading"><div><p class="mega-kicker">Capabilities</p><p class="mega-intro">The disciplines we bring together when a people question crosses country, technical, and operating boundaries.</p></div><a href="/services/">View all ↗</a></div>
+          <div class="mega-service-grid">{navigationPanel.capabilities.map((item) => <a href={item.href}><span class="mega-service-number">{item.number}</span><span><strong>{item.title}</strong><small>{item.short}</small></span></a>)}</div>
+          <p class="mega-kicker mega-kicker--spaced">Adjacent options</p>
+          <div class="mega-adjacent-grid">{navigationPanel.adjacent.map((item) => <a href={item.href}>{item.title}<span aria-hidden="true">↗</span></a>)}</div>
+          <p class="mega-kicker mega-kicker--spaced">Industries</p>
+          <div class="mega-plain-grid mega-plain-grid--two">{navigationPanel.industries.map((item) => <a href={item.href}>{item.title}<span aria-hidden="true">↗</span></a>)}</div>
+        </div>
+        <aside class="mega-feature">
+          <p class="mega-kicker">{navigationPanel.feature.label}</p>
+          <p class="mega-quote-mark" aria-hidden="true">“</p>
+          <h2>{navigationPanel.feature.title}</h2>
+          <p>{navigationPanel.feature.description}</p>
+          <a class="inline-link" href={navigationPanel.feature.href}>Access the brief <span aria-hidden="true">↗</span></a>
+        </aside>
+      </div>
+    </div>
+  </details>
+)}
