@@ -28,8 +28,11 @@ const isCurrent = (href: string) => currentPath === href || (href !== '/' && cur
     {!conversion && <a class="button header-cta" href="/eor-brief/">Get the EoR brief <span aria-hidden="true">↗</span></a>}
     {!conversion && (
       <details class="nav-drawer">
-        <summary class="menu-toggle">Menu</summary>
-        <div class="drawer-panel">
+        <summary class="menu-toggle" aria-controls="mobile-navigation">
+          <span class="menu-label">Menu</span>
+          <span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+        </summary>
+        <div class="drawer-panel" id="mobile-navigation">
           <nav aria-label="Mobile navigation">
             <ul>
               <li><MegaMenu mobile /></li>
@@ -42,3 +45,41 @@ const isCurrent = (href: string) => currentPath === href || (href !== '/' && cur
     )}
   </div>
 </header>
+
+<script>
+  const drawers = document.querySelectorAll('.nav-drawer');
+
+  drawers.forEach((drawer) => {
+    const toggle = drawer.querySelector('.menu-toggle');
+    const firstLink = drawer.querySelector<HTMLElement>('.drawer-panel a');
+
+    if (!(drawer instanceof HTMLDetailsElement) || !(toggle instanceof HTMLElement)) return;
+
+    const closeDrawer = (returnFocus = false) => {
+      drawer.open = false;
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.setAttribute('aria-expanded', String(drawer.open));
+
+    drawer.addEventListener('toggle', () => {
+      toggle.setAttribute('aria-expanded', String(drawer.open));
+      if (drawer.open) requestAnimationFrame(() => firstLink?.focus());
+    });
+
+    drawer.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => closeDrawer());
+    });
+
+    drawer.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && drawer.open) {
+        event.preventDefault();
+        closeDrawer(true);
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (drawer.open && event.target instanceof Node && !drawer.contains(event.target)) closeDrawer();
+    });
+  });
+</script>
