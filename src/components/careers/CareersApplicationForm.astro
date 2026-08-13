@@ -1,0 +1,453 @@
+---
+const countries = [
+  'Pakistan',
+  'India',
+  'Bangladesh',
+  'Sri Lanka',
+  'Nepal',
+  'Afghanistan',
+  'United Arab Emirates',
+  'Saudi Arabia',
+  'Qatar',
+  'Singapore',
+  'Malaysia',
+  'Indonesia',
+  'Philippines',
+  'Thailand',
+  'Australia',
+  'New Zealand',
+  'United Kingdom',
+  'Ireland',
+  'Germany',
+  'Netherlands',
+  'France',
+  'Poland',
+  'Switzerland',
+  'United States',
+  'Canada',
+  'Mexico',
+  'Brazil',
+  'Nigeria',
+  'Kenya',
+  'South Africa',
+  'Other / not listed',
+];
+
+const timezones = [
+  'UTC−08:00 / Pacific Time',
+  'UTC−05:00 / Eastern Time',
+  'UTC−03:00 / Atlantic or Brasília Time',
+  'UTC+00:00 / GMT or UTC',
+  'UTC+01:00 / Central European Time',
+  'UTC+02:00 / Eastern European or South Africa Time',
+  'UTC+03:00 / East Africa or Arabia Time',
+  'UTC+04:00 / Gulf or Azerbaijan Time',
+  'UTC+05:00 / Pakistan Standard Time',
+  'UTC+05:30 / India or Sri Lanka Standard Time',
+  'UTC+06:00 / Bangladesh Standard Time',
+  'UTC+07:00 / Indochina Time',
+  'UTC+08:00 / Singapore, Malaysia, or China Time',
+  'UTC+09:00 / Japan or Korea Standard Time',
+  'UTC+10:00 / Australian Eastern Standard Time',
+  'UTC+12:00 / New Zealand Standard Time',
+  'Other or changing time zone',
+];
+
+const regionalOptions = [
+  'Punjab · Pakistan',
+  'Sindh · Pakistan',
+  'Khyber Pakhtunkhwa · Pakistan',
+  'Balochistan · Pakistan',
+  'Islamabad Capital Territory · Pakistan',
+  'Azad Jammu and Kashmir · Pakistan',
+  'Gilgit-Baltistan · Pakistan',
+  'South Asia · other region',
+  'East or Southeast Asia',
+  'Middle East or Africa',
+  'European Union or United Kingdom',
+  'Australia or New Zealand',
+  'United States or Canada',
+  'Latin America or Caribbean',
+  'Other / prefer to discuss',
+];
+
+const languages = [
+  ['language-english', 'English'],
+  ['language-urdu', 'Urdu'],
+  ['language-punjabi', 'Punjabi'],
+  ['language-pashto', 'Pashto'],
+  ['language-sindhi', 'Sindhi'],
+  ['language-hindi', 'Hindi'],
+  ['language-bengali', 'Bengali'],
+  ['language-arabic', 'Arabic'],
+  ['language-malay', 'Malay / Indonesian'],
+  ['language-mandarin', 'Mandarin'],
+  ['language-other', 'Another language'],
+];
+
+const roleTracks = [
+  ['role-ai', 'AI / ML engineering and evaluation'],
+  ['role-quantum', 'Quantum computing, physics, and advanced computing'],
+  ['role-contracts', 'Strategic Initiative Contract Management (SICM)'],
+  ['role-software', 'Software, product, platform, and shipped applications'],
+  ['role-science', 'Science, research, laboratory, and technical operations'],
+  ['role-people', 'People operations, EoR delivery, and employee experience'],
+  ['role-client', 'Client solutions, partnerships, and international growth'],
+  ['role-internship', 'Internship, apprenticeship, and early-career programs'],
+  ['role-other', 'Another role that fits the Trustora mission'],
+];
+
+const careerEndpoint = import.meta.env.PUBLIC_CAREERS_API_URL?.trim() || 'mailto:info@trustora.net?subject=Trustora%20career%20application';
+const careerDeliveryMode = import.meta.env.PUBLIC_CAREERS_API_URL?.trim() ? 'secure-api' : 'email-fallback';
+const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-form-urlencoded' : 'text/plain';
+---
+
+<section class="section careers-application" id="apply" aria-labelledby="application-title">
+  <div class="measure careers-application__grid">
+    <div class="careers-application__intro">
+      <p class="section-label">Application desk</p>
+      <h2 id="application-title">Give us enough signal to start a useful conversation.</h2>
+      <p>We review applications for current openings, future team needs, and carefully scoped internships. A thoughtful outline is more useful than a perfect format.</p>
+
+      <ol class="careers-application__steps" aria-label="Application steps">
+        <li><span>01</span><div><strong>Context first</strong><p>Tell us where you are, what you can do, and the kind of work you want to make possible.</p></div></li>
+        <li><span>02</span><div><strong>Role conversation</strong><p>We look for the overlap between your capability, a real Trustora need, and a workable employment model.</p></div></li>
+        <li><span>03</span><div><strong>Practical next step</strong><p>Depending on the role, that may be a technical discussion, writing sample, portfolio review, or structured case.</p></div></li>
+      </ol>
+
+      <aside class="careers-application__privacy">
+        <span class="careers-application__eyebrow">Please protect yourself</span>
+        <p>Do not include passport numbers, national ID numbers, bank details, health information, passwords, or confidential work product. We will request any legally required documentation through a secure process later.</p>
+      </aside>
+    </div>
+
+    <div class="careers-application__panel">
+      <div class="careers-application__panel-head">
+        <span class="careers-application__eyebrow">Trustora careers · intake v1</span>
+        <p>Required fields are marked with an asterisk.</p>
+      </div>
+
+      <form
+        class="career-form"
+        method="post"
+        enctype={careerEncoding}
+        data-intake-target="dream.crm.dynamics.com"
+        data-business-unit="Trustora"
+        data-integration="azure-function-or-logic-app"
+        data-front-door-ready={careerDeliveryMode === 'secure-api' ? 'configured' : 'pending-provisioning'}
+        data-schema-version="trustora-careers-v1"
+        data-delivery-mode={careerDeliveryMode}
+        action={careerEndpoint}
+        aria-describedby="application-note"
+      >
+        <input type="hidden" name="source" value="trustora.net/careers" />
+        <input type="hidden" name="business-unit" value="Trustora" />
+        <input type="hidden" name="crm-target" value="dream.crm.dynamics.com" />
+        <input type="hidden" name="integration-handoff" value="azure-function-or-logic-app" />
+        <input type="hidden" name="schema-version" value="trustora-careers-v1" />
+        <input type="hidden" name="application-id" value="" />
+        <label class="sr-only" for="career-website">Leave this field empty</label>
+        <input id="career-website" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="career-form__honeypot" />
+
+        <fieldset class="career-form__fieldset">
+          <legend><span>01</span> About you</legend>
+          <div class="career-form__grid">
+            <div class="career-form__field">
+              <label for="applicant-name">Full name <span aria-hidden="true">*</span></label>
+              <input id="applicant-name" name="full-name" type="text" autocomplete="name" required placeholder="Your name" />
+            </div>
+            <div class="career-form__field">
+              <label for="preferred-name">Preferred name</label>
+              <input id="preferred-name" name="preferred-name" type="text" autocomplete="nickname" placeholder="What should we call you?" />
+            </div>
+            <div class="career-form__field">
+              <label for="applicant-email">Email <span aria-hidden="true">*</span></label>
+              <input id="applicant-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+            </div>
+            <div class="career-form__field">
+              <label for="applicant-phone">Phone or WhatsApp</label>
+              <input id="applicant-phone" name="phone-or-whatsapp" type="tel" autocomplete="tel" placeholder="Include country code" />
+            </div>
+            <div class="career-form__field">
+              <label for="current-country">Current country or region <span aria-hidden="true">*</span></label>
+              <select id="current-country" name="current-country" autocomplete="country-name" required>
+                <option value="">Select one</option>
+                {countries.map((country) => <option value={country}>{country}</option>)}
+              </select>
+            </div>
+            <div class="career-form__field">
+              <label for="city-region">City or region</label>
+              <input id="city-region" name="city-region" type="text" autocomplete="address-level2" placeholder="City, province, or region" />
+            </div>
+            <div class="career-form__field">
+              <label for="regional-context">Regional context</label>
+              <select id="regional-context" name="regional-context">
+                <option value="">Prefer to describe it</option>
+                {regionalOptions.map((region) => <option value={region}>{region}</option>)}
+              </select>
+            </div>
+            <div class="career-form__field career-form__field--wide">
+              <label for="time-zone">Primary time zone <span aria-hidden="true">*</span></label>
+              <select id="time-zone" name="time-zone" required>
+                <option value="">Select your usual working time zone</option>
+                {timezones.map((timezone) => <option value={timezone}>{timezone}</option>)}
+              </select>
+              <small>It is fine to choose the closest option if your schedule moves seasonally.</small>
+            </div>
+          </div>
+          <fieldset class="career-form__check-fieldset">
+            <legend>Languages you use professionally</legend>
+            <div class="career-form__check-grid">
+              {languages.map(([id, label]) => (
+                <label class="career-form__check" for={id}>
+                  <input id={id} name="professional-languages" type="checkbox" value={label} />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </fieldset>
+
+        <fieldset class="career-form__fieldset">
+          <legend><span>02</span> The work you want to do</legend>
+          <div class="career-form__field">
+            <label for="role-title">Role title or problem you want to solve <span aria-hidden="true">*</span></label>
+            <input id="role-title" name="role-title-or-problem" type="text" required placeholder="e.g. ML evaluation engineer, SICM analyst, quantum researcher" />
+          </div>
+          <fieldset class="career-form__check-fieldset">
+            <legend>Areas that interest you</legend>
+            <div class="career-form__check-grid">
+              {roleTracks.map(([id, label]) => (
+                <label class="career-form__check" for={id}>
+                  <input id={id} name="role-interests" type="checkbox" value={label} />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="career-form__field career-form__field--wide">
+            <label for="work-evidence">What have you built, researched, managed, or shipped?</label>
+            <textarea id="work-evidence" name="work-evidence" rows="5" placeholder="A short outline is enough. Include the problem, your contribution, and the result where you can."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset class="career-form__fieldset">
+          <legend><span>03</span> Working conditions</legend>
+          <div class="career-form__grid">
+            <div class="career-form__field">
+              <label for="work-authorization">Work authorization <span aria-hidden="true">*</span></label>
+              <select id="work-authorization" name="work-authorization" required>
+                <option value="">Select one</option>
+                <option>I can work in my current country without sponsorship</option>
+                <option>I hold a time-limited work authorization</option>
+                <option>I may need employer sponsorship</option>
+                <option>I am open to a remote engagement from my current country</option>
+                <option>Prefer to discuss</option>
+              </select>
+            </div>
+            <div class="career-form__field">
+              <label for="work-model">Preferred work model <span aria-hidden="true">*</span></label>
+              <select id="work-model" name="work-model" required>
+                <option value="">Select one</option>
+                <option>Remote-first</option>
+                <option>Hybrid</option>
+                <option>On-site</option>
+                <option>Open to the role's needs</option>
+              </select>
+            </div>
+            <div class="career-form__field">
+              <label for="availability">Availability <span aria-hidden="true">*</span></label>
+              <select id="availability" name="availability" required>
+                <option value="">Select one</option>
+                <option>Available now</option>
+                <option>Within 2–4 weeks</option>
+                <option>Within 1–2 months</option>
+                <option>More than 2 months</option>
+                <option>Internship or academic schedule</option>
+              </select>
+            </div>
+            <div class="career-form__field">
+              <label for="travel">Travel or relocation</label>
+              <select id="travel" name="travel-or-relocation">
+                <option>Prefer remote</option>
+                <option>Open to occasional travel</option>
+                <option>Open to relocation for the right role</option>
+                <option>Already mobile internationally</option>
+                <option>Prefer to discuss</option>
+              </select>
+            </div>
+            <div class="career-form__field career-form__field--wide">
+              <label for="authorization-notes">Work authorization or scheduling context</label>
+              <textarea id="authorization-notes" name="authorization-notes" rows="3" placeholder="Optional: visa timing, university schedule, notice period, or hours you can reliably overlap."></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="career-form__fieldset">
+          <legend><span>04</span> Education and expectations</legend>
+          <div class="career-form__grid">
+            <div class="career-form__field">
+              <label for="education-level">Highest education or training level</label>
+              <select id="education-level" name="education-level">
+                <option value="">Prefer not to say</option>
+                <option>Secondary school or equivalent</option>
+                <option>Diploma or technical training</option>
+                <option>Bachelor's degree</option>
+                <option>Master's degree</option>
+                <option>Doctorate or postdoctoral research</option>
+                <option>Professional experience / self-taught</option>
+                <option>Currently studying</option>
+              </select>
+            </div>
+            <div class="career-form__field">
+              <label for="education-field">Field of study or technical discipline</label>
+              <input id="education-field" name="education-field" type="text" placeholder="e.g. physics, CS, contracts, product" />
+            </div>
+            <div class="career-form__field">
+              <label for="compensation-currency">Compensation currency</label>
+              <select id="compensation-currency" name="compensation-currency">
+                <option>USD</option>
+                <option>PKR</option>
+                <option>INR</option>
+                <option>BDT</option>
+                <option>LKR</option>
+                <option>AED</option>
+                <option>SGD</option>
+                <option>AUD</option>
+                <option>EUR</option>
+                <option>GBP</option>
+                <option>CAD</option>
+                <option>Other / prefer to discuss</option>
+              </select>
+            </div>
+            <div class="career-form__field">
+              <label for="compensation-expectation">Compensation expectation</label>
+              <input id="compensation-expectation" name="compensation-expectation" type="text" inputmode="decimal" placeholder="Range or target amount" />
+              <small>Share a range and whether it is hourly, monthly, or annual.</small>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="career-form__fieldset">
+          <legend><span>05</span> Work samples</legend>
+          <div class="career-form__grid">
+            <div class="career-form__field career-form__field--wide">
+              <label for="resume-link">CV or resume link</label>
+              <input id="resume-link" name="resume-link" type="url" inputmode="url" placeholder="https://..." />
+            </div>
+            <div class="career-form__field">
+              <label for="linkedin">LinkedIn</label>
+              <input id="linkedin" name="linkedin" type="url" inputmode="url" placeholder="https://linkedin.com/in/..." />
+            </div>
+            <div class="career-form__field">
+              <label for="github">GitHub or code portfolio</label>
+              <input id="github" name="github" type="url" inputmode="url" placeholder="https://github.com/..." />
+            </div>
+            <div class="career-form__field">
+              <label for="portfolio">Portfolio, publications, ORCID, or Scholar profile</label>
+              <input id="portfolio" name="portfolio-or-publications" type="url" inputmode="url" placeholder="https://..." />
+            </div>
+            <div class="career-form__field career-form__field--wide">
+              <label for="cover-note">Why Trustora, and what should we understand first?</label>
+              <textarea id="cover-note" name="cover-note" rows="6" placeholder="Tell us what kind of work brings out your best judgment."></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="career-form__consent">
+          <label class="career-form__check career-form__check--consent" for="applicant-consent">
+            <input id="applicant-consent" name="applicant-consent" type="checkbox" value="yes" required />
+            <span>I confirm that this information is accurate to the best of my knowledge, contains no confidential third-party material, and may be used by Trustora to evaluate my application. <span aria-hidden="true">*</span></span>
+          </label>
+          <p id="application-note">The form uses the secure careers endpoint when configured; until then it opens an email fallback. The production integration validates, protects, and routes this record into the Trustora Business Unit in dream.crm.dynamics.com.</p>
+          <button class="button" type="submit">Send application outline <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-schema-version="trustora-careers-v1"]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      const field = form.elements.namedItem('application-id') as HTMLInputElement | null;
+      if (field && !field.value) field.value = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      if (form.dataset.deliveryMode !== 'secure-api') return;
+      event.preventDefault();
+      if (form.dataset.submitting === 'true') return;
+      form.dataset.submitting = 'true';
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const note = form.querySelector<HTMLElement>('#application-note');
+      if (button) button.disabled = true;
+      if (note) {
+        note.setAttribute('aria-live', 'polite');
+        note.textContent = 'Sending your application outline securely…';
+      }
+      try {
+        const body = new URLSearchParams();
+        new FormData(form).forEach((value, key) => { if (typeof value === 'string') body.append(key, value); });
+        const result = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+        if (!result.ok) throw new Error('application_failed');
+        form.reset();
+        if (note) note.textContent = 'Application received. The Trustora team will review the outline and follow up when there is a useful next conversation.';
+      } catch {
+        if (note) note.textContent = 'We could not send the application right now. Please try again or use the email fallback at info@trustora.net.';
+      } finally {
+        form.dataset.submitting = 'false';
+        if (button) button.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .careers-application { background: var(--paper-bright); }
+  .careers-application__grid { display: grid; grid-template-columns: minmax(15rem, 0.68fr) minmax(0, 1.32fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+  .careers-application__intro { position: sticky; top: 2rem; }
+  .careers-application__intro h2 { max-width: 14ch; margin-top: 1rem; }
+  .careers-application__intro > p:not(.section-label) { max-width: 36rem; margin-top: 1.2rem; color: var(--muted); }
+  .careers-application__steps { display: grid; gap: 0; margin-top: 2.2rem; border-top: 1px solid var(--line); }
+  .careers-application__steps li { display: grid; grid-template-columns: 2.5rem 1fr; gap: 0.8rem; padding: 1rem 0; border-bottom: 1px solid var(--line); list-style: none; }
+  .careers-application__steps li > span { color: var(--accent-deep); font-family: var(--mono); font-size: 0.68rem; }
+  .careers-application__steps strong { font-size: 0.88rem; }
+  .careers-application__steps p { margin-top: 0.35rem; color: var(--muted); font-size: 0.78rem; line-height: 1.5; }
+  .careers-application__privacy { margin-top: 2rem; padding: 1rem; border: 1px solid var(--line); background: var(--mist); }
+  .careers-application__privacy p { margin-top: 0.55rem; color: var(--muted); font-size: 0.75rem; line-height: 1.5; }
+  .careers-application__eyebrow { color: var(--accent-deep); font-family: var(--mono); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .careers-application__panel { min-width: 0; padding: clamp(1.1rem, 3vw, 2.5rem); border: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow-soft); }
+  .careers-application__panel-head { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+  .careers-application__panel-head p { color: var(--muted); font-size: 0.72rem; }
+  .career-form { display: grid; gap: 0; }
+  .career-form__fieldset { min-width: 0; margin: 0; padding: 1.65rem 0 1.8rem; border: 0; border-bottom: 1px solid var(--line); }
+  .career-form__fieldset legend, .career-form__check-fieldset legend { padding: 0; color: var(--ink); font-size: 0.8rem; font-weight: 800; }
+  .career-form__fieldset legend span { display: inline-block; width: 2rem; color: var(--accent-deep); font-family: var(--mono); font-size: 0.67rem; }
+  .career-form__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+  .career-form__field { display: grid; min-width: 0; gap: 0.35rem; }
+  .career-form__field--wide { grid-column: 1 / -1; }
+  .career-form__field label { font-size: 0.75rem; font-weight: 800; }
+  .career-form__field label span, .career-form__check span span { color: var(--accent-deep); }
+  .career-form__field input, .career-form__field select, .career-form__field textarea { width: 100%; min-width: 0; padding: 0.8rem 0.82rem; border: 1px solid var(--line); border-radius: 0.3rem; background: var(--white); color: var(--ink); }
+  .career-form__field textarea { resize: vertical; }
+  .career-form__field input:focus, .career-form__field select:focus, .career-form__field textarea:focus { border-color: var(--accent); outline: 2px solid color-mix(in srgb, var(--accent) 28%, transparent); outline-offset: 1px; }
+  .career-form__field small { color: var(--muted); font-size: 0.68rem; line-height: 1.4; }
+  .career-form__check-fieldset { min-width: 0; margin: 1.4rem 0 0; padding: 0; border: 0; }
+  .career-form__check-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.45rem; margin-top: 0.75rem; }
+  .career-form__check { display: flex; align-items: flex-start; gap: 0.55rem; min-width: 0; padding: 0.68rem 0.7rem; border: 1px solid var(--line); border-radius: 0.3rem; background: var(--white); color: var(--ink); font-size: 0.72rem; line-height: 1.35; }
+  .career-form__check input { flex: 0 0 auto; width: 1rem; height: 1rem; margin-top: 0.05rem; accent-color: var(--accent); }
+  .career-form__consent { display: grid; gap: 1rem; padding-top: 1.4rem; }
+  .career-form__check--consent { border: 0; padding: 0; background: transparent; }
+  .career-form__consent p { color: var(--muted); font-size: 0.7rem; line-height: 1.5; }
+  .career-form__consent .button { justify-self: start; }
+  .career-form__honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  @media (max-width: 900px) {
+    .careers-application__grid { grid-template-columns: 1fr; }
+    .careers-application__intro { position: static; }
+    .careers-application__intro h2 { max-width: 20ch; }
+  }
+  @media (max-width: 560px) {
+    .careers-application__panel-head { display: grid; }
+    .career-form__grid, .career-form__check-grid { grid-template-columns: 1fr; }
+    .career-form__field--wide { grid-column: auto; }
+    .career-form__consent .button { width: 100%; }
+  }
+</style>

@@ -6,6 +6,7 @@
     --paper-bright: #ffffff;
     --mist: #e8f0f5;
     --line: rgba(21, 47, 69, 0.18);
+    --line-strong: rgba(21, 47, 69, 0.32);
     --muted: #5e6c78;
     --accent: #b63b32;
     --accent-deep: #9b2f2b;
@@ -32,5 +33,6 @@
     --radius-s: 0.15rem;
     --radius-m: 0.3rem;
     --shadow: 0 0.8rem 2rem rgba(11, 39, 64, 0.1);
+    --shadow-soft: 0 0.45rem 1.2rem rgba(11, 39, 64, 0.07);
   }
 }

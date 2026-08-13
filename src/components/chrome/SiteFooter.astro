@@ -13,11 +13,12 @@ import { footerNavigation, site } from '../../data/site';
     </nav>
     <div class="footer-contact">
       <a href={`mailto:${site.email}`}>{site.email}</a>
-      <p>EU · Australia · USA</p>
+      <p>{site.legalName} · {site.jurisdiction}</p>
+      <a class="footer-legal-link" href="/legal/entities/">Legal identity &amp; boundaries</a>
     </div>
   </div>
   <div class="measure footer-bottom">
     <span>© {new Date().getFullYear()} Trustora. EoR with Employee Intelligence.</span>
-    <span><a href="/legal/privacy/">Privacy</a> · <a href="/legal/terms/">Terms</a></span>
+    <span><a href="/legal/privacy/">Privacy</a> · <a href="/legal/terms/">Terms</a> · <a href="/legal/entities/">Legal identity</a></span>
   </div>
 </footer>

@@ -19,6 +19,11 @@ import accessibleRemoteCall from '../assets/editorial/avif/accessible-remote-cal
 import technicalStandup from '../assets/editorial/avif/technical-standup.avif';
 import hardwarePrototyping from '../assets/editorial/avif/hardware-prototyping.avif';
 import conferenceNetworking from '../assets/editorial/avif/conference-networking.avif';
+import accessibleOfficeReview from '../assets/editorial/avif/accessible-office-review.avif';
+import payrollBenefitsReview from '../assets/editorial/avif/payroll-benefits-review.avif';
+import specialistAiLab from '../assets/editorial/avif/specialist-ai-lab.avif';
+import quantumPhysicsTeam from '../assets/editorial/avif/quantum-physics-team.avif';
+import onboardingAcrossBorders from '../assets/editorial/avif/onboarding-across-borders.avif';
 import serviceEorIntake from '../assets/editorial/avif/service-eor-intake.avif';
 import serviceEorAdvisor from '../assets/editorial/avif/service-eor-advisor.avif';
 import servicePayrollReconciliation from '../assets/editorial/avif/service-payroll-reconciliation.avif';
@@ -77,6 +82,11 @@ export const media = {
   'technical-standup': technicalStandup,
   'hardware-prototyping': hardwarePrototyping,
   'conference-networking': conferenceNetworking,
+  'accessible-office-review': accessibleOfficeReview,
+  'payroll-benefits-review': payrollBenefitsReview,
+  'specialist-ai-lab': specialistAiLab,
+  'quantum-physics-team': quantumPhysicsTeam,
+  'onboarding-across-borders': onboardingAcrossBorders,
   'service-eor-intake': serviceEorIntake,
   'service-eor-advisor': serviceEorAdvisor,
   'service-payroll-reconciliation': servicePayrollReconciliation,

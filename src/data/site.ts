@@ -1,10 +1,11 @@
 export const site = {
   name: 'Trustora',
-  legalName: 'Trustora',
+  legalName: 'TRUSTORA (SMC-PRIVATE) LIMITED',
+  jurisdiction: 'Pakistan',
   url: 'https://trustora.net',
   email: 'info@trustora.net',
   description:
-    'Trustora combines Employer of Record services with employee intelligence for companies building with AI, machine learning, quantum, physics, and the applied sciences.',
+    'Trustora (SMC-Private) Limited is a Pakistan-based Employer of Record and specialist employee intelligence company for teams building with AI, machine learning, quantum, physics, and the applied sciences.',
   socialImage: '/images/trustora-logo.svg',
 };
 
@@ -99,6 +100,23 @@ export const intelligenceAreas = [
     body: 'Researchers, engineers, and product builders who know how to move from insight to a working app.',
   },
 ] as const;
+
+export const employeeIntelligenceDefinition = {
+  definition:
+    'Employee Intelligence is Trustora’s capability-first service: we translate a technical or scientific problem into the expertise, employment model, and working conditions needed to solve it, then coordinate the EoR layer around the person who does the work.',
+  distinction:
+    'It is not employee surveillance or a generic talent database. It is the disciplined context around a specialist hire: the problem, the capability, the team, the country, the workplace, and the decisions that need a clear owner.',
+  workedExample: {
+    title: 'An ML evaluation lead in Germany',
+    body:
+      'A US product company needs an ML evaluation lead in Germany but does not yet have a German entity. Trustora helps define the evaluation problem, identifies the blend of model-evaluation and shipped-product experience required, and coordinates the local employment relationship through EoR.',
+    steps: [
+      'The client keeps ownership of the technical roadmap, manager relationship, and delivery outcomes.',
+      'Trustora coordinates the employment contract, payroll, benefits, onboarding, and employee support path for Germany.',
+      'The employee starts with the country, time zone, workplace, equipment, and working agreements made visible—not left to improvisation.',
+    ],
+  },
+} as const;
 
 export const trustoraPrinciples = [
   {
@@ -265,6 +283,41 @@ export const mediaManifest = {
     caption: 'Cross-border work grows through the conversations that happen before and after the formal agenda.',
     credit: 'Trustora generated editorial image · illustrative',
     role: 'Workplace / professional network',
+  },
+  'accessible-office-review': {
+    src: 'accessible-office-review',
+    alt: 'An Asian professional reviewing an accessible office setup with a workplace coordinator.',
+    caption: 'A regional talent corridor becomes credible when workplace access is part of the operating plan.',
+    credit: 'Trustora generated editorial image · illustrative',
+    role: 'Insights / Asia-Pacific workplace context',
+  },
+  'payroll-benefits-review': {
+    src: 'payroll-benefits-review',
+    alt: 'A professional reviewing payroll and benefits records on a laptop at a structured operations desk.',
+    caption: 'Employment integrity becomes practical when pay, benefits, records, and questions have a visible owner.',
+    credit: 'Trustora generated editorial image · illustrative',
+    role: 'Insights / employment integrity',
+  },
+  'specialist-ai-lab': {
+    src: 'specialist-ai-lab',
+    alt: 'An AI specialist evaluating model outputs across monitors in a professional research lab.',
+    caption: 'AI hiring is more useful when the role is connected to the system, access, and decision it must change.',
+    credit: 'Trustora generated editorial image · illustrative',
+    role: 'Insights / AI and ML workforce',
+  },
+  'quantum-physics-team': {
+    src: 'quantum-physics-team',
+    alt: 'A diverse physics team reviewing measurements beside specialized research equipment.',
+    caption: 'Quantum work crosses research, engineering, equipment, and the employment conditions around the team.',
+    credit: 'Trustora generated editorial image · illustrative',
+    role: 'Insights / quantum workforce',
+  },
+  'onboarding-across-borders': {
+    src: 'onboarding-across-borders',
+    alt: 'A technical manager welcoming a new colleague into a structured cross-border onboarding call.',
+    caption: 'An internship should begin with a real learning plan, a named manager, and a dependable path for questions.',
+    credit: 'Trustora generated editorial image · illustrative',
+    role: 'Insights / cross-border internships',
   },
   'service-eor-intake': { src: 'service-eor-intake', alt: 'A Black HR operations lead configuring a digital onboarding workflow on a monitor.', caption: 'A good EoR engagement starts by making the employment workflow explicit.', credit: 'Trustora generated editorial image · illustrative', role: 'Service / EoR intake' },
   'service-eor-advisor': { src: 'service-eor-advisor', alt: 'An East Asian employment advisor wearing a headset on a client video call.', caption: 'A named human path makes a cross-border employment model easier to operate.', credit: 'Trustora generated editorial image · illustrative', role: 'Service / EoR support' },

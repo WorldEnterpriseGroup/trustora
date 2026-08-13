@@ -1,14 +1,209 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import SectionLabel from '../../components/editorial/SectionLabel.astro';
-import MediaFrame from '../../components/editorial/MediaFrame.astro';
-import { media } from '../../data/media';
-import { mediaManifest } from '../../data/site';
+import CareersApplicationForm from '../../components/careers/CareersApplicationForm.astro';
+
+const roleFamilies = [
+  {
+    number: '01',
+    title: 'AI & machine learning',
+    body: 'Evaluation, data, applied models, product intelligence, and the engineering discipline that turns prototypes into dependable systems.',
+    signal: 'AI · ML · evaluation',
+  },
+  {
+    number: '02',
+    title: 'Quantum & physics',
+    body: 'People who can work across quantum information, physics, scientific computing, instrumentation, and the questions between disciplines.',
+    signal: 'quantum · physics · science',
+  },
+  {
+    number: '03',
+    title: 'Strategic Initiative Contract Management',
+    body: 'Structured thinkers who can translate a complex initiative into obligations, milestones, stakeholders, decisions, and accountable delivery.',
+    signal: 'SICM · contracts · delivery',
+  },
+  {
+    number: '04',
+    title: 'Software, product & platform',
+    body: 'Builders who have shipped successful apps, services, internal tools, data products, or the operational systems that keep them moving.',
+    signal: 'software · product · apps',
+  },
+  {
+    number: '05',
+    title: 'Science & research operations',
+    body: 'Researchers, lab operators, analysts, technical writers, and program coordinators who make difficult work repeatable and legible.',
+    signal: 'research · labs · programs',
+  },
+  {
+    number: '06',
+    title: 'People operations & EoR delivery',
+    body: 'Calm, detail-oriented operators who care about contracts, payroll, benefits, onboarding, employee support, and the country context around each person.',
+    signal: 'EoR · people · care',
+  },
+  {
+    number: '07',
+    title: 'Client solutions & partnerships',
+    body: 'Listeners and translators who can understand a company’s real constraint, frame the next decision, and build trust across time zones.',
+    signal: 'clients · growth · trust',
+  },
+  {
+    number: '08',
+    title: 'Internships & early career',
+    body: 'Students and emerging professionals who bring curiosity, evidence of learning, and the willingness to make the work clearer for the next person.',
+    signal: 'internships · learning · start',
+  },
+];
+
+const operatingSignals = [
+  ['01', 'A real problem', 'We start with the work a client or employee needs to do—not a title detached from an outcome.'],
+  ['02', 'A responsible owner', 'We make decisions, handoffs, country context, and escalation paths visible early.'],
+  ['03', 'A working relationship', 'We care about the conditions that help a distributed specialist do excellent work over time.'],
+];
 ---
 
-<Layout title="Careers at Trustora" description="Join Trustora's global employment services team and help make cross-border work clearer for companies and people." currentPath="/careers/">
-  <section class="page-hero"><div class="measure page-hero-grid"><div class="page-hero-copy"><SectionLabel>Careers at Trustora</SectionLabel><h1>Make global work feel more human.</h1><p>We are building a company for people who like the detail behind the detail: local context, careful operations, good judgment, and a clear answer when the obvious answer is wrong.</p></div><div class="page-hero-media"><MediaFrame src={media['hardware-prototyping']} alt={mediaManifest['hardware-prototyping'].alt} caption="The work is administrative. The impact is human." credit={mediaManifest['hardware-prototyping'].credit} sizes="(max-width: 900px) 100vw, 38vw" priority /></div></div></section>
-  <section class="section cream-field"><div class="measure split-argument"><h2>We are looking for people who can hold complexity without passing it along.</h2><div class="prose"><p>Trustora works across employment administration, client service, local context, and the employee experience. You do not need to have worked in every country. You do need to be curious, precise, and willing to name what you do not know.</p><p>We value thoughtful communication, strong follow-through, and people who can make an operating process feel calm without making it vague.</p></div></div></section>
-  <section class="section dark-field"><div class="measure"><div class="section-head"><div><SectionLabel light>What matters here</SectionLabel><h2 class="mt-2">The way we work is part of the work.</h2></div></div><div class="service-path"><div class="service-path-item"><span>01</span><h3>Be clear</h3><p>Say what you mean, document what matters, and make the next step easy to find.</p></div><div class="service-path-item"><span>02</span><h3>Stay local</h3><p>Context is not a footnote. Ask the country question early.</p></div><div class="service-path-item"><span>03</span><h3>Keep learning</h3><p>Rules change. Good judgment starts with being willing to update your view.</p></div><div class="service-path-item"><span>04</span><h3>Care in public</h3><p>Make the employee experience visible in the way you design the system.</p></div></div></div></section>
-  <section class="section orange-field"><div class="measure intro-slab"><div><SectionLabel light>Interested?</SectionLabel><h2 class="mt-2">Send a note, not a performance.</h2></div><div class="intro-body"><p>Share what you are good at, what you want to learn, and where you think you could make the work better.</p><a class="button button-light" href="mailto:info@trustora.net?subject=Careers%20at%20Trustora">Email Trustora <span aria-hidden="true">↗</span></a></div></div></section>
+<Layout title="Careers at Trustora" seoTitle="Careers at Trustora | AI, Quantum & Global Work" description="Build AI, quantum, science, software, contract-management, and EoR capabilities with Trustora across Asia, the EU, Australia, and the United States." currentPath="/careers/">
+  <section class="careers-hero">
+    <div class="measure careers-hero__grid">
+      <div class="careers-hero__copy">
+        <SectionLabel>Careers at Trustora</SectionLabel>
+        <h1>Build the employment layer for intelligent work.</h1>
+        <p>Trustora brings together Employer of Record operations and specialist employee intelligence. We are looking for people who can move between deep expertise, careful execution, and the human details that make global work sustainable.</p>
+        <div class="careers-hero__actions">
+          <a class="button" href="#apply">Apply to Trustora <span aria-hidden="true">↘</span></a>
+          <a class="button button-quiet" href="/about/">How we work <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="careers-hero__meta"><span>Open to global talent</span><span>Remote · hybrid · on-site</span><span>Current and future roles</span></div>
+      </div>
+      <figure class="career-lattice" aria-labelledby="career-lattice-title career-lattice-desc">
+        <svg viewBox="0 0 720 540" role="img" aria-labelledby="career-lattice-title career-lattice-desc">
+          <title id="career-lattice-title">Trustora career capability lattice</title>
+          <desc id="career-lattice-desc">A diagram connecting technical and scientific capability to employment operations, country context, and client outcomes.</desc>
+          <path class="career-lattice__line" d="M112 152H250M470 152h138M112 388h138M470 388h138M360 70v88M360 382v88M250 152l110 74 110-74M250 388l110-74 110 74" />
+          <circle class="career-lattice__node career-lattice__node--orange" cx="112" cy="152" r="62" />
+          <circle class="career-lattice__node career-lattice__node--blue" cx="608" cy="152" r="62" />
+          <circle class="career-lattice__node career-lattice__node--blue" cx="112" cy="388" r="62" />
+          <circle class="career-lattice__node career-lattice__node--orange" cx="608" cy="388" r="62" />
+          <rect class="career-lattice__center" x="250" y="158" width="220" height="156" rx="4" />
+          <rect class="career-lattice__tag" x="286" y="42" width="148" height="38" rx="3" />
+          <rect class="career-lattice__tag" x="286" y="460" width="148" height="38" rx="3" />
+          <text class="career-lattice__kicker" x="112" y="145">CAPABILITY</text><text class="career-lattice__label" x="112" y="169">Deep work</text>
+          <text class="career-lattice__kicker" x="608" y="145">OUTCOME</text><text class="career-lattice__label" x="608" y="169">Useful work</text>
+          <text class="career-lattice__kicker" x="112" y="381">CONTEXT</text><text class="career-lattice__label" x="112" y="405">Country</text>
+          <text class="career-lattice__kicker" x="608" y="381">RELATIONSHIP</text><text class="career-lattice__label" x="608" y="405">Trust</text>
+          <text class="career-lattice__center-kicker" x="360" y="220">TRUSTORA</text><text class="career-lattice__center-label" x="360" y="250">Employment +</text><text class="career-lattice__center-label" x="360" y="276">employee intelligence</text>
+          <text class="career-lattice__tag-text" x="360" y="66">PEOPLE · SYSTEMS</text><text class="career-lattice__tag-text" x="360" y="484">LOCAL · GLOBAL</text>
+        </svg>
+        <figcaption>Good work needs more than expertise. It needs a clear operating relationship around the person doing it.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section cream-field careers-intent">
+    <div class="measure careers-intent__grid">
+      <div><SectionLabel>The opportunity</SectionLabel><h2 class="mt-2">We are building a company for people who hold complexity without passing it along.</h2></div>
+      <div class="prose"><p>The employment layer is where ambition meets local reality. Our work asks for more than one discipline: a machine-learning specialist may need an employment model; a contract manager may need technical fluency; an intern may need a real problem and a patient mentor.</p><p>You do not need to have worked in every country. You do need to be curious, precise, and willing to name what you do not know. We value strong follow-through, evidence over performance, and communication that leaves the next person better equipped.</p></div>
+    </div>
+  </section>
+
+  <section class="section blue-field careers-operating">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel>Our operating brief</SectionLabel><h2 class="mt-2">The work begins with the conditions around the work.</h2></div><p>Trustora serves companies and specialist people across borders. Our internal standard is the same one we bring to clients: make the situation legible, give the right person ownership, and leave a durable record.</p></div>
+      <div class="careers-operating__grid">
+        {operatingSignals.map(([number, title, body]) => <article><span>{number}</span><h3>{title}</h3><p>{body}</p></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark-field careers-roles">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel light>Role families</SectionLabel><h2 class="mt-2">Bring a discipline. Learn the system around it.</h2></div><p>Some roles are active now; others are part of our forward-looking talent map. Select the closest fit in the application and tell us what you would make possible.</p></div>
+      <div class="careers-role-index">
+        {roleFamilies.map((role) => <article class="careers-role-card"><div class="careers-role-card__top"><span>{role.number}</span><span>{role.signal}</span></div><h3>{role.title}</h3><p>{role.body}</p><a href="#apply">Explore this path <span aria-hidden="true">↘</span></a></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cream-field careers-global">
+    <div class="measure careers-global__grid">
+      <div><SectionLabel>Distributed by design</SectionLabel><h2 class="mt-2">A global team needs a practical rhythm.</h2></div>
+      <div class="careers-global__content"><p>Many Trustora colleagues and candidates will be based in Pakistan and across Asia. We design for real working lives: PKT (UTC+5), IST (UTC+5:30), BDT (UTC+6), Singapore and Malaysia time (UTC+8), Australia, the EU, the UK, and US time zones can all be part of the same operating week.</p><div class="careers-global__facts"><div><strong>Remote-first where possible</strong><span>Clear overlap, documented decisions, and equipment that lets the work happen.</span></div><div><strong>Language is a capability</strong><span>Strong written and spoken English is useful; local language and cultural fluency are valued.</span></div><div><strong>Location is not a shortcut</strong><span>We ask about authorization, schedule, and working context without using geography as a proxy for talent.</span></div><div><strong>Interns get real context</strong><span>Early-career work should have a defined question, a reviewer, and something you can point to afterward.</span></div></div></div>
+    </div>
+  </section>
+
+  <section class="section orange-field careers-process">
+    <div class="measure careers-process__grid"><div><SectionLabel light>What happens next</SectionLabel><h2 class="mt-2">A considered process, with no unpaid mystery work.</h2></div><div class="careers-process__body"><p>We review for evidence of judgment, capability, and care. The exact process depends on the role, but we will tell you what we are evaluating and how to prepare.</p><ol><li><span>01</span><strong>Application review</strong></li><li><span>02</span><strong>Introductory conversation</strong></li><li><span>03</span><strong>Role-specific discussion or exercise</strong></li><li><span>04</span><strong>References, offer, and onboarding</strong></li></ol></div></div>
+  </section>
+
+  <CareersApplicationForm />
 </Layout>
+
+<style>
+  .careers-hero { padding: var(--space-4) 0 var(--space-5); background: var(--paper-bright); }
+  .careers-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr); gap: clamp(2rem, 7vw, 7rem); align-items: center; }
+  .careers-hero__copy { max-width: 43rem; }
+  .careers-hero h1 { max-width: 11ch; margin-top: 1.15rem; }
+  .careers-hero__copy > p { max-width: 40rem; margin-top: 1.35rem; color: var(--muted); font-size: var(--step-1); }
+  .careers-hero__actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.8rem; }
+  .careers-hero__meta { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; margin-top: 2rem; color: var(--accent-deep); font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .career-lattice { min-width: 0; margin: 0; padding: clamp(0.75rem, 2vw, 1.4rem); border: 1px solid var(--line); background: var(--mist); }
+  .career-lattice svg { display: block; width: 100%; height: auto; }
+  .career-lattice figcaption { margin-top: 0.7rem; color: var(--muted); font-size: 0.72rem; line-height: 1.45; }
+  .career-lattice__line { fill: none; stroke: var(--accent-deep); stroke-width: 2; stroke-dasharray: 2 8; stroke-linecap: round; }
+  .career-lattice__node { stroke: var(--ink); stroke-width: 1; }
+  .career-lattice__node--orange { fill: var(--yellow); }
+  .career-lattice__node--blue { fill: var(--blue-soft); }
+  .career-lattice__center { fill: var(--ink-deep); stroke: var(--ink-deep); }
+  .career-lattice__tag { fill: var(--white); stroke: var(--line-strong); }
+  .career-lattice text { text-anchor: middle; }
+  .career-lattice__kicker, .career-lattice__center-kicker, .career-lattice__tag-text { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; }
+  .career-lattice__kicker { fill: var(--accent-deep); }
+  .career-lattice__label { fill: var(--ink); font-family: var(--display); font-size: 18px; font-weight: 700; }
+  .career-lattice__center-kicker, .career-lattice__center-label { fill: var(--white); }
+  .career-lattice__center-label { font-family: var(--display); font-size: 21px; font-weight: 700; }
+  .career-lattice__tag-text { fill: var(--accent-deep); }
+  .careers-intent__grid, .careers-global__grid { display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); gap: var(--space-5); }
+  .careers-intent h2, .careers-global h2 { max-width: 14ch; }
+  .careers-operating .section-head > p, .careers-roles .section-head > p { max-width: 35rem; }
+  .careers-operating__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: var(--space-4); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .careers-operating__grid article { min-height: 13rem; padding: 1.25rem; }
+  .careers-operating__grid article + article { border-left: 1px solid var(--line); }
+  .careers-operating__grid span { color: var(--accent-deep); font-family: var(--mono); font-size: 0.68rem; }
+  .careers-operating__grid h3 { margin-top: 3rem; font-family: var(--body); font-size: 1rem; font-weight: 800; letter-spacing: 0; }
+  .careers-operating__grid p { margin-top: 0.55rem; color: var(--muted); font-size: 0.84rem; }
+  .careers-role-index { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--space-4); border-top: 1px solid rgba(255,253,248,0.25); border-left: 1px solid rgba(255,253,248,0.25); }
+  .careers-role-card { display: flex; min-height: 16rem; flex-direction: column; padding: 1.1rem; border-right: 1px solid rgba(255,253,248,0.25); border-bottom: 1px solid rgba(255,253,248,0.25); }
+  .careers-role-card__top { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--yellow); font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .careers-role-card h3 { max-width: 18ch; margin-top: 2.7rem; color: var(--white); font-family: var(--body); font-size: 1rem; font-weight: 800; letter-spacing: 0; }
+  .careers-role-card p { margin-top: 0.65rem; color: rgba(255,253,248,0.68); font-size: 0.79rem; line-height: 1.5; }
+  .careers-role-card a { margin-top: auto; padding-top: 1.1rem; color: var(--yellow); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-decoration: none; text-transform: uppercase; }
+  .careers-global__content > p { max-width: 62ch; color: var(--muted); }
+  .careers-global__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.5rem; border-top: 1px solid var(--line); }
+  .careers-global__facts div { display: grid; gap: 0.35rem; padding: 1rem 1rem 1rem 0; border-bottom: 1px solid var(--line); }
+  .careers-global__facts div:nth-child(even) { padding-left: 1rem; border-left: 1px solid var(--line); }
+  .careers-global__facts strong { font-size: 0.83rem; }
+  .careers-global__facts span { color: var(--muted); font-size: 0.76rem; line-height: 1.45; }
+  .careers-process { background: var(--blue-soft); color: var(--ink); }
+  .careers-process .section-label.is-light { color: var(--blue); }
+  .careers-process__grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: var(--space-5); }
+  .careers-process h2 { max-width: 14ch; }
+  .careers-process__body > p { max-width: 55ch; color: var(--muted); }
+  .careers-process__body ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.5rem; border-top: 1px solid var(--line); }
+  .careers-process__body li { display: grid; grid-template-columns: 2rem 1fr; gap: 0.7rem; padding: 1rem 0; border-bottom: 1px solid var(--line); list-style: none; }
+  .careers-process__body li:nth-child(even) { padding-left: 1rem; border-left: 1px solid var(--line); }
+  .careers-process__body li span { color: var(--accent-deep); font-family: var(--mono); font-size: 0.68rem; }
+  .careers-process__body li strong { font-size: 0.85rem; }
+  @media (max-width: 900px) {
+    .careers-hero__grid, .careers-intent__grid, .careers-global__grid, .careers-process__grid { grid-template-columns: 1fr; gap: var(--space-3); }
+    .careers-hero h1 { max-width: 14ch; }
+    .careers-operating__grid { grid-template-columns: 1fr; }
+    .careers-operating__grid article + article { border-top: 1px solid var(--line); border-left: 0; }
+    .careers-role-index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .careers-process h2, .careers-intent h2, .careers-global h2 { max-width: 20ch; }
+  }
+  @media (max-width: 560px) {
+    .careers-role-index, .careers-global__facts, .careers-process__body ol { grid-template-columns: 1fr; }
+    .careers-role-card { min-height: 0; }
+    .careers-global__facts div:nth-child(even), .careers-process__body li:nth-child(even) { padding-left: 0; border-left: 0; }
+    .careers-global__facts div + div, .careers-process__body li + li { border-top: 1px solid var(--line); }
+  }
+</style>

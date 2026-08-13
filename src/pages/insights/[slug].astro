@@ -21,7 +21,7 @@ const relatedArticles = (await getPublishedArticles()).filter((item) => article.
 const articleImage = media[article.data.imageKey];
 ---
 
-<Layout title={`${article.data.title} | Trustora`} description={article.data.description} currentPath={articlePath(article.id)} type="article" publishedAt={article.data.publishedAt} updatedAt={article.data.updatedAt}>
+<Layout title={article.data.title} seoTitle={`${article.data.title} | Trustora`} description={article.data.description} currentPath={articlePath(article.id)} type="article" publishedAt={article.data.publishedAt} updatedAt={article.data.updatedAt}>
   <section class="article-hero"><div class="measure article-hero-grid"><div><SectionLabel>{article.data.category}</SectionLabel><h1>{article.data.title}</h1><p class="article-dek">{article.data.lede}</p><div class="article-meta"><span>{article.data.publishedAt.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric' })}</span><span>{article.data.readTime}</span><span>By Trustora</span></div></div><div class="article-hero-media"><MediaFrame src={articleImage} alt={article.data.imageAlt} caption={article.data.imageCaption} credit={mediaManifest[article.data.imageKey].credit} sizes="(max-width: 900px) 100vw, 55vw" priority /></div></div></section>
   <div class="measure article-layout">
     <aside class="article-aside" aria-label="On this page"><h2>On this page</h2><ol>{headings.filter((heading) => heading.depth === 2).map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></aside>

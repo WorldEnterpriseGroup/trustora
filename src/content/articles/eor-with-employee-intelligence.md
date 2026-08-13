@@ -1,6 +1,6 @@
 ---
 title: "EoR with Employee Intelligence: why the employment layer matters"
-description: "An Employer of Record can be more than a way to hire in a new country. For technical teams, it can create the operating conditions for specialist people to do their best work."
+description: "An Employer of Record can be more than a way to hire in a new country. For technical teams, it can create better conditions for difficult work."
 category: "Operating model"
 publishedAt: 2026-08-11
 draft: false

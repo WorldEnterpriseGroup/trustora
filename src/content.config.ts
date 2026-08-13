@@ -13,7 +13,7 @@ const articles = defineCollection({
     draft: z.boolean().default(false),
     readTime: z.string().min(1),
     lede: z.string().min(1),
-    imageKey: z.enum(['team-table', 'trustora-team', 'workplace-grid', 'dubai-skyline', 'operations-room', 'remote-work', 'people-at-work', 'remote-call-home', 'coffee-corridor', 'conference-speaker', 'camera-grip-set', 'event-coordinator', 'lab-instrument-research', 'dry-lab-data-review', 'gpu-rnd', 'camera-rnd', 'legal-drafting', 'accessible-remote-call', 'technical-standup', 'hardware-prototyping', 'conference-networking']),
+    imageKey: z.enum(['team-table', 'trustora-team', 'workplace-grid', 'dubai-skyline', 'operations-room', 'remote-work', 'people-at-work', 'remote-call-home', 'coffee-corridor', 'conference-speaker', 'camera-grip-set', 'event-coordinator', 'lab-instrument-research', 'dry-lab-data-review', 'gpu-rnd', 'camera-rnd', 'legal-drafting', 'accessible-remote-call', 'technical-standup', 'hardware-prototyping', 'conference-networking', 'accessible-office-review', 'payroll-benefits-review', 'specialist-ai-lab', 'quantum-physics-team', 'onboarding-across-borders']),
     imageAlt: z.string().min(1),
     imageCaption: z.string().min(1),
     sources: z.array(z.object({ label: z.string(), url: z.url() })).default([]),

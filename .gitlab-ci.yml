@@ -44,8 +44,16 @@ pages:
     - job: build
       artifacts: true
   script:
+    - rm -rf public
     - mkdir -p public
     - cp -a dist/. public/
+    - |
+      for forbidden in '.claude' '.mcp.json' 'CLAUDE.md' 'plan.md' '.gitlab-ci.yml' 'docs' 'package.json' 'pnpm-lock.yaml'; do
+        if [ -e "public/$forbidden" ]; then
+          echo "Forbidden repository file copied into Pages artifact: $forbidden"
+          exit 1
+        fi
+      done
   pages: true
   artifacts:
     paths:
