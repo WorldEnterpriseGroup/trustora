@@ -5,6 +5,7 @@ import SectionLabel from '../components/editorial/SectionLabel.astro';
 import ArticleCard from '../components/editorial/ArticleCard.astro';
 import EmployeeIntelligenceDefinition from '../components/editorial/EmployeeIntelligenceDefinition.astro';
 import ProofStatus from '../components/editorial/ProofStatus.astro';
+import TrustBar from '../components/editorial/TrustBar.astro';
 import TrustMark from '../components/primitives/TrustMark.astro';
 import { media } from '../data/media';
 import { services } from '../data/services';
@@ -24,18 +25,22 @@ const articles = (await getPublishedArticles()).slice(0, 3);
     <div class="measure hero-home-grid">
       <div class="hero-home-copy">
         <SectionLabel>Employer of Record · Employee intelligence</SectionLabel>
-        <h1>Put specialist talent to work, <em>reliably—wherever it matters.</em></h1>
-        <p class="hero-home-lede">Trustora is an Employer of Record partner for companies building with AI, machine learning, quantum, physics, and the applied sciences. We make it easier to employ expert people across the EU, Australia, and the USA with a clear local operating layer.</p>
+        <h1>Put specialist talent to work <em>— reliably, everywhere it matters.</em></h1>
+        <p class="hero-home-lede">Trustora is a Pakistan-based Employer of Record partner for companies building with AI, machine learning, quantum, physics, and the applied sciences. We help clients organize specialist employment across EU, Australia, and USA contexts with a clear local operating layer.</p>
         <div class="hero-actions">
           <a class="button" href="/contact/">Discuss a specialist hire <span aria-hidden="true">↗</span></a>
           <a class="button button-quiet" href="/what-is-eor/">How EoR works <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="hero-meta"><span>EU · Australia · USA</span><span>EoR + specialist talent</span></div>
+        <div class="hero-meta"><span>Pakistan entity · EU / Australia / USA client context</span><span>EoR + specialist talent</span></div>
       </div>
       <div class="hero-media">
         <MediaFrame src={media['technical-standup']} alt={mediaManifest['technical-standup'].alt} caption="The employment layer behind high-consequence work." credit={mediaManifest['technical-standup'].credit} priority sizes="(max-width: 900px) 100vw, 50vw" position="50% 42%" />
       </div>
     </div>
+  </section>
+
+  <section class="section-tight cream-field">
+    <div class="measure"><TrustBar /></div>
   </section>
 
   <section class="section cream-field">

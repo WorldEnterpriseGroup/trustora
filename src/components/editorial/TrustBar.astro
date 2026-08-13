@@ -1,0 +1,78 @@
+<div class="trust-bar" aria-label="Published Trustora confidence signals">
+  <div class="trust-bar-heading">
+    <span class="eyebrow">Published confidence signals</span>
+    <p>Facts first. Claims follow approved evidence.</p>
+  </div>
+  <div class="trust-bar-items">
+    <div class="trust-bar-item"><strong>Pakistan entity on record</strong><span>TRUSTORA (SMC-PRIVATE) LIMITED</span></div>
+    <div class="trust-bar-item"><strong>Employee Intelligence</strong><span>A defined capability for specialist work</span></div>
+    <div class="trust-bar-item"><strong>Proof held for approval</strong><span>Case studies publish with client permission</span></div>
+  </div>
+</div>
+
+<style>
+  .trust-bar {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.7fr) 1.8fr;
+    gap: 2rem;
+    padding: 1.35rem 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  }
+
+  .trust-bar-heading {
+    display: grid;
+    align-content: start;
+    gap: 0.4rem;
+  }
+
+  .trust-bar-heading p,
+  .trust-bar-item span {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+
+  .eyebrow {
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .trust-bar-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .trust-bar-item {
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    padding-left: 1rem;
+    border-left: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .trust-bar-item strong {
+    font-size: 0.84rem;
+    line-height: 1.25;
+  }
+
+  @media (max-width: 760px) {
+    .trust-bar,
+    .trust-bar-items {
+      grid-template-columns: 1fr;
+    }
+
+    .trust-bar {
+      gap: 1rem;
+    }
+
+    .trust-bar-item {
+      padding: 0.75rem 0 0 0.8rem;
+    }
+  }
+</style>
