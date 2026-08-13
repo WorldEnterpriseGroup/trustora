@@ -25,7 +25,7 @@ const isCurrent = (href: string) => currentPath === href || (href !== '/' && cur
         </ul>
       </nav>
     )}
-    {!conversion && <a class="button header-cta" href="/eor-brief/">Get the EoR brief <span aria-hidden="true">↗</span></a>}
+    {!conversion && <a class="button header-cta" href="/contact/">Talk to Trustora <span aria-hidden="true">↗</span></a>}
     {!conversion && (
       <details class="nav-drawer">
         <summary class="menu-toggle" aria-controls="mobile-navigation">
@@ -37,7 +37,7 @@ const isCurrent = (href: string) => currentPath === href || (href !== '/' && cur
             <ul>
               <li><MegaMenu mobile /></li>
               {navigation.slice(1).map((item) => <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>)}
-              <li><a class="button" href="/eor-brief/">Get the EoR brief <span aria-hidden="true">↗</span></a></li>
+              <li><a class="button" href="/contact/">Talk to Trustora <span aria-hidden="true">↗</span></a></li>
             </ul>
           </nav>
         </div>

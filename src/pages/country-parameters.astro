@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/editorial/SectionLabel.astro';
+import TrustBar from '../components/editorial/TrustBar.astro';
+import { countryParameters } from '../data/countryParameters';
+
+const disclaimer = 'Trustora provides employment administration and coordination. Country-specific legal, tax, immigration, and employment advice may require qualified local professionals.';
+---
+
+<Layout title="Country parameters | Trustora" description="A clear country-context map for Employer of Record conversations with Trustora." currentPath="/country-parameters/">
+  <section class="page-hero">
+    <div class="measure page-hero-grid">
+      <div class="page-hero-copy">
+        <SectionLabel>Country parameters / published baseline</SectionLabel>
+        <h1>Country context before country promises.</h1>
+        <p>Trustora is a Pakistan-based Employer of Record partner. This map separates our published entity identity from the client corridors and local questions that shape an engagement.</p>
+      </div>
+      <div class="page-hero-note">A regional relationship is not the same as a local legal entity. The country, worker, role, workplace, and timing facts come first.</div>
+    </div>
+  </section>
+
+  <section class="section cream-field">
+    <div class="measure">
+      <TrustBar />
+      <div class="section-head country-parameters-intro"><div><SectionLabel>How to read this</SectionLabel><h2 class="mt-2">A decision surface, not a coverage boast.</h2></div><p>Use the cards to prepare a better first conversation. They are intentionally written as operating prompts—not as a substitute for country-specific advice or an unsupported jurisdiction count.</p></div>
+      <div class="country-parameter-grid">
+        {countryParameters.map((country) => (
+          <article class="country-parameter-card">
+            <div class="country-parameter-top"><span class="country-parameter-number">{country.number}</span><span class="country-parameter-code">{country.code}</span></div>
+            <p class="country-parameter-status">{country.status}</p>
+            <h2>{country.title}</h2>
+            <p class="country-parameter-posture">{country.posture}</p>
+            <p>{country.summary}</p>
+            <ul>{country.parameters.map((parameter) => <li>{parameter}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark-field">
+    <div class="measure split-argument">
+      <div><SectionLabel light>Before the next country</SectionLabel><h2 class="mt-2">Bring the facts that change the answer.</h2></div>
+      <div class="prose"><p>Start with where the person will work, who manages them, the role they will perform, the target start date, the workplace model, and the support the employee will need. Trustora can then organize the EoR and specialist-employment questions around the actual situation.</p><p>{disclaimer}</p><p><a href="/contact/">Prepare an intake</a> or <a href="/locations/">browse the location context</a>.</p></div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .country-parameters-intro {
+    margin-top: var(--space-5);
+  }
+
+  .country-parameter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    border: 1px solid var(--line);
+    background: var(--line);
+  }
+
+  .country-parameter-card {
+    min-height: 25rem;
+    padding: clamp(1.25rem, 2vw, 2rem);
+    background: var(--paper-bright);
+  }
+
+  .country-parameter-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .country-parameter-number,
+  .country-parameter-code,
+  .country-parameter-status {
+    color: var(--accent-deep);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .country-parameter-code {
+    color: var(--muted);
+  }
+
+  .country-parameter-status {
+    margin-top: 1.35rem;
+  }
+
+  .country-parameter-card h2 {
+    margin-top: 0.45rem;
+    font-size: clamp(1.75rem, 1.4rem + 1vw, 2.65rem);
+  }
+
+  .country-parameter-posture {
+    margin-top: 0.55rem;
+    color: var(--accent-deep);
+    font-weight: 750;
+  }
+
+  .country-parameter-card > p:not(.country-parameter-status):not(.country-parameter-posture) {
+    margin-top: 1.1rem;
+    color: var(--muted);
+  }
+
+  .country-parameter-card ul {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 1.45rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .country-parameter-card li {
+    position: relative;
+    padding-left: 1.2rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .country-parameter-card li::before {
+    position: absolute;
+    top: 0.55em;
+    left: 0;
+    width: 0.45rem;
+    height: 1px;
+    background: var(--accent);
+    content: '';
+  }
+
+  @media (max-width: 760px) {
+    .country-parameter-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .country-parameter-card {
+      min-height: 0;
+    }
+  }
+</style>

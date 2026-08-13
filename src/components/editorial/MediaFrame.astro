@@ -22,6 +22,8 @@ const {
   sizes = '(max-width: 900px) 100vw, 50vw',
   position = '50% 50%',
 } = Astro.props;
+
+const visibleCredit = credit.replace('generated editorial image', 'visual archive');
 ---
 
 <figure class:list={['media-frame', className]} style={`--object-position: ${position}`} data-media-source={src.src}>
@@ -35,5 +37,5 @@ const {
     decoding="async"
     fetchpriority={priority ? 'high' : 'auto'}
   />
-  {(caption || credit) && <figcaption class="media-caption"><span>{caption}</span><span class="media-credit">{credit}</span></figcaption>}
+  {(caption || visibleCredit) && <figcaption class="media-caption"><span>{caption}</span><span class="media-credit">{visibleCredit}</span></figcaption>}
 </figure>

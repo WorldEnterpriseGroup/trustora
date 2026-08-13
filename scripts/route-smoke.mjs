@@ -31,7 +31,7 @@ const files = await walk(root);
 const htmlFiles = files.filter((file) => file.endsWith('.html'));
 const routes = htmlFiles.map(routeFromFile).filter(Boolean).sort();
 
-const expectedRouteCount = 89;
+const expectedRouteCount = 90;
 if (routes.length !== expectedRouteCount) failures.push(`Expected ${expectedRouteCount} HTML routes, found ${routes.length}`);
 if (!files.some((file) => file.endsWith('/robots.txt'))) failures.push('robots.txt is missing');
 if (!files.some((file) => file.endsWith('/sitemap.xml'))) failures.push('sitemap.xml is missing');
