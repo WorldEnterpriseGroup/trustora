@@ -1,0 +1,237 @@
+{
+  "@odata.type": "Microsoft.Dynamics.CRM.EntityMetadata",
+  "SchemaName": "tr_TrustoraCareerApplication",
+  "DisplayName": {
+    "LocalizedLabels": [
+      { "Label": "Trustora Career Application", "LanguageCode": 1033 }
+    ]
+  },
+  "DisplayCollectionName": {
+    "LocalizedLabels": [
+      { "Label": "Trustora Career Applications", "LanguageCode": 1033 }
+    ]
+  },
+  "Description": {
+    "LocalizedLabels": [
+      { "Label": "Sanitized Trustora careers intake record. Do not store passports, bank details, health information, or credentials.", "LanguageCode": 1033 }
+    ]
+  },
+  "OwnershipType": "UserOwned",
+  "IsActivity": false,
+  "HasNotes": false,
+  "HasActivities": false,
+  "PrimaryNameAttribute": "tr_name",
+  "Attributes": [
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Name",
+      "IsPrimaryName": true,
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Application name", "LanguageCode": 1033 }] },
+      "RequiredLevel": { "Value": "ApplicationRequired" },
+      "MaxLength": 160
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_SubmissionId",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Submission ID", "LanguageCode": 1033 }] },
+      "RequiredLevel": { "Value": "ApplicationRequired" },
+      "MaxLength": 64
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_FullName",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Full name", "LanguageCode": 1033 }] },
+      "MaxLength": 160
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_PreferredName",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Preferred name", "LanguageCode": 1033 }] },
+      "MaxLength": 80
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Email",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Email", "LanguageCode": 1033 }] },
+      "MaxLength": 254
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_PhoneOrWhatsApp",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Phone or WhatsApp", "LanguageCode": 1033 }] },
+      "MaxLength": 80
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Country",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Current country", "LanguageCode": 1033 }] },
+      "MaxLength": 80
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_CityRegion",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "City or region", "LanguageCode": 1033 }] },
+      "MaxLength": 120
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_RegionalContext",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Regional context", "LanguageCode": 1033 }] },
+      "MaxLength": 120
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_TimeZone",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Time zone", "LanguageCode": 1033 }] },
+      "MaxLength": 120
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_RoleTitle",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Role or problem area", "LanguageCode": 1033 }] },
+      "MaxLength": 180
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_RoleInterests",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Role interests", "LanguageCode": 1033 }] },
+      "MaxLength": 2000
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_ProfessionalLanguages",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Professional languages", "LanguageCode": 1033 }] },
+      "MaxLength": 1000
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.MemoAttributeMetadata",
+      "SchemaName": "tr_WorkEvidence",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Work evidence", "LanguageCode": 1033 }] },
+      "MaxLength": 5000
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_WorkAuthorization",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Work authorization", "LanguageCode": 1033 }] },
+      "MaxLength": 160
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_WorkModel",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Work model", "LanguageCode": 1033 }] },
+      "MaxLength": 80
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Availability",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Availability", "LanguageCode": 1033 }] },
+      "MaxLength": 100
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Travel",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Travel or relocation", "LanguageCode": 1033 }] },
+      "MaxLength": 120
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.MemoAttributeMetadata",
+      "SchemaName": "tr_AuthorizationNotes",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Authorization notes", "LanguageCode": 1033 }] },
+      "MaxLength": 2000
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_EducationLevel",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Education level", "LanguageCode": 1033 }] },
+      "MaxLength": 120
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_EducationField",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Education field", "LanguageCode": 1033 }] },
+      "MaxLength": 160
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_CompensationCurrency",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Compensation currency", "LanguageCode": 1033 }] },
+      "MaxLength": 60
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_CompensationExpectation",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Compensation expectation", "LanguageCode": 1033 }] },
+      "MaxLength": 120
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_ResumeLink",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Resume link", "LanguageCode": 1033 }] },
+      "MaxLength": 500
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_LinkedIn",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "LinkedIn", "LanguageCode": 1033 }] },
+      "MaxLength": 500
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_GitHub",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "GitHub", "LanguageCode": 1033 }] },
+      "MaxLength": 500
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Portfolio",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Portfolio or publications", "LanguageCode": 1033 }] },
+      "MaxLength": 500
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.MemoAttributeMetadata",
+      "SchemaName": "tr_CoverNote",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Cover note", "LanguageCode": 1033 }] },
+      "MaxLength": 6000
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Source",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Source", "LanguageCode": 1033 }] },
+      "MaxLength": 300
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.BooleanAttributeMetadata",
+      "SchemaName": "tr_Consent",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Applicant consent", "LanguageCode": 1033 }] },
+      "OptionSet": {
+        "TrueOption": { "Value": 1, "Label": { "LocalizedLabels": [{ "Label": "Yes", "LanguageCode": 1033 }] } },
+        "FalseOption": { "Value": 0, "Label": { "LocalizedLabels": [{ "Label": "No", "LanguageCode": 1033 }] } }
+      },
+      "DefaultValue": false
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_ConsentScope",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Consent scope", "LanguageCode": 1033 }] },
+      "MaxLength": 120
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_ConsentCapturedAt",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Consent captured at", "LanguageCode": 1033 }] },
+      "MaxLength": 50
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_ReceivedAt",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Received at", "LanguageCode": 1033 }] },
+      "MaxLength": 50
+    },
+    {
+      "@odata.type": "Microsoft.Dynamics.CRM.StringAttributeMetadata",
+      "SchemaName": "tr_Status",
+      "DisplayName": { "LocalizedLabels": [{ "Label": "Status", "LanguageCode": 1033 }] },
+      "MaxLength": 40
+    }
+  ]
+}

@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import MediaFrame from '../components/editorial/MediaFrame.astro';
 import SectionLabel from '../components/editorial/SectionLabel.astro';
 import ArticleCard from '../components/editorial/ArticleCard.astro';
+import EmployeeIntelligenceDefinition from '../components/editorial/EmployeeIntelligenceDefinition.astro';
+import ProofStatus from '../components/editorial/ProofStatus.astro';
 import TrustMark from '../components/primitives/TrustMark.astro';
 import { media } from '../data/media';
 import { services } from '../data/services';
@@ -22,7 +24,7 @@ const articles = (await getPublishedArticles()).slice(0, 3);
     <div class="measure hero-home-grid">
       <div class="hero-home-copy">
         <SectionLabel>Employer of Record · Employee intelligence</SectionLabel>
-        <h1>Put specialist talent to work, <em>everywhere.</em></h1>
+        <h1>Put specialist talent to work, <em>reliably—wherever it matters.</em></h1>
         <p class="hero-home-lede">Trustora is an Employer of Record partner for companies building with AI, machine learning, quantum, physics, and the applied sciences. We make it easier to employ expert people across the EU, Australia, and the USA with a clear local operating layer.</p>
         <div class="hero-actions">
           <a class="button" href="/contact/">Discuss a specialist hire <span aria-hidden="true">↗</span></a>
@@ -52,6 +54,7 @@ const articles = (await getPublishedArticles()).slice(0, 3);
       <div class="expertise-grid">
         {intelligenceAreas.map((area) => <div class="expertise-item"><span>{area.number}</span><h3>{area.title}</h3><p>{area.body}</p></div>)}
       </div>
+      <EmployeeIntelligenceDefinition compact />
     </div>
   </section>
 
@@ -82,6 +85,7 @@ const articles = (await getPublishedArticles()).slice(0, 3);
         <TrustMark label="Strong working relationships across three regions" value="EU · AU · US" />
         <TrustMark label="A network that understands delivery" value="Shipped work" />
       </div>
+      <ProofStatus />
     </div>
   </section>
 

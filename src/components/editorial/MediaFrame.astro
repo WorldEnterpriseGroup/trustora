@@ -24,7 +24,7 @@ const {
 } = Astro.props;
 ---
 
-<figure class:list={['media-frame', className]} style={`--object-position: ${position}`}>
+<figure class:list={['media-frame', className]} style={`--object-position: ${position}`} data-media-source={src.src}>
   <img
     src={src.src}
     alt={alt}

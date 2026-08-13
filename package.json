@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node scripts/route-smoke.mjs"
+    "test": "node scripts/route-smoke.mjs && node scripts/deep-audit.mjs",
+    "audit:technical": "node scripts/technical-audit.mjs"
   },
   "repository": {
     "type": "git",

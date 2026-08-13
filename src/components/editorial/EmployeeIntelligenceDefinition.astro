@@ -1,0 +1,24 @@
+---
+import SectionLabel from './SectionLabel.astro';
+import { employeeIntelligenceDefinition } from '../../data/site';
+
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+---
+
+<div class:list={['intelligence-definition', { 'intelligence-definition--compact': compact }]}>
+  <div class="intelligence-definition-copy">
+    <SectionLabel>{compact ? 'The definition' : 'Employee intelligence / the product'}</SectionLabel>
+    <h2 id="employee-intelligence-definition">A defined capability, not a slogan.</h2>
+    <p class="intelligence-definition-lede">{employeeIntelligenceDefinition.definition}</p>
+    <p>{employeeIntelligenceDefinition.distinction}</p>
+  </div>
+  <div class="intelligence-example">
+    <span class="intelligence-example-label">Illustrative worked example</span>
+    <h3>{employeeIntelligenceDefinition.workedExample.title}</h3>
+    <p>{employeeIntelligenceDefinition.workedExample.body}</p>
+    <ol>
+      {employeeIntelligenceDefinition.workedExample.steps.map((step, index) => <li><span>0{index + 1}</span><p>{step}</p></li>)}
+    </ol>
+  </div>
+</div>

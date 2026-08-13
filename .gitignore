@@ -23,3 +23,12 @@ vendor/
 .astro/
 dist/
 build/
+
+# Legacy static export files; Pages is deployed from dist/ only.
+/_astro/
+/images/
+/*/index.html
+/404.html
+/favicon.ico
+/robots.txt
+/sitemap.xml

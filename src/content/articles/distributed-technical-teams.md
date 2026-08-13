@@ -1,6 +1,6 @@
 ---
 title: "Distributed technical teams need architecture, not just collaboration tools"
-description: "Cross-border AI, ML, quantum, physics, and software teams need clear ownership, working agreements, documentation, and escalation paths—not another layer of meetings."
+description: "Cross-border AI, ML, quantum, physics, and software teams need clear ownership, documentation, and escalation paths—not another layer of meetings."
 category: "Technical workforce"
 publishedAt: 2026-08-11
 draft: false

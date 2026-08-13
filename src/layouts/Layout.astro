@@ -15,6 +15,7 @@ interface Props {
   publishedAt?: Date;
   updatedAt?: Date;
   image?: string;
+  seoTitle?: string;
 }
 
 const {
@@ -28,7 +29,11 @@ const {
   publishedAt,
   updatedAt,
   image = site.socialImage,
+  seoTitle = title,
 } = Astro.props;
+
+const metaTitle = seoTitle.length > 60 ? `${seoTitle.slice(0, 57).trimEnd()}…` : seoTitle;
+const socialImageAlt = `${site.name} — ${metaTitle}`;
 
 const canonical = new URL(currentPath, site.url).toString();
 const structuredData = type === 'article'
@@ -47,6 +52,7 @@ const structuredData = type === 'article'
       '@context': 'https://schema.org',
       '@type': 'ProfessionalService',
       name: site.name,
+      legalName: site.legalName,
       url: site.url,
       description: site.description,
       email: site.email,
@@ -69,14 +75,17 @@ const structuredData = type === 'article'
     <link rel="alternate icon" href="/favicon.ico" />
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={metaTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, site.url).toString()} />
+    <meta property="og:image:alt" content={socialImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={metaTitle} />
     <meta name="twitter:description" content={description} />
-    <title>{title}</title>
+    <meta name="twitter:image" content={new URL(image, site.url).toString()} />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
+    <title>{metaTitle}</title>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
   </head>
   <body class:list={{ 'conversion-page': conversion, 'home-page': currentPath === '/' }}>
@@ -84,5 +93,6 @@ const structuredData = type === 'article'
     <SiteHeader currentPath={currentPath} dark={darkHeader || conversion} conversion={conversion} />
     <main id="main-content"><slot /></main>
     {!conversion && <SiteFooter />}
+    <script is:inline src="/scripts/corporate-email-validation.js"></script>
   </body>
 </html>

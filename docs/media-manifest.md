@@ -1,15 +1,26 @@
 # Trustora media manifest
 
-All editorial images are bundled from `src/assets/editorial/avif/` and emitted as AVIF. They are used through the typed manifest in `src/data/site.ts` and the typed asset map in `src/data/media.ts`. The `MediaFrame` component supplies meaningful alt text, intrinsic dimensions, responsive sizing hints, captions, and credit lines.
+All editorial raster masters live in `src/assets/editorial/avif/` and are imported through `src/data/media.ts`. The library currently contains 66 distinct AVIF masters, with source assignments emitted across the generated route set. `MediaFrame.astro` serves those already-optimized AVIF masters directly with intrinsic dimensions, deliberate loading priority, meaningful alt text, captions, credits, and a `data-media-source` identity used by the production audit.
 
-| Asset | Role | Route use | Reuse rationale |
-| --- | --- | --- | --- |
-| `team-table.avif` | Orientation | Home hero | Establishes the human, collaborative starting point |
-| `trustora-team.avif` | Observation | Home / about / employee-intelligence article | Shows the company’s operating posture and team context; the article uses it as a people-and-practice visual |
-| `workplace-grid.avif` | Context | What-is-EoR explainer, contractor service, article | A collage communicates multiple local working contexts |
-| `dubai-skyline.avif` | Place | Services index, EoR service, mobility support | Reused only when geographic market context is the subject |
-| `operations-room.avif` | Observation | Payroll service, people operations support, article | Signals the recurring operational layer |
-| `people-at-work.avif` | Observation | Services support, contractor support, careers | Signals employee experience and collaboration |
-| `remote-work.avif` | Context | Global mobility, payroll support, article | Signals distributed work and cross-border coordination |
+## Asset families
 
-No substantial route repeats the same creative image in its hero and supporting media slot. Repeated images across routes are role-based: place, context, observation, or orientation. The repository’s original image library remains available as source material, while the active build consumes the seven selected, pre-optimized editorial assets above.
+The active library covers 55 assigned creative sources across:
+
+- corporate collaboration, leadership, networking, and event coordination;
+- remote work, accessible home work, employee support, and workplace setup;
+- AI evaluation, ML deployment, GPU R&D, camera R&D, hardware prototyping, and technical interviews;
+- physics, quantum measurement, scientific calibration, dry-lab data review, and laboratory research;
+- EoR intake, payroll, benefits, compensation, mobility, verification, HRIS, compliance, IT, and people operations.
+
+Every active creative assignment is represented by a typed key in `src/data/media.ts` and a corresponding editorial description in `src/data/site.ts`. The `credit` field distinguishes Trustora-generated illustrative imagery from brand-archive material. Generated imagery is illustrative and should not be presented as a photograph of a real employee, client, office, or customer outcome.
+
+## Delivery rules
+
+- Source masters are AVIF; no PNG/JPG/JPEG/WebP creative files remain in `src` or `public`.
+- `MediaFrame` serves the pre-optimized AVIF master directly. Astro’s Sharp transform pipeline was benchmarked during the audit; generating 115–223 additional AVIF variants pushed a production build to 8–10 minutes for this image library without improving the already-AVIF payload. The direct-master choice is intentional and keeps publishing reproducible and fast.
+- The likely LCP image is eager and high priority; other editorial images are lazy by default.
+- Every meaningful image has alt text; every editorial figure has a caption and credit.
+- The route smoke test detects repeated emitted creative URLs within or across routes.
+- The deep audit additionally checks source identities, rejects cross-route reuse, and hashes source masters to catch duplicate files with different names.
+
+Run `pnpm run build && pnpm run test` after adding or changing an image. Do not add a new image reference directly in a page; add the asset import, manifest entry, alt/caption/credit, and route assignment together.

@@ -11,7 +11,7 @@ interface Props { comparison: (typeof comparisons)[number]; }
 const { comparison } = Astro.props;
 ---
 
-<Layout title={`${comparison.title} | Trustora`} description={comparison.description} currentPath={`/compare/${comparison.slug}/`}>
+<Layout title={comparison.title} seoTitle={`${comparison.title} | Trustora`} description={comparison.description} currentPath={`/compare/${comparison.slug}/`}>
   <section class="page-hero comparison-hero">
     <div class="measure page-hero-grid">
       <div class="page-hero-copy">

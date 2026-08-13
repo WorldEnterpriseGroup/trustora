@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import { site } from '../../data/site';
+---
+
+<Layout title="Legal identity & boundaries | Trustora" description="Trustora's published legal identity and service boundaries." currentPath="/legal/entities/">
+  <section class="page-hero">
+    <div class="measure page-hero-grid">
+      <div class="page-hero-copy">
+        <SectionLabel>Legal / Identity</SectionLabel>
+        <h1>A clear operating identity.</h1>
+        <p>Trust is easier to build when the entity, the service boundary, and the unanswered questions are visible.</p>
+      </div>
+      <div class="page-hero-note">This page publishes only facts approved for Trustora's public website. It is not a substitute for country-specific legal, tax, immigration, or employment advice.</div>
+    </div>
+  </section>
+
+  <section class="section cream-field">
+    <div class="measure legal-layout">
+      <aside><SectionLabel>Published identity</SectionLabel></aside>
+      <div class="prose">
+        <h2>{site.legalName}</h2>
+        <p>{site.legalName} is a company established in {site.jurisdiction}. Trustora provides Employer of Record coordination and related specialist talent, payroll, people operations, and workplace services through written engagement terms.</p>
+        <h2>What this does—and does not—mean</h2>
+        <p>Trustora's service reach may involve clients, employees, and local partners in more than one country. That service reach should not be read as a claim that Trustora maintains a separate legal entity, employment license, registered office, insurance policy, or immigration practice in every country described on this site.</p>
+        <p>Country-specific obligations are reviewed against the facts of an engagement. Where specialist legal, tax, immigration, or employment advice is required, Trustora will identify that boundary and coordinate the appropriate qualified professional.</p>
+        <h2>Information we will add only when approved</h2>
+        <p>Registration numbers, registered-office details, tax identifiers, insurance information, country-specific licenses, and formal partner descriptions will be published here only after the underlying documents and wording are approved for public use.</p>
+        <p>For a potential engagement, email <a href={`mailto:${site.email}`}>{site.email}</a> or <a href="/contact/">start an intake</a>.</p>
+      </div>
+    </div>
+  </section>
+</Layout>

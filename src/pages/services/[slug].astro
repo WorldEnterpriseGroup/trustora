@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import MediaFrame from '../../components/editorial/MediaFrame.astro';
 import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import EmployeeIntelligenceDefinition from '../../components/editorial/EmployeeIntelligenceDefinition.astro';
+import LegalBoundaryNote from '../../components/editorial/LegalBoundaryNote.astro';
 import { media } from '../../data/media';
 import { services, serviceDetails } from '../../data/services';
 import { mediaManifest } from '../../data/site';
@@ -14,6 +16,10 @@ const { slug } = Astro.params;
 const service = services.find((item) => item.slug === slug);
 const detail = slug ? serviceDetails[slug] : undefined;
 if (!service || !detail) throw new Error(`Unknown service: ${slug}`);
+const pathHeading = detail.pathHeading ?? `${service.title} starts with context.`;
+const pathIntro = detail.pathIntro ?? 'The operating rhythm follows the role, the country, and the decisions the team needs to make.';
+const nextHeading = detail.nextHeading ?? `Make ${service.title.toLowerCase()} useful from day one.`;
+const nextBody = detail.nextBody ?? 'Tell us the country, role, team, and timing. We will help you understand the questions that matter before we propose a path.';
 ---
 
 <Layout title={`${service.title} | Trustora`} description={service.description} currentPath={`/services/${service.slug}/`}>
@@ -24,11 +30,15 @@ if (!service || !detail) throw new Error(`Unknown service: ${slug}`);
     </div>
   </section>
 
-  <section class="section cream-field"><div class="measure"><div class="section-head"><div><SectionLabel>The path</SectionLabel><h2 class="mt-2">A steady sequence beats a rushed handoff.</h2></div><p>Every engagement changes with the country and the role. The rhythm stays useful.</p></div><div class="service-path">{detail.path.map((step, index) => <div class="service-path-item"><span>0{index + 1}</span><h3>{step.title}</h3><p>{step.body}</p></div>)}</div></div></section>
+  <section class="section cream-field"><div class="measure"><div class="section-head"><div><SectionLabel>The path</SectionLabel><h2 class="mt-2">{pathHeading}</h2></div><p>{pathIntro}</p></div><div class="service-path">{detail.path.map((step, index) => <div class="service-path-item"><span>0{index + 1}</span><h3>{step.title}</h3><p>{step.body}</p></div>)}</div></div></section>
+
+  {slug === 'employee-intelligence' && <section class="section blue-field"><div class="measure"><EmployeeIntelligenceDefinition /></div></section>}
 
   <section class="section dark-field"><div class="measure split-argument"><h2>{detail.sections[0].heading}</h2><div class="prose"><p>{detail.sections[0].body}</p>{detail.sections[0].items && <ul>{detail.sections[0].items.map((item) => <li>{item}</li>)}</ul>}</div></div></section>
 
   <section class="section cream-field"><div class="measure story-grid"><div class="story-copy"><SectionLabel>What to expect</SectionLabel><h2 class="mt-2">{detail.sections[1].heading}</h2><p>{detail.sections[1].body}</p>{detail.sections[1].items && <ul class="prose mt-2">{detail.sections[1].items.map((item) => <li>{item}</li>)}</ul>}</div><MediaFrame src={media[detail.supportImageKey]} alt={mediaManifest[detail.supportImageKey].alt} caption={mediaManifest[detail.supportImageKey].caption} credit={mediaManifest[detail.supportImageKey].credit} sizes="(max-width: 900px) 100vw, 55vw" position="58% 52%" /></div></section>
 
-  <section class="section orange-field"><div class="measure intro-slab"><div><SectionLabel light>Next step</SectionLabel><h2 class="mt-2">Bring us the facts as they are.</h2></div><div class="intro-body"><p>Tell us the country, role, team, and timing. We will help you understand the questions that matter before we propose a path.</p><div class="hero-actions"><a class="button button-light" href="/contact/">Start a conversation <span aria-hidden="true">↗</span></a><a class="button" href="/services/">Back to services <span aria-hidden="true">↗</span></a></div></div></div></section>
+  <section class="section-tight cream-field"><div class="measure"><LegalBoundaryNote /></div></section>
+
+  <section class="section orange-field"><div class="measure intro-slab"><div><SectionLabel light>Next step</SectionLabel><h2 class="mt-2">{nextHeading}</h2></div><div class="intro-body"><p>{nextBody}</p><div class="hero-actions"><a class="button button-light" href="/contact/">Start a conversation <span aria-hidden="true">↗</span></a><a class="button" href="/services/">Back to services <span aria-hidden="true">↗</span></a></div></div></div></section>
 </Layout>

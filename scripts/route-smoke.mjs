@@ -31,7 +31,8 @@ const files = await walk(root);
 const htmlFiles = files.filter((file) => file.endsWith('.html'));
 const routes = htmlFiles.map(routeFromFile).filter(Boolean).sort();
 
-if (routes.length !== 70) failures.push(`Expected 70 HTML routes, found ${routes.length}`);
+const expectedRouteCount = 89;
+if (routes.length !== expectedRouteCount) failures.push(`Expected ${expectedRouteCount} HTML routes, found ${routes.length}`);
 if (!files.some((file) => file.endsWith('/robots.txt'))) failures.push('robots.txt is missing');
 if (!files.some((file) => file.endsWith('/sitemap.xml'))) failures.push('sitemap.xml is missing');
 
@@ -68,6 +69,7 @@ for (const file of htmlFiles) {
 }
 
 const sitemap = await readFile(join(root, 'sitemap.xml'), 'utf8');
+if (!/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/.test(sitemap)) failures.push('sitemap is missing lastmod dates');
 for (const route of routes.filter((item) => item !== '/404/')) {
   if (!sitemap.includes(`https://trustora.net${route}`)) failures.push(`sitemap is missing ${route}`);
 }
