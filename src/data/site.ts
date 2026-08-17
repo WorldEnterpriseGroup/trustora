@@ -6,7 +6,7 @@ export const site = {
   email: 'info@trustora.net',
   description:
     'Trustora (SMC-Private) Limited is a Pakistan-based Employer of Record and specialist employee intelligence company for teams building with AI, machine learning, quantum, physics, and the applied sciences.',
-  socialImage: '/images/trustora-logo.svg',
+  socialImage: '/images/trustora-og-image.svg',
 };
 
 export const navigation = [
