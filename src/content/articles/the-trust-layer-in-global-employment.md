@@ -15,6 +15,11 @@ sources:
   - label: "U.S. Department of Labor — Misclassification myths and facts"
     url: "https://www.dol.gov/agencies/whd/flsa/misclassification/myths/detail"
 related: ["why-companies-use-eor", "what-is-employer-of-record"]
+nextStep:
+  title: "Put ownership on the page."
+  description: "Use the EoR Control Plane Brief to map client, EoR, employee, and adviser responsibilities, evidence, and escalation."
+  label: "Open the EoR control plane brief"
+  href: "/briefings/eor-control-plane-brief/"
 ---
 
 An EoR relationship creates a chain of trust between a company, an employee, a local employment partner, and the rules of the country where the work happens.

@@ -1,5 +1,7 @@
 import { getCollection } from 'astro:content';
 
+export const eorOperatingBriefPath = '/briefings/employer-of-record-operating-brief/';
+
 export async function getPublishedArticles() {
   const articles = await getCollection('articles', ({ data }) => data.draft !== true);
   return articles.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());

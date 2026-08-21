@@ -1,6 +1,6 @@
 # Trustora route ledger
 
-The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts are verified against the production output; the current regression gate expects 88 HTML routes including the 404 route and 87 indexable routes, plus `robots.txt` and `sitemap.xml`. Update the gate and this ledger together when a route is intentionally added or removed.
+The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts are verified against the production output; the current regression gate expects 93 HTML routes including the 404 route and 92 indexable routes, plus `robots.txt` and `sitemap.xml`. Update the gate and this ledger together when a route is intentionally added or removed.
 
 ## Route families
 
@@ -9,7 +9,7 @@ The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts ar
 | Home | 1 | Establish Trustora’s point of view and introduce EoR with Employee Intelligence | Orientation hero → capability definition → service index → trust principles → insights → contact CTA |
 | Capabilities | 18 | Explain the core EoR service and its adjacent operating options | Capability map or detail → path → boundaries → support image → conversation |
 | Industries | 7 | Connect technical work to sector context | Industry thesis → questions to surface → relevant capabilities → next conversation |
-| Locations | 4 | Make the EU, Australia, and USA operating context discussable | Location brief → local questions → employment path → contact |
+| Locations | 6 | Make the EU, Australia, USA, and focused specialist hiring contexts discussable | Location brief → local questions → employment path → contact |
 | Insights | 16 | Explain EoR, integrity, employee experience, workplace, and specialist teams | Article index or article reading experience → sources → related questions |
 | Briefings | 12 | Give early-stage and executive readers a decision instrument | Brief preview → access gate → use-in-the-room outcomes → working questions |
 | Comparisons | 3 | Clarify EoR versus entity, contractor, and PEO models | Thesis → comparison table → caveats → next step |

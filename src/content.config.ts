@@ -18,6 +18,12 @@ const articles = defineCollection({
     imageCaption: z.string().min(1),
     sources: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
     related: z.array(z.string()).default([]),
+    nextStep: z.object({
+      title: z.string().min(1),
+      description: z.string().min(1),
+      label: z.string().min(1),
+      href: z.string().regex(/^\/(?:[^/?#]+\/)*[^/?#]+\/$/),
+    }),
   }),
 });
 

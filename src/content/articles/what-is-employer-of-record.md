@@ -15,6 +15,11 @@ sources:
   - label: "U.S. Department of Labor — Misclassification of employees as independent contractors"
     url: "https://www.dol.gov/agencies/whd/flsa/misclassification"
 related: ["why-companies-use-eor", "eor-vs-peo"]
+nextStep:
+  title: "Use the plain-language model in a real decision."
+  description: "Read the Employer of Record Operating Brief to test the next hire, country, responsibility map, and when to seek qualified advice."
+  label: "Read the EoR operating brief"
+  href: "/briefings/employer-of-record-operating-brief/"
 ---
 
 An Employer of Record is a local employment model for a company that wants to hire someone in a country where it does not yet have its own employing entity.

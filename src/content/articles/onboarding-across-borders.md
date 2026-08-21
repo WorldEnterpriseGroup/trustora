@@ -15,6 +15,11 @@ sources:
   - label: "WHO and ILO — Healthy and safe telework"
     url: "https://www.who.int/publications/i/item/9789240040977"
 related: ["what-is-employer-of-record", "eor-employee-experience", "eor-work-from-home-setup"]
+nextStep:
+  title: "Make the first ten days accountable."
+  description: "Review the employee experience route to connect the offer, documents, payroll, equipment, manager context, and support."
+  label: "Review employee experience"
+  href: "/employee-experience/"
 ---
 
 International onboarding is often described as a checklist. The employee experiences it as a test of whether the company is ready for the relationship it offered.

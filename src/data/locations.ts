@@ -7,6 +7,7 @@ export const locations = [
     thesis: '“Europe” is a strategic region and a collection of employment contexts. The right EoR conversation starts with the country, not the label.',
     body: 'Trustora helps companies plan specialist employment across EU markets with an explicit operating map for local contracts, payroll, benefits, employee support, and specialist advice.',
     watch: ['Country-specific employment requirements', 'Worker classification and local documentation', 'Benefits, currency, leave, and employee expectations', 'When an EoR should become an entity conversation'],
+    contextNote: 'Regional context only; each country and worker situation needs its own review.',
   },
   {
     slug: 'australia',
@@ -16,6 +17,7 @@ export const locations = [
     thesis: 'Distance changes the employment workflow, not the standard of the employee experience.',
     body: 'Trustora helps teams coordinate an Australian employment layer for specialist people while keeping the day-to-day work and management relationship with the client company.',
     watch: ['Local employment and payroll administration', 'Benefits and leave expectations', 'Time-zone and manager handoffs', 'Mobility and longer-term workforce planning'],
+    contextNote: 'Service context only; country-specific advice may require qualified local professionals.',
   },
   {
     slug: 'united-states',
@@ -25,6 +27,29 @@ export const locations = [
     thesis: 'A strong talent market does not remove the need for a clear employing model. It increases the cost of getting the relationship wrong.',
     body: 'Trustora supports international companies employing specialist people in the United States and U.S.-based teams building a distributed capability footprint.',
     watch: ['State and role context', 'Payroll, benefits, and employment documentation', 'Contractor-to-employee transitions', 'When specialist legal or tax advice is needed'],
+    contextNote: 'Service context only; country-specific advice may require qualified US professionals.',
+  },
+  {
+    slug: 'us-ai-ml-teams',
+    number: '04',
+    title: 'US AI / ML teams',
+    short: 'Build AI and ML capability in the United States with a clearer employment path.',
+    thesis: 'AI and ML hiring moves faster when the problem, access, manager, and employment model are explicit.',
+    body: 'For companies building AI or ML capability in the United States, Trustora helps frame specialist hiring, EoR administration, and employee support around the work. This is a service context, not a claim of a US entity or US legal advice.',
+    watch: ['Role scope, access, and data-handling context', 'State, worker, and employment-model questions', 'Pay, benefits, and manager operating rhythm', 'When qualified US legal or tax advice is needed'],
+    contextNote: 'Focused US AI/ML hiring context; not a US entity or country-specific advice.',
+    cta: { href: '/services/employee-intelligence/', label: 'Explore employee intelligence' },
+  },
+  {
+    slug: 'eu-specialist-hiring',
+    number: '05',
+    title: 'EU specialist hiring',
+    short: 'Hire technical and scientific specialists across Europe without flattening country context.',
+    thesis: 'European specialist hiring is stronger when a regional ambition is translated into country-aware employment decisions.',
+    body: 'For companies hiring technical or scientific talent across European Union countries, Trustora helps coordinate EoR and employee-support questions without treating the EU as one employment system. This is a service context, not a claim of an EU entity or legal advice.',
+    watch: ['Country-by-country employment and documentation questions', 'Role, worker, and workplace context', 'Benefits, leave, currency, and employee expectations', 'When qualified local legal or tax advice is needed'],
+    contextNote: 'Focused EU hiring context; not an EU entity or country-specific advice.',
+    cta: { href: '/services/specialist-talent-search/', label: 'Explore specialist talent search' },
   },
 ] as const;
 

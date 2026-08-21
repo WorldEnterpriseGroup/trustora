@@ -19,6 +19,11 @@ sources:
   - label: "U.S. Department of Labor — Hours worked under the FLSA"
     url: "https://www.dol.gov/agencies/whd/fact-sheets/22-flsa-hours-worked"
 related: ["eor-office-space-recommendations", "eor-employee-experience", "the-trust-layer-in-global-employment"]
+nextStep:
+  title: "Review the working environment before day one."
+  description: "Use the remote employee setup route to turn equipment, safety, privacy, and support into concrete readiness questions."
+  label: "Review remote employee setup"
+  href: "/remote-employee-setup/"
 ---
 
 Working from home is not one universal arrangement. It might mean a dedicated room, a shared apartment, a temporary setup, or a hybrid week that changes over time. The employer’s task is to create a reasonable, secure, and supportable way for the employee to do the work.

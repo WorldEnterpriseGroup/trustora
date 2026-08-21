@@ -5,7 +5,7 @@ import SectionLabel from '../../components/editorial/SectionLabel.astro';
 import EmployeeIntelligenceDefinition from '../../components/editorial/EmployeeIntelligenceDefinition.astro';
 import LegalBoundaryNote from '../../components/editorial/LegalBoundaryNote.astro';
 import { media } from '../../data/media';
-import { services, serviceDetails } from '../../data/services';
+import { services, serviceDetails, serviceProblems } from '../../data/services';
 import { mediaManifest } from '../../data/site';
 
 export function getStaticPaths() {
@@ -20,6 +20,8 @@ const pathHeading = detail.pathHeading ?? `${service.title} starts with context.
 const pathIntro = detail.pathIntro ?? 'The operating rhythm follows the role, the country, and the decisions the team needs to make.';
 const nextHeading = detail.nextHeading ?? `Make ${service.title.toLowerCase()} useful from day one.`;
 const nextBody = detail.nextBody ?? 'Tell us the country, role, team, and timing. We will help you understand the questions that matter before we propose a path.';
+const problem = serviceProblems[service.slug];
+if (!problem) throw new Error(`Missing problem framing for service: ${service.slug}`);
 ---
 
 <Layout title={`${service.title} | Trustora`} description={service.description} currentPath={`/services/${service.slug}/`}>
@@ -29,6 +31,8 @@ const nextBody = detail.nextBody ?? 'Tell us the country, role, team, and timing
       <div class="page-hero-media"><MediaFrame src={media[detail.imageKey]} alt={mediaManifest[detail.imageKey].alt} caption={mediaManifest[detail.imageKey].caption} credit={mediaManifest[detail.imageKey].credit} sizes="(max-width: 900px) 100vw, 38vw" priority /></div>
     </div>
   </section>
+
+  <section class="section dark-field"><div class="measure split-argument"><div><SectionLabel light>Problem to solve</SectionLabel><h2 class="mt-2">{problem.heading}</h2></div><div class="prose"><p>{problem.body}</p><ul>{problem.painPoints.map((painPoint) => <li>{painPoint}</li>)}</ul></div></div></section>
 
   <section class="section cream-field"><div class="measure"><div class="section-head"><div><SectionLabel>The path</SectionLabel><h2 class="mt-2">{pathHeading}</h2></div><p>{pathIntro}</p></div><div class="service-path">{detail.path.map((step, index) => <div class="service-path-item"><span>0{index + 1}</span><h3>{step.title}</h3><p>{step.body}</p></div>)}</div></div></section>
 

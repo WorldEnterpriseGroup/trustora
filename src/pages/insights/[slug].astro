@@ -25,7 +25,18 @@ const articleImage = media[article.data.imageKey];
   <section class="article-hero"><div class="measure article-hero-grid"><div><SectionLabel>{article.data.category}</SectionLabel><h1>{article.data.title}</h1><p class="article-dek">{article.data.lede}</p><div class="article-meta"><span>{article.data.publishedAt.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric' })}</span><span>{article.data.readTime}</span><span>By Trustora</span></div></div><div class="article-hero-media"><MediaFrame src={articleImage} alt={article.data.imageAlt} caption={article.data.imageCaption} credit={mediaManifest[article.data.imageKey].credit} sizes="(max-width: 900px) 100vw, 55vw" priority /></div></div></section>
   <div class="measure article-layout">
     <aside class="article-aside" aria-label="On this page"><h2>On this page</h2><ol>{headings.filter((heading) => heading.depth === 2).map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></aside>
-    <article class="article-content"><div class="prose"><Content /></div>{article.data.sources.length > 0 && <section class="source-notes" aria-labelledby="sources-title"><h2 id="sources-title">Sources and further reading</h2><ul>{article.data.sources.map((source) => <li><a href={source.url} rel="noreferrer">{source.label} ↗</a></li>)}</ul></section>}</article>
+    <article class="article-content">
+      <div class="prose"><Content /></div>
+      {article.data.sources.length > 0 && <section class="source-notes" aria-labelledby="sources-title"><h2 id="sources-title">Sources and further reading</h2><ul>{article.data.sources.map((source) => <li><a href={source.url} rel="noreferrer">{source.label} ↗</a></li>)}</ul></section>}
+      <section class="article-next-step" aria-labelledby="article-next-step-title">
+        <div>
+          <SectionLabel>What to do next</SectionLabel>
+          <h2 id="article-next-step-title">{article.data.nextStep.title}</h2>
+          <p>{article.data.nextStep.description}</p>
+        </div>
+        <a class="button" href={article.data.nextStep.href}>{article.data.nextStep.label} <span aria-hidden="true">↗</span></a>
+      </section>
+    </article>
     <blockquote class="article-pullquote">“Clear boundaries are part of good service.”</blockquote>
   </div>
   {relatedArticles.length > 0 && <section class="section-tight cream-field"><div class="measure"><div class="section-head"><div><SectionLabel>Keep reading</SectionLabel><h2 class="mt-2">More from this question.</h2></div></div><div class="article-grid">{relatedArticles.map((related) => <ArticleCard article={related} showImage={false} />)}</div></div></section>}

@@ -1,4 +1,5 @@
 ---
 import PageRedirectNotice from '../components/editorial/PageRedirectNotice.astro';
+import { eorOperatingBriefPath } from '../utils/articles';
 ---
-<PageRedirectNotice currentPath="/eor-brief/" pageName="EoR operating brief" />
+<PageRedirectNotice currentPath="/eor-brief/" pageName="EoR operating brief" destination={eorOperatingBriefPath} />

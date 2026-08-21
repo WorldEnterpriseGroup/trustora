@@ -17,6 +17,11 @@ sources:
   - label: "Fair Work Ombudsman — International students"
     url: "https://www.fairwork.gov.au/tools-and-resources/fact-sheets/rights-and-obligations/international-students"
 related: ["onboarding-across-borders", "eor-employee-experience", "what-is-employer-of-record"]
+nextStep:
+  title: "Turn the internship into an operating plan."
+  description: "Use the Internship & Early-Career Program Brief to make learning, supervision, employment context, and the next step explicit."
+  label: "Open the early-career brief"
+  href: "/briefings/internship-and-early-career-program-brief/"
 ---
 
 The word “internship” can hide several different arrangements: a paid student role, a university placement, a short-term employee position, a research collaboration, or an informal trial that should never have been informal.

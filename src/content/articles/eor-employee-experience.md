@@ -15,6 +15,11 @@ sources:
   - label: "European Commission — Which rules apply to you?"
     url: "https://employment-social-affairs.ec.europa.eu/policies-and-activities/moving-working-europe/eu-social-security-coordination/which-rules-apply-you_en"
 related: ["what-is-employer-of-record", "the-trust-layer-in-global-employment", "eor-work-from-home-setup"]
+nextStep:
+  title: "Make the employee journey visible."
+  description: "Use the EoR Control Plane Brief to map ownership for the offer, pay, support, role changes, and employee questions."
+  label: "Open the EoR control plane brief"
+  href: "/briefings/eor-control-plane-brief/"
 ---
 
 An employee rarely experiences an EoR as a legal category. They experience it as a series of moments: the offer arrives, the contract makes sense, the first payment is correct, a benefits question gets answered, a manager knows what to do, and the work environment lets them contribute.

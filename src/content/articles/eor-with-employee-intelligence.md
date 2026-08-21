@@ -15,6 +15,11 @@ sources:
   - label: "U.S. Department of Labor — Misclassification of employees as independent contractors"
     url: "https://www.dol.gov/agencies/whd/flsa/misclassification"
 related: ["what-is-employer-of-record", "why-companies-use-eor", "the-trust-layer-in-global-employment"]
+nextStep:
+  title: "Connect the capability to its employment layer."
+  description: "Use the Frontier Talent & Employee Intelligence Brief to frame specialist capability, manager support, workplace, and EoR conditions together."
+  label: "Open the frontier talent brief"
+  href: "/briefings/frontier-talent-and-employee-intelligence-brief/"
 ---
 
 An Employer of Record is usually introduced as an answer to a geography problem: a company wants to employ someone in a country where it does not yet have its own entity.

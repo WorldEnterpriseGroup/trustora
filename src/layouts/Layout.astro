@@ -3,6 +3,7 @@ import '../styles/global.css';
 import SiteHeader from '../components/chrome/SiteHeader.astro';
 import SiteFooter from '../components/chrome/SiteFooter.astro';
 import { site } from '../data/site';
+import { getSeoMetadata } from '../data/seo';
 
 interface Props {
   title: string;
@@ -36,7 +37,9 @@ const {
   refreshTo,
 } = Astro.props;
 
-const metaTitle = seoTitle.length > 60 ? `${seoTitle.slice(0, 57).trimEnd()}…` : seoTitle;
+const resolvedSeo = getSeoMetadata(currentPath, { title: seoTitle, description });
+const metaTitle = resolvedSeo.title.length > 60 ? `${resolvedSeo.title.slice(0, 57).trimEnd()}…` : resolvedSeo.title;
+const metaDescription = resolvedSeo.description;
 const socialImageAlt = `${site.name} — ${metaTitle}`;
 
 const interFontUrl =
@@ -57,7 +60,7 @@ const structuredData = type === 'article'
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: title,
-      description,
+      description: metaDescription,
       mainEntityOfPage: canonical,
       datePublished: publishedAt?.toISOString(),
       dateModified: (updatedAt ?? publishedAt)?.toISOString(),
@@ -88,7 +91,7 @@ const structuredData = type === 'article'
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Permissions-Policy" content="accelerometer=(), autoplay=(), camera=(), cross-origin-isolated=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), payment=(), usb=(), xr-spatial-tracking=()" />
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content={darkHeader || conversion ? '#0b2740' : '#f5f6f7'} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -103,13 +106,13 @@ const structuredData = type === 'article'
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={metaTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, site.url).toString()} />
     <meta property="og:image:alt" content={socialImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={metaTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={new URL(image, site.url).toString()} />
     <meta name="twitter:image:alt" content={socialImageAlt} />
     <title>{metaTitle}</title>

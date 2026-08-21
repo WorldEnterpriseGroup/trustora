@@ -13,6 +13,11 @@ sources:
   - label: "IRS — Outsourcing payroll and third-party payers"
     url: "https://www.irs.gov/businesses/small-businesses-self-employed/outsourcing-payroll-and-third-party-payers"
 related: ["what-is-employer-of-record", "why-companies-use-eor"]
+nextStep:
+  title: "Compare the model with responsibilities in view."
+  description: "Use the EoR and PEO comparison to test entity ownership, risk, control, and the stage of your expansion."
+  label: "Compare EoR and PEO"
+  href: "/compare/eor-vs-peo/"
 ---
 
 EoR and PEO are both used to describe outsourced employment support. That is where the similarity ends.

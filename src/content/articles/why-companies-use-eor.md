@@ -15,6 +15,11 @@ sources:
   - label: "U.S. Department of Labor — Misclassification of employees as independent contractors"
     url: "https://www.dol.gov/agencies/whd/flsa/misclassification"
 related: ["what-is-employer-of-record", "the-trust-layer-in-global-employment"]
+nextStep:
+  title: "Decide whether optionality fits the market."
+  description: "Use the EoR or Entity Decision Brief to stage commitment, surface country facts, and agree on review triggers."
+  label: "Open the EoR or entity brief"
+  href: "/briefings/eor-vs-entity-decision-brief/"
 ---
 
 The benefit of an Employer of Record is often described as speed: hire in a new country without waiting to build an entity. That is real, but incomplete.

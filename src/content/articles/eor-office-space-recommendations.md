@@ -15,6 +15,11 @@ sources:
   - label: "HSE — Employers: protect home workers"
     url: "https://www.hse.gov.uk/home-working/employer/index.htm"
 related: ["eor-work-from-home-setup", "eor-employee-experience", "what-is-employer-of-record"]
+nextStep:
+  title: "Treat the workplace as part of readiness."
+  description: "Review workplace readiness to connect space, equipment, privacy, access, and collaboration to the employment setup."
+  label: "Review workplace readiness"
+  href: "/workplace/"
 ---
 
 When an international employee needs an office, the question is often treated as a real-estate problem. That is too narrow. The better question is: what environment lets this person do the work safely, securely, and with the right level of focus?
