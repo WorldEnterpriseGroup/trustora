@@ -2,6 +2,7 @@
 title: "GovCon Policy & Administration Fellowship / Internship – Strategic Initiatives"
 location: "Remote (Work From Home)"
 employmentType: "Full-Time"
+status: "Open"
 department: "Strategic Initiatives / Government Contracting (GovCon)"
 reportsTo: "Executive Leadership"
 description: "The GovCon Policy & Administration Fellowship / Internship – Strategic Initiatives is a professional development role designed for individuals who are interested in government contracting, grants, proposal development, strategic partnerships, policy administration, and business development."

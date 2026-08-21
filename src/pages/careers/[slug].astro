@@ -3,34 +3,49 @@ import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SectionLabel from '../../components/editorial/SectionLabel.astro';
+import CareersApplicationForm from '../../components/careers/CareersApplicationForm.astro';
 
 export async function getStaticPaths() {
   const careers = await getCollection('careers', ({ data }) => data.draft !== true);
-  return careers.map((career) => ({ params: { slug: career.id }, props: { career } }));
+  const roleOptions = careers
+    .filter(({ data }) => data.status !== 'Closed')
+    .map(({ id, data }) => ({ id, title: data.title }));
+  return careers.map((career) => ({ params: { slug: career.id }, props: { career, roleOptions } }));
+}
+
+interface RoleOption {
+  id: string;
+  title: string;
 }
 
 interface Props {
   career: CollectionEntry<'careers'>;
+  roleOptions: RoleOption[];
 }
 
-const { career } = Astro.props;
+const { career, roleOptions } = Astro.props;
 const { Content } = await render(career);
-const applyHref = `/careers/?role=${encodeURIComponent(career.data.title)}#apply`;
+const isClosed = career.data.status === 'Closed';
+const roleStatusLabel = isClosed ? 'Closed role' : career.data.status === 'Talent pool' ? 'Talent pool' : 'Open role';
+const applyLabel = career.data.status === 'Talent pool' ? 'Express interest' : 'Apply for this role';
 ---
 
-<Layout title={career.data.title} seoTitle={`${career.data.title} | Trustora`} description={career.data.description} currentPath={`/careers/${career.id}/`}>
+<Layout title={career.data.title} seoTitle={`${career.data.title} | Trustora`} description={career.data.description} currentPath={`/careers/${career.id}/`} noindex={isClosed}>
   <section class="career-detail-hero">
     <div class="measure career-detail-hero__grid">
       <div class="career-detail-hero__copy">
         <a class="career-detail-back" href="/careers/">Careers at Trustora <span aria-hidden="true">↖</span></a>
-        <SectionLabel>Open role</SectionLabel>
+        <SectionLabel>{roleStatusLabel}</SectionLabel>
         <h1>{career.data.title}</h1>
         <p class="career-detail-dek">{career.data.description}</p>
-        <a class="button" href={applyHref}>Apply for this role <span aria-hidden="true">↘</span></a>
+        <p class="career-detail-type"><span>{career.data.level}</span><span>{career.data.opportunityType}</span><span>{career.data.status}</span></p>
+        {isClosed ? <a class="button button-quiet" href="/careers/#career-routes">View current careers <span aria-hidden="true">↗</span></a> : <a class="button" href="#apply">{applyLabel} <span aria-hidden="true">↘</span></a>}
       </div>
       <dl class="career-detail-meta" aria-label="Role details">
         <div><dt>Location</dt><dd>{career.data.location}</dd></div>
         <div><dt>Employment type</dt><dd>{career.data.employmentType}</dd></div>
+        <div><dt>Level</dt><dd>{career.data.level}</dd></div>
+        <div><dt>Opportunity</dt><dd>{career.data.opportunityType}</dd></div>
         <div><dt>Department</dt><dd>{career.data.department}</dd></div>
         <div><dt>Reports to</dt><dd>{career.data.reportsTo}</dd></div>
       </dl>
@@ -42,7 +57,7 @@ const applyHref = `/careers/?role=${encodeURIComponent(career.data.title)}#apply
       <div class="career-detail-description__intro">
         <SectionLabel>Role description</SectionLabel>
         <h2 id="career-description-title">The work, standards, and outcomes.</h2>
-        <p>Read the complete description before using the application form.</p>
+        <p>{isClosed ? 'This listing is retained for clarity; review current routes before applying.' : 'Read the complete description before using the application form below.'}</p>
       </div>
       <article class="prose career-detail-content">
         <Content />
@@ -52,10 +67,17 @@ const applyHref = `/careers/?role=${encodeURIComponent(career.data.title)}#apply
 
   <section class="section dark-field career-detail-apply" aria-labelledby="career-apply-title">
     <div class="measure career-detail-apply__grid">
-      <div><SectionLabel light>Next step</SectionLabel><h2 id="career-apply-title">Apply for this role.</h2></div>
-      <div class="career-detail-apply__body"><p>Use the application form on the careers page to share an outline for this role.</p><div class="career-detail-apply__actions"><a class="button button-light" href={applyHref}>Apply for this role <span aria-hidden="true">↗</span></a><a class="career-detail-apply__back" href="/careers/">View all careers <span aria-hidden="true">↗</span></a></div></div>
+      <div><SectionLabel light>Next step</SectionLabel><h2 id="career-apply-title">{isClosed ? 'This role is closed.' : 'Apply for this role.'}</h2></div>
+      <div class="career-detail-apply__body">
+        {isClosed ? <p>This opportunity is not accepting applications. Review the current career routes for other fellowship, paid, and talent-pool paths.</p> : <p>The application form below is already set to this role. Share an outline of your experience, context, and the work you want to do.</p>}
+        <div class="career-detail-apply__actions">
+          {isClosed ? <a class="button button-light" href="/careers/#career-routes">View current careers <span aria-hidden="true">↗</span></a> : <a class="button button-light" href="#apply">{applyLabel} <span aria-hidden="true">↘</span></a>}
+          <a class="career-detail-apply__back" href="/careers/">View all careers <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
     </div>
   </section>
+  {!isClosed && <CareersApplicationForm roleTitle={career.data.title} roleOptions={roleOptions} />}
 </Layout>
 
 <style>
@@ -66,6 +88,8 @@ const applyHref = `/careers/?role=${encodeURIComponent(career.data.title)}#apply
   .career-detail-hero .section-label { margin-top: 3.2rem; }
   .career-detail-hero h1 { max-width: 16ch; margin-top: 1.05rem; }
   .career-detail-dek { max-width: 47rem; margin-top: 1.35rem; color: var(--muted); font-size: var(--step-1); }
+  .career-detail-type { display: flex; flex-wrap: wrap; gap: 0.55rem 1rem; margin-top: 1rem; color: var(--accent-deep); font-family: var(--mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .career-detail-type span + span { padding-left: 1rem; border-left: 1px solid var(--line-strong); }
   .career-detail-hero .button { margin-top: 1.7rem; }
   .career-detail-meta { display: grid; border-top: 1px solid var(--line-strong); }
   .career-detail-meta div { display: grid; grid-template-columns: minmax(6rem, 0.55fr) minmax(0, 1fr); gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
@@ -93,6 +117,8 @@ const applyHref = `/careers/?role=${encodeURIComponent(career.data.title)}#apply
   }
   @media (max-width: 560px) {
     .career-detail-meta div { grid-template-columns: 1fr; gap: 0.25rem; }
+    .career-detail-type { display: grid; gap: 0.35rem; }
+    .career-detail-type span + span { padding-left: 0; border-left: 0; }
     .career-detail-apply__actions { align-items: flex-start; flex-direction: column; }
   }
 </style>

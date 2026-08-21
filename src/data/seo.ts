@@ -79,6 +79,16 @@ export const seoOverrides: Readonly<Record<string, SeoMetadata>> = {
     description:
       'Professional development in government contracting, grants, proposal development, strategic partnerships, policy administration, and business development.',
   },
+  '/careers/contract-strategic-initiatives-manager/': {
+    title: 'Contract & Strategic Initiatives Manager | Trustora',
+    description:
+      'Manage contracts, strategic initiatives, proposal context, and delivery records for Trustora’s cross-border employment work.',
+  },
+  '/careers/employee-intelligence-workforce-strategy-lead/': {
+    title: 'Senior Workforce Strategy Lead | Trustora',
+    description:
+      'Lead employee intelligence and workforce strategy for specialist teams across country-aware employment operations.',
+  },
   '/country-parameters/': {
     title: 'Clarify the country questions before you hire | Trustora',
     description:

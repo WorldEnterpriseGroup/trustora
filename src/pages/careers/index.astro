@@ -2,10 +2,21 @@
 import Layout from '../../layouts/Layout.astro';
 import SectionLabel from '../../components/editorial/SectionLabel.astro';
 import CareersApplicationForm from '../../components/careers/CareersApplicationForm.astro';
+import { getCollection } from 'astro:content';
 
-const govconRoleTitle = 'GovCon Policy & Administration Fellowship / Internship – Strategic Initiatives';
-const requestedRole = Astro.url.searchParams.get('role');
-const roleTitle = requestedRole === govconRoleTitle ? govconRoleTitle : '';
+const careers = await getCollection('careers', ({ data }) => data.draft !== true && data.status !== 'Closed');
+const roleOptions = careers.map(({ id, data }) => ({ id, title: data.title }));
+const requestedRole = Astro.url.searchParams.get('role')?.trim() ?? '';
+const requestedCareer = careers.find(({ id, data }) => id === requestedRole || data.title === requestedRole);
+const roleTitle = requestedCareer?.data.title ?? '';
+const govconCareer = careers.find(({ id }) => id === 'govcon-fellowship');
+const govconRoleTitle = govconCareer?.data.title ?? 'GovCon Policy & Administration Fellowship / Internship – Strategic Initiatives';
+const govconRoleHref = govconCareer ? `/careers/${govconCareer.id}/` : '/careers/';
+const experiencedCareers = careers.filter(({ data }) => data.level === 'Mid-level' || data.level === 'Senior-level');
+
+const usFellowsCatalogueUrl = 'https://usfellows.org/fellowships.html';
+const internationalRdScholarsUrl = 'https://usfellows.org/international-rd-scholars.html';
+const internationalRdScholarsApplyUrl = 'https://usfellows.org/apply.html?program=International+R%26D+Scholar';
 
 const roleFamilies = [
   {
@@ -73,7 +84,7 @@ const operatingSignals = [
         <h1>Build the employment layer for intelligent work.</h1>
         <p>Trustora brings together Employer of Record operations and specialist employee intelligence. We are looking for people who can move between deep expertise, careful execution, and the human details that make global work sustainable.</p>
         <div class="careers-hero__actions">
-          <a class="button" href="#apply">Apply to Trustora <span aria-hidden="true">↘</span></a>
+          <a class="button" href="#career-routes">Choose your route <span aria-hidden="true">↘</span></a>
           <a class="button button-quiet" href="/about/">How we work <span aria-hidden="true">↗</span></a>
         </div>
         <div class="careers-hero__meta"><span>Open to global talent</span><span>Remote · hybrid · on-site</span><span>Current and future roles</span></div>
@@ -118,14 +129,57 @@ const operatingSignals = [
     </div>
   </section>
 
-  <section class="section cream-field careers-openings" aria-labelledby="open-role-title">
+  <section class="section cream-field careers-pathways" id="career-routes" aria-labelledby="career-routes-title">
     <div class="measure">
-      <div class="section-head"><div><SectionLabel>Open role</SectionLabel><h2 id="open-role-title" class="mt-2">A GovCon role for strategic initiative work.</h2></div><p>This published opening sits within Strategic Initiatives / Government Contracting (GovCon) and is labelled Full-Time in the role description.</p></div>
-      <a class="careers-opening-card" href="/careers/govcon-fellowship/">
-        <div class="careers-opening-card__top"><span>Current opening</span><span>Full-Time</span></div>
-        <div><h3>{govconRoleTitle}</h3><p>Remote (Work From Home) · Strategic Initiatives / Government Contracting (GovCon)</p></div>
-        <span class="careers-opening-card__arrow" aria-hidden="true">↗</span>
-      </a>
+      <div class="section-head"><div><SectionLabel>Choose your route</SectionLabel><h2 id="career-routes-title" class="mt-2">Start where your experience is honest.</h2></div><p>Trustora’s early-career and experienced paths have different next steps. Use the route that matches the work you are ready to do now.</p></div>
+      <div class="careers-pathways__grid">
+        <article class="careers-pathway careers-pathway--early">
+          <div class="careers-pathway__top"><span>01</span><span>Early-career / no experience</span></div>
+          <h3>Build evidence, find a fellowship, or start with a defined question.</h3>
+          <p>Early-career does not mean low-expectation. It means the next step should give you a real problem, a clear standard, and a way to show what you learned.</p>
+          <div class="careers-pathway__options">
+            <article class="careers-pathway__option careers-pathway__option--trustora">
+              <span class="careers-pathway__option-label">Trustora fellowship / internship</span>
+              <h4>{govconRoleTitle}</h4>
+              <p>Government contracting, grants, proposal development, strategic partnerships, and policy administration.</p>
+              <a class="careers-pathway__link" href={govconRoleHref}>Read the role and apply <span aria-hidden="true">↗</span></a>
+            </article>
+            <article class="careers-pathway__option">
+              <span class="careers-pathway__option-label">External fellowship catalogue</span>
+              <h4>Explore the US Fellows catalogue</h4>
+              <p>A broad set of public-interest fellowship pathways across fields, missions, and career stages.</p>
+              <a class="careers-pathway__link" href={usFellowsCatalogueUrl} target="_blank" rel="noopener noreferrer">Open the general catalogue <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+            </article>
+            <article class="careers-pathway__option">
+              <span class="careers-pathway__option-label">External research pathway</span>
+              <h4>International R&amp;D Scholar</h4>
+              <p>A self-directed route for developing researchers, students, engineers, and technical contributors building a credible research direction.</p>
+              <div class="careers-pathway__links">
+                <a class="careers-pathway__link" href={internationalRdScholarsUrl} target="_blank" rel="noopener noreferrer">Read the pathway <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+                <a class="careers-pathway__link" href={internationalRdScholarsApplyUrl} target="_blank" rel="noopener noreferrer">Begin the application <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+              </div>
+            </article>
+          </div>
+          <p class="careers-pathway__note"><strong>One-way handoff:</strong> The external links are stand-alone, vendor-neutral destinations. US Fellows sets its own eligibility and application process; Trustora does not administer it, ask for an endorsement, or assume Trustora material is part of it.</p>
+        </article>
+
+        <article class="careers-pathway careers-pathway--experienced">
+          <div class="careers-pathway__top"><span>02</span><span>Mid-level / senior</span></div>
+          <h3>Take on paid Trustora work with a direct application path.</h3>
+          <p>These are direct Trustora opportunities aligned to the work we are building now. Read the scope, then apply through the existing Trustora careers flow.</p>
+          <div class="careers-pathway__options">
+            {experiencedCareers.map((career) => (
+              <article class="careers-pathway__option careers-pathway__option--paid">
+                <span class="careers-pathway__option-label">{career.data.level} · Paid Trustora opportunity</span>
+                <h4>{career.data.title}</h4>
+                <p>{career.data.description}</p>
+                <a class="careers-pathway__link" href={`/careers/${career.id}/`}>Read the role and apply directly <span aria-hidden="true">↗</span></a>
+              </article>
+            ))}
+          </div>
+          <p class="careers-pathway__note"><strong>Direct route:</strong> These roles are Trustora opportunities. Their detail pages lead to the Trustora application form; no third-party fellowship application is involved.</p>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -149,7 +203,7 @@ const operatingSignals = [
     <div class="measure careers-process__grid"><div><SectionLabel light>What happens next</SectionLabel><h2 class="mt-2">A considered process, with no unpaid mystery work.</h2></div><div class="careers-process__body"><p>We review for evidence of judgment, capability, and care. The exact process depends on the role, but we will tell you what we are evaluating and how to prepare.</p><ol><li><span>01</span><strong>Application review</strong></li><li><span>02</span><strong>Introductory conversation</strong></li><li><span>03</span><strong>Role-specific discussion or exercise</strong></li><li><span>04</span><strong>References, offer, and onboarding</strong></li></ol></div></div>
   </section>
 
-  <CareersApplicationForm roleTitle={roleTitle} />
+  <CareersApplicationForm roleTitle={roleTitle} roleOptions={roleOptions} />
 </Layout>
 
 <style>
@@ -185,12 +239,25 @@ const operatingSignals = [
   .careers-operating__grid span { color: var(--accent-deep); font-family: var(--mono); font-size: 0.68rem; }
   .careers-operating__grid h3 { margin-top: 3rem; font-family: var(--body); font-size: 1rem; font-weight: 800; letter-spacing: 0; }
   .careers-operating__grid p { margin-top: 0.55rem; color: var(--muted); font-size: 0.84rem; }
-  .careers-opening-card { display: grid; grid-template-columns: minmax(8rem, 0.32fr) minmax(0, 1fr) auto; align-items: center; gap: 1.5rem; padding: 1.2rem; border: 1px solid var(--line); background: var(--paper); text-decoration: none; box-shadow: var(--shadow-soft); }
-  .careers-opening-card:hover { color: var(--ink); border-color: var(--accent); box-shadow: var(--shadow); }
-  .careers-opening-card__top { display: flex; align-self: stretch; flex-direction: column; justify-content: space-between; gap: 1rem; color: var(--accent-deep); font-family: var(--mono); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
-  .careers-opening-card h3 { max-width: 30ch; font-family: var(--body); font-size: clamp(1.1rem, 1rem + 0.35vw, 1.45rem); font-weight: 800; letter-spacing: 0; line-height: 1.15; }
-  .careers-opening-card p { margin-top: 0.55rem; color: var(--muted); font-size: 0.82rem; }
-  .careers-opening-card__arrow { color: var(--accent-deep); font-size: 1.5rem; }
+  .careers-pathways__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: var(--space-4); }
+  .careers-pathway { min-width: 0; padding: clamp(1.1rem, 2.5vw, 1.7rem); border: 1px solid var(--line); background: var(--paper); }
+  .careers-pathway--early { background: var(--blue-soft); }
+  .careers-pathway--experienced { background: var(--paper-bright); }
+  .careers-pathway__top { display: flex; justify-content: space-between; gap: 1rem; color: var(--accent-deep); font-family: var(--mono); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+  .careers-pathway h3 { max-width: 22ch; margin-top: 2.2rem; font-family: var(--body); font-size: clamp(1.1rem, 1rem + 0.35vw, 1.45rem); font-weight: 800; letter-spacing: 0; line-height: 1.15; }
+  .careers-pathway > p:not(.careers-pathway__note) { max-width: 54ch; margin-top: 0.75rem; color: var(--muted); font-size: 0.82rem; }
+  .careers-pathway__options { display: grid; gap: 0.65rem; margin-top: 1.5rem; }
+  .careers-pathway__option { min-width: 0; padding: 1rem; border: 1px solid var(--line); background: var(--paper); }
+  .careers-pathway__option--trustora { border-color: var(--accent); }
+  .careers-pathway__option--paid { background: var(--mist); }
+  .careers-pathway__option-label { color: var(--accent-deep); font-family: var(--mono); font-size: 0.61rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .careers-pathway__option h4 { max-width: 34ch; margin-top: 0.55rem; font-family: var(--body); font-size: 0.94rem; font-weight: 800; letter-spacing: 0; line-height: 1.25; }
+  .careers-pathway__option p { margin-top: 0.45rem; color: var(--muted); font-size: 0.76rem; line-height: 1.5; }
+  .careers-pathway__link { display: inline-flex; align-items: baseline; gap: 0.35rem; margin-top: 0.8rem; color: var(--accent-deep); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; }
+  .careers-pathway__link:hover { color: var(--ink); }
+  .careers-pathway__links { display: flex; flex-wrap: wrap; gap: 0 1rem; }
+  .careers-pathway__note { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.72rem; line-height: 1.5; }
+  .careers-pathway__note strong { color: var(--ink); }
   .careers-role-index { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--space-4); border-top: 1px solid rgba(255,253,248,0.25); border-left: 1px solid rgba(255,253,248,0.25); }
   .careers-role-card { display: flex; min-height: 16rem; flex-direction: column; padding: 1.1rem; border-right: 1px solid rgba(255,253,248,0.25); border-bottom: 1px solid rgba(255,253,248,0.25); }
   .careers-role-card__top { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--yellow); font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.05em; text-transform: uppercase; }
@@ -218,16 +285,15 @@ const operatingSignals = [
     .careers-hero h1 { max-width: 14ch; }
     .careers-operating__grid { grid-template-columns: 1fr; }
     .careers-operating__grid article + article { border-top: 1px solid var(--line); border-left: 0; }
-    .careers-opening-card { grid-template-columns: 1fr auto; }
-    .careers-opening-card__top { grid-column: 1 / -1; flex-direction: row; }
+    .careers-pathways__grid { grid-template-columns: 1fr; }
     .careers-role-index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .careers-process h2, .careers-intent h2, .careers-global h2 { max-width: 20ch; }
   }
   @media (max-width: 560px) {
-    .careers-opening-card { grid-template-columns: 1fr; gap: 1rem; }
-    .careers-opening-card__top { grid-column: auto; }
+    .careers-pathway__top { display: grid; gap: 0.35rem; }
     .careers-role-index, .careers-global__facts, .careers-process__body ol { grid-template-columns: 1fr; }
     .careers-role-card { min-height: 0; }
+    .careers-pathway__links { display: grid; }
     .careers-global__facts div:nth-child(even), .careers-process__body li:nth-child(even) { padding-left: 0; border-left: 0; }
     .careers-global__facts div + div, .careers-process__body li + li { border-top: 1px solid var(--line); }
   }

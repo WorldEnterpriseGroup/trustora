@@ -1,9 +1,15 @@
 ---
-interface Props {
-  roleTitle?: string;
+interface RoleOption {
+  id: string;
+  title: string;
 }
 
-const { roleTitle = '' } = Astro.props;
+interface Props {
+  roleTitle?: string;
+  roleOptions?: RoleOption[];
+}
+
+const { roleTitle = '', roleOptions = [] } = Astro.props;
 
 const countries = [
   'Pakistan',
@@ -155,6 +161,9 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
         <input type="hidden" name="application-id" value="" />
         <label class="sr-only" for="career-website">Leave this field empty</label>
         <input id="career-website" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="career-form__honeypot" />
+        <div hidden aria-hidden="true">
+          {roleOptions.map((role) => <span data-role-option data-role-id={role.id} data-role-title={role.title}></span>)}
+        </div>
 
         <fieldset class="career-form__fieldset">
           <legend><span>01</span> About you</legend>
@@ -375,12 +384,14 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
 </section>
 
 <script>
-  const requestedRole = new URLSearchParams(globalThis.location.search).get('role');
-  const govconRoleTitle = 'GovCon Policy & Administration Fellowship / Internship – Strategic Initiatives';
-
   document.querySelectorAll<HTMLFormElement>('[data-schema-version="trustora-careers-v1"]').forEach((form) => {
     const roleField = form.elements.namedItem('role-title-or-problem') as HTMLInputElement | null;
-    if (roleField && requestedRole === govconRoleTitle && !roleField.value) roleField.value = requestedRole;
+    const requestedRole = new URLSearchParams(globalThis.location.search).get('role')?.trim();
+    if (roleField && requestedRole && !roleField.value) {
+      const selectedRole = [...form.querySelectorAll<HTMLElement>('[data-role-option]')]
+        .find((role) => role.dataset.roleId === requestedRole || role.dataset.roleTitle === requestedRole);
+      if (selectedRole?.dataset.roleTitle) roleField.value = selectedRole.dataset.roleTitle;
+    }
     form.addEventListener('submit', async (event) => {
       const field = form.elements.namedItem('application-id') as HTMLInputElement | null;
       if (field && !field.value) field.value = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
