@@ -3,6 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import SectionLabel from '../../components/editorial/SectionLabel.astro';
 import CareersApplicationForm from '../../components/careers/CareersApplicationForm.astro';
 
+const govconRoleTitle = 'GovCon Policy & Administration Fellowship / Internship – Strategic Initiatives';
+const requestedRole = Astro.url.searchParams.get('role');
+const roleTitle = requestedRole === govconRoleTitle ? govconRoleTitle : '';
+
 const roleFamilies = [
   {
     number: '01',
@@ -114,6 +118,17 @@ const operatingSignals = [
     </div>
   </section>
 
+  <section class="section cream-field careers-openings" aria-labelledby="open-role-title">
+    <div class="measure">
+      <div class="section-head"><div><SectionLabel>Open role</SectionLabel><h2 id="open-role-title" class="mt-2">A GovCon role for strategic initiative work.</h2></div><p>This published opening sits within Strategic Initiatives / Government Contracting (GovCon) and is labelled Full-Time in the role description.</p></div>
+      <a class="careers-opening-card" href="/careers/govcon-fellowship/">
+        <div class="careers-opening-card__top"><span>Current opening</span><span>Full-Time</span></div>
+        <div><h3>{govconRoleTitle}</h3><p>Remote (Work From Home) · Strategic Initiatives / Government Contracting (GovCon)</p></div>
+        <span class="careers-opening-card__arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
   <section class="section dark-field careers-roles">
     <div class="measure">
       <div class="section-head"><div><SectionLabel light>Role families</SectionLabel><h2 class="mt-2">Bring a discipline. Learn the system around it.</h2></div><p>Some roles are active now; others are part of our forward-looking talent map. Select the closest fit in the application and tell us what you would make possible.</p></div>
@@ -134,7 +149,7 @@ const operatingSignals = [
     <div class="measure careers-process__grid"><div><SectionLabel light>What happens next</SectionLabel><h2 class="mt-2">A considered process, with no unpaid mystery work.</h2></div><div class="careers-process__body"><p>We review for evidence of judgment, capability, and care. The exact process depends on the role, but we will tell you what we are evaluating and how to prepare.</p><ol><li><span>01</span><strong>Application review</strong></li><li><span>02</span><strong>Introductory conversation</strong></li><li><span>03</span><strong>Role-specific discussion or exercise</strong></li><li><span>04</span><strong>References, offer, and onboarding</strong></li></ol></div></div>
   </section>
 
-  <CareersApplicationForm />
+  <CareersApplicationForm roleTitle={roleTitle} />
 </Layout>
 
 <style>
@@ -170,6 +185,12 @@ const operatingSignals = [
   .careers-operating__grid span { color: var(--accent-deep); font-family: var(--mono); font-size: 0.68rem; }
   .careers-operating__grid h3 { margin-top: 3rem; font-family: var(--body); font-size: 1rem; font-weight: 800; letter-spacing: 0; }
   .careers-operating__grid p { margin-top: 0.55rem; color: var(--muted); font-size: 0.84rem; }
+  .careers-opening-card { display: grid; grid-template-columns: minmax(8rem, 0.32fr) minmax(0, 1fr) auto; align-items: center; gap: 1.5rem; padding: 1.2rem; border: 1px solid var(--line); background: var(--paper); text-decoration: none; box-shadow: var(--shadow-soft); }
+  .careers-opening-card:hover { color: var(--ink); border-color: var(--accent); box-shadow: var(--shadow); }
+  .careers-opening-card__top { display: flex; align-self: stretch; flex-direction: column; justify-content: space-between; gap: 1rem; color: var(--accent-deep); font-family: var(--mono); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+  .careers-opening-card h3 { max-width: 30ch; font-family: var(--body); font-size: clamp(1.1rem, 1rem + 0.35vw, 1.45rem); font-weight: 800; letter-spacing: 0; line-height: 1.15; }
+  .careers-opening-card p { margin-top: 0.55rem; color: var(--muted); font-size: 0.82rem; }
+  .careers-opening-card__arrow { color: var(--accent-deep); font-size: 1.5rem; }
   .careers-role-index { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--space-4); border-top: 1px solid rgba(255,253,248,0.25); border-left: 1px solid rgba(255,253,248,0.25); }
   .careers-role-card { display: flex; min-height: 16rem; flex-direction: column; padding: 1.1rem; border-right: 1px solid rgba(255,253,248,0.25); border-bottom: 1px solid rgba(255,253,248,0.25); }
   .careers-role-card__top { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--yellow); font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.05em; text-transform: uppercase; }
@@ -197,10 +218,14 @@ const operatingSignals = [
     .careers-hero h1 { max-width: 14ch; }
     .careers-operating__grid { grid-template-columns: 1fr; }
     .careers-operating__grid article + article { border-top: 1px solid var(--line); border-left: 0; }
+    .careers-opening-card { grid-template-columns: 1fr auto; }
+    .careers-opening-card__top { grid-column: 1 / -1; flex-direction: row; }
     .careers-role-index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .careers-process h2, .careers-intent h2, .careers-global h2 { max-width: 20ch; }
   }
   @media (max-width: 560px) {
+    .careers-opening-card { grid-template-columns: 1fr; gap: 1rem; }
+    .careers-opening-card__top { grid-column: auto; }
     .careers-role-index, .careers-global__facts, .careers-process__body ol { grid-template-columns: 1fr; }
     .careers-role-card { min-height: 0; }
     .careers-global__facts div:nth-child(even), .careers-process__body li:nth-child(even) { padding-left: 0; border-left: 0; }

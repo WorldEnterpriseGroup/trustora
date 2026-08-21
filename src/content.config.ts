@@ -27,4 +27,17 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { articles };
+const careers = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/careers' }),
+  schema: z.object({
+    title: z.string().min(1),
+    location: z.string().min(1),
+    employmentType: z.literal('Full-Time'),
+    department: z.string().min(1),
+    reportsTo: z.string().min(1),
+    description: z.string().min(1),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { articles, careers };

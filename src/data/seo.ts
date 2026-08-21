@@ -74,6 +74,11 @@ export const seoOverrides: Readonly<Record<string, SeoMetadata>> = {
     description:
       'Join a team connecting EoR, specialist talent, technical fluency, and country-aware employee support across global work.',
   },
+  '/careers/govcon-fellowship/': {
+    title: 'GovCon Policy & Administration Fellowship | Trustora',
+    description:
+      'Professional development in government contracting, grants, proposal development, strategic partnerships, policy administration, and business development.',
+  },
   '/country-parameters/': {
     title: 'Clarify the country questions before you hire | Trustora',
     description:

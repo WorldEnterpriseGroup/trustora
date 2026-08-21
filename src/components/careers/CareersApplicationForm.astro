@@ -1,4 +1,10 @@
 ---
+interface Props {
+  roleTitle?: string;
+}
+
+const { roleTitle = '' } = Astro.props;
+
 const countries = [
   'Pakistan',
   'India',
@@ -93,6 +99,7 @@ const roleTracks = [
   ['role-science', 'Science, research, laboratory, and technical operations'],
   ['role-people', 'People operations, EoR delivery, and employee experience'],
   ['role-client', 'Client solutions, partnerships, and international growth'],
+  ['role-govcon', 'GovCon / Strategic Initiatives'],
   ['role-internship', 'Internship, apprenticeship, and early-career programs'],
   ['role-other', 'Another role that fits the Trustora mission'],
 ];
@@ -212,7 +219,7 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
           <legend><span>02</span> The work you want to do</legend>
           <div class="career-form__field">
             <label for="role-title">Role title or problem you want to solve <span aria-hidden="true">*</span></label>
-            <input id="role-title" name="role-title-or-problem" type="text" required placeholder="e.g. ML evaluation engineer, SICM analyst, quantum researcher" />
+            <input id="role-title" name="role-title-or-problem" type="text" required value={roleTitle} placeholder="e.g. ML evaluation engineer, SICM analyst, quantum researcher" />
           </div>
           <fieldset class="career-form__check-fieldset">
             <legend>Areas that interest you</legend>
@@ -368,7 +375,12 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
 </section>
 
 <script>
+  const requestedRole = new URLSearchParams(globalThis.location.search).get('role');
+  const govconRoleTitle = 'GovCon Policy & Administration Fellowship / Internship – Strategic Initiatives';
+
   document.querySelectorAll<HTMLFormElement>('[data-schema-version="trustora-careers-v1"]').forEach((form) => {
+    const roleField = form.elements.namedItem('role-title-or-problem') as HTMLInputElement | null;
+    if (roleField && requestedRole === govconRoleTitle && !roleField.value) roleField.value = requestedRole;
     form.addEventListener('submit', async (event) => {
       const field = form.elements.namedItem('application-id') as HTMLInputElement | null;
       if (field && !field.value) field.value = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
