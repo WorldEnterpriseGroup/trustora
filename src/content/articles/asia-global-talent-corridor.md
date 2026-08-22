@@ -17,6 +17,11 @@ sources:
   - label: "European Commission — Which rules apply to you?"
     url: "https://employment-social-affairs.ec.europa.eu/policies-and-activities/moving-working-europe/eu-social-security-coordination/which-rules-apply-you_en"
 related: ["distributed-technical-teams", "eor-employee-experience", "eor-work-from-home-setup", "what-is-employer-of-record"]
+nextStep:
+  title: "Make the corridor country-specific."
+  description: "Use the Asia-Pacific Employment Readiness Brief to bring country context, workplace needs, and employee support into the expansion conversation."
+  label: "Review Asia-Pacific readiness"
+  href: "/briefings/asia-pacific-employment-readiness-brief/"
 ---
 
 Companies often say they want to hire from Asia when what they mean is that they want access to a deep and varied set of technical, scientific, product, and operations capabilities.

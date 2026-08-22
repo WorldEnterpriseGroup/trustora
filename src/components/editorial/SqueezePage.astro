@@ -35,6 +35,8 @@ const page = squeezePages[pageKey];
         <p class="squeeze-fallback">This static site opens an email draft to <a href="mailto:info@trustora.net">info@trustora.net</a>. Prefer to read first? <a href={page.fallbackHref}>{page.fallbackLabel} ↗</a></p>
       </div>
     </div>
-    <div class="measure squeeze-proof-strip" aria-label="Working principles">{page.proof.map((item, index) => <div><span>0{index + 1}</span><p>{item}</p></div>)}</div>
+    <section class="measure squeeze-proof-strip" role="region" aria-label="Working principles">
+      {page.proof.map((item, index) => <div><span>0{index + 1}</span><p>{item}</p></div>)}
+    </section>
   </section>
 </Layout>

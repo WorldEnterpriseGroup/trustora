@@ -6,7 +6,7 @@ export const site = {
   email: 'info@trustora.net',
   description:
     'Trustora (SMC-Private) Limited is a Pakistan-based Employer of Record and specialist employee intelligence company for teams building with AI, machine learning, quantum, physics, and the applied sciences.',
-  socialImage: '/images/trustora-logo.svg',
+  socialImage: '/images/trustora-og-image.svg',
 };
 
 export const navigation = [
@@ -63,7 +63,7 @@ export const navigationPanel = {
   ],
   feature: {
     label: 'Featured brief',
-    href: '/eor-brief/',
+    href: '/briefings/employer-of-record-operating-brief/',
     title: 'The Employer of Record Operating Brief',
     description: 'A practical decision instrument for the next specialist hire, market entry, or employment-model review.',
   },
@@ -78,6 +78,7 @@ export const footerNavigation = [
   { href: '/careers/', label: 'Careers' },
   { href: '/contact/', label: 'Start a conversation' },
   { href: '/legal/privacy/', label: 'Privacy' },
+  { href: '/legal/policy/', label: 'Operations policy' },
 ];
 
 export const intelligenceAreas = [

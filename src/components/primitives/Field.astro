@@ -4,14 +4,15 @@ interface Props {
   name?: string;
   label: string;
   type?: 'text' | 'email' | 'tel';
+  autocomplete?: string;
   required?: boolean;
   placeholder?: string;
 }
 
-const { id, name = id, label, type = 'text', required = false, placeholder } = Astro.props;
+const { id, name = id, label, type = 'text', autocomplete = type === 'email' ? 'email' : undefined, required = false, placeholder } = Astro.props;
 ---
 
 <div class="field">
   <label for={id}>{label}{required && <span aria-hidden="true"> *</span>}</label>
-  <input id={id} name={name} type={type} required={required} placeholder={placeholder} />
+  <input id={id} name={name} type={type} autocomplete={autocomplete} required={required} placeholder={placeholder} />
 </div>

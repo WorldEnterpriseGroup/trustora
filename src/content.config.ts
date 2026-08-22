@@ -18,7 +18,29 @@ const articles = defineCollection({
     imageCaption: z.string().min(1),
     sources: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
     related: z.array(z.string()).default([]),
+    nextStep: z.object({
+      title: z.string().min(1),
+      description: z.string().min(1),
+      label: z.string().min(1),
+      href: z.string().regex(/^\/(?:[^/?#]+\/)*[^/?#]+\/$/),
+    }),
   }),
 });
 
-export const collections = { articles };
+const careers = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/careers' }),
+  schema: z.object({
+    title: z.string().min(1),
+    location: z.string().min(1),
+    employmentType: z.literal('Full-Time'),
+    level: z.enum(['Early-career', 'Mid-level', 'Senior-level']).default('Early-career'),
+    opportunityType: z.enum(['Fellowship / internship', 'Paid Trustora opportunity']).default('Fellowship / internship'),
+    status: z.enum(['Open', 'Talent pool', 'Closed']).default('Open'),
+    department: z.string().min(1),
+    reportsTo: z.string().min(1),
+    description: z.string().min(1),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { articles, careers };

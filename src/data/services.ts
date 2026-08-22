@@ -294,3 +294,97 @@ for (const service of services.slice(6)) {
     ],
   };
 }
+
+export interface ServiceProblem {
+  heading: string;
+  body: string;
+  painPoints: readonly string[];
+}
+
+export const serviceProblems: Record<Service['slug'], ServiceProblem> = {
+  'employer-of-record': {
+    heading: 'A new-country hire should not wait for a new-country entity.',
+    body: 'Teams lose momentum when the employment model is treated as paperwork at the end of the hiring process. The country, worker, role, and timing need a clear operating path before the offer is drafted.',
+    painPoints: ['No local entity, but a real need to employ someone', 'Unclear ownership across contracts, payroll, benefits, and support', 'A promising hire waiting while country questions remain open'],
+  },
+  'employee-intelligence': {
+    heading: 'A difficult technical role cannot be solved by a job title alone.',
+    body: 'Specialist teams need a way to translate the problem into capability, team context, country, and working conditions. Without that translation, the search gets wider while the decision gets less precise.',
+    painPoints: ['A role brief that names tools instead of the outcome', 'Technical depth that gets lost between hiring and delivery', 'Specialists entering a team without a clear employment or support model'],
+  },
+  'global-payroll': {
+    heading: 'Payroll becomes a trust problem when nobody can explain the number.',
+    body: 'A pay cycle can be technically correct and still create avoidable anxiety. Distributed teams need visible inputs, owners, local context, and a dependable route for employee questions.',
+    painPoints: ['Last-minute changes with no clear decision owner', 'Country-specific deductions or benefits that employees cannot follow', 'Recurring payroll questions spread across too many teams'],
+  },
+  'contractor-to-employee': {
+    heading: 'A contractor label can outlive the working reality.',
+    body: 'When a contractor becomes part of the team, the relationship may need a more explicit model. Trustora helps surface the facts and options; classification conclusions remain subject to the applicable local rules and qualified advice.',
+    painPoints: ['A contractor working like an employee without a reviewed model', 'Unclear changes to pay, benefits, protections, or responsibilities', 'A transition that could damage trust if it is treated as an administrative swap'],
+  },
+  'global-mobility': {
+    heading: 'A cross-border move feels fragmented when every handoff has a different owner.',
+    body: 'Employment, payroll, benefits, travel, work authorization, and employee support are experienced as one move. The operating plan should connect those pieces while leaving immigration, tax, and legal conclusions with qualified professionals.',
+    painPoints: ['A move date that is disconnected from employment readiness', 'Documents and local partners managed in separate channels', 'An employee unsure who owns the next question'],
+  },
+  'people-operations': {
+    heading: 'The employee experience gets heavy when small questions have no home.',
+    body: 'After the first day, trust is built through ordinary moments: leave, records, changes, questions, and offboarding. A clear people-operations rhythm keeps those moments from becoming a manager or employee scavenger hunt.',
+    painPoints: ['Onboarding that ends before the employee feels ready', 'Leave, document, and support requests with no visible route', 'Offboarding treated as an exception instead of part of the lifecycle'],
+  },
+  'global-hris': {
+    heading: 'Distributed teams cannot operate well from scattered employee records.',
+    body: 'A people system should shorten the route to a dependable answer. The challenge is not collecting more data; it is giving records, permissions, approvals, and country-aware workflows a clear owner.',
+    painPoints: ['The same employee fact maintained in multiple places', 'Approvals and documents disappearing between teams', 'Managers and employees unsure which system is authoritative'],
+  },
+  'benefits-administration': {
+    heading: 'Local benefits should not become a maze for the employee.',
+    body: 'Benefits vary by country and employer, but the employee still needs a clear explanation of what is offered, what is required, and where to go for help. Coordination makes local variation easier to use.',
+    painPoints: ['Benefits choices that are hard to compare or explain', 'Enrollment deadlines and changes without a clear owner', 'Country context missing from an otherwise global program'],
+  },
+  'compensation-and-equity': {
+    heading: 'A compelling offer is more than a number on a page.',
+    body: 'Specialist candidates read the whole operating promise: role, country, pay, equity, benefits, timing, and the confidence of the answers. A structured conversation keeps those pieces aligned without pretending one formula fits every market.',
+    painPoints: ['Pay decisions separated from role and country context', 'Equity or allowance questions arriving too late in the offer', 'Employees unable to understand how the offer is meant to work'],
+  },
+  'specialist-talent-search': {
+    heading: 'The hardest talent searches fail when expertise is reduced to keywords.',
+    body: 'A researcher, model evaluator, systems builder, product engineer, and technical leader may all solve different parts of the same problem. Capability-first framing gives the search a better starting point and the eventual hire a workable path.',
+    painPoints: ['A title that attracts the wrong experience', 'Interview signals disconnected from the work the person will do', 'A candidate found without a country, offer, or first-day plan'],
+  },
+  'talent-operations': {
+    heading: 'Specialist hiring slows down in the gaps between functions.',
+    body: 'The manager, recruiter, finance team, employment partner, candidate, and new employee each hold part of the path. Naming the handoffs and decision owners helps the process move from a good brief to a credible first day.',
+    painPoints: ['Role design and sourcing operating on different assumptions', 'Offers delayed by employment, payroll, or equipment questions', 'Candidate momentum lost between selection and onboarding'],
+  },
+  'background-verifications': {
+    heading: 'A check without purpose can create more risk than confidence.',
+    body: 'Verification should match the role, country, consent, retention need, and decision it is meant to inform. A proportionate workflow gives the candidate context and gives the team a clear route for exceptions.',
+    painPoints: ['Generic checks that do not match the role or country', 'Consent, records, and retention responsibilities left unclear', 'Discrepancies routed without a human review path'],
+  },
+  'equipment-and-it': {
+    heading: 'A specialist cannot do the work if day-one access is still a surprise.',
+    body: 'Devices, accounts, security, shipping, and returns are part of the employment experience. A visible readiness plan helps the employee start contributing instead of spending the first week finding the right owner.',
+    painPoints: ['A device or access request raised after the start date', 'Security requirements disconnected from role and location', 'No dependable return or offboarding workflow'],
+  },
+  'workforce-compliance': {
+    heading: 'Workforce risk grows when changing facts are reviewed only after a problem.',
+    body: 'A useful compliance rhythm makes assumptions visible, gives them an owner, and creates a path to qualified legal, tax, immigration, or employment advice when the facts require it.',
+    painPoints: ['Classification and documentation assumptions that are not revisited', 'Country or role changes without a corresponding review', 'Approvals and escalations that depend on personal memory'],
+  },
+  'entity-and-corporate-services': {
+    heading: 'An EoR bridge needs a review point before it becomes permanent by default.',
+    body: 'A local entity can be the right commitment, but the decision should follow evidence about the work, team, market, and operating capability. A staged review keeps optionality useful and the next decision explicit.',
+    painPoints: ['A temporary model continuing without a defined review date', 'Entity decisions made before the operating need is clear', 'Local administration questions arriving without the right adviser involved'],
+  },
+  'embedded-employment': {
+    heading: 'Connecting systems does not solve an unclear employment responsibility.',
+    body: 'Embedded workflows are useful when they make ownership, permissions, approvals, and employee support easier to follow. The interface should shorten the path to a human answer rather than hide who is accountable.',
+    painPoints: ['Employment events moving between systems without a named owner', 'Data access and permissions designed after the workflow', 'Employees sent through an integration that has no support route'],
+  },
+  'performance-and-development': {
+    heading: 'Specialist contribution gets flattened when every role uses the same scorecard.',
+    body: 'Research milestones, model improvements, shipped software, and systems decisions need context to be discussed fairly. A better rhythm connects feedback and development to the actual work and the conditions around it.',
+    painPoints: ['Generic goals that do not describe the contribution', 'Managers without a steady, useful feedback rhythm', 'Specialists unable to see how growth connects to their next level of work'],
+  },
+};

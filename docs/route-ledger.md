@@ -1,6 +1,6 @@
 # Trustora route ledger
 
-The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts are verified against the production output; the current regression gate expects 88 HTML routes including the 404 route and 87 indexable routes, plus `robots.txt` and `sitemap.xml`. Update the gate and this ledger together when a route is intentionally added or removed.
+The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts are verified against the production output; the current regression gate expects 96 HTML routes including the 404 route and 95 indexable routes, plus `robots.txt` and `sitemap.xml`. Update the gate and this ledger together when a route is intentionally added or removed.
 
 ## Route families
 
@@ -9,13 +9,15 @@ The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts ar
 | Home | 1 | Establish Trustora’s point of view and introduce EoR with Employee Intelligence | Orientation hero → capability definition → service index → trust principles → insights → contact CTA |
 | Capabilities | 18 | Explain the core EoR service and its adjacent operating options | Capability map or detail → path → boundaries → support image → conversation |
 | Industries | 7 | Connect technical work to sector context | Industry thesis → questions to surface → relevant capabilities → next conversation |
-| Locations | 4 | Make the EU, Australia, and USA operating context discussable | Location brief → local questions → employment path → contact |
+| Locations | 6 | Make the EU, Australia, USA, and focused specialist hiring contexts discussable | Location brief → local questions → employment path → contact |
 | Insights | 16 | Explain EoR, integrity, employee experience, workplace, and specialist teams | Article index or article reading experience → sources → related questions |
 | Briefings | 12 | Give early-stage and executive readers a decision instrument | Brief preview → access gate → use-in-the-room outcomes → working questions |
 | Comparisons | 3 | Clarify EoR versus entity, contractor, and PEO models | Thesis → comparison table → caveats → next step |
 | Workplace / employee experience | 3 | Make the conditions around work visible | Workplace matrix or employee journey → library → brief |
 | Conversion / squeeze | 15 | Capture context for a brief or readiness conversation | Reduced header → working material → `mailto:` fallback |
-| Company / utility / legal | 8 | Explain Trustora, invite careers, provide contact, legal, and recovery paths | Page-specific document composition |
+| Company / careers / utility / legal | 10 | Explain Trustora, segment career routes, provide contact, legal, and recovery paths | Page-specific document composition |
+
+Career entries use `status: Open`, `Talent pool`, or `Closed`. Closed entries remain available as noindex status pages without an application form and are excluded from the public sitemap; draft entries are not generated.
 
 ## Conversion routes
 

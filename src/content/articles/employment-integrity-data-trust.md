@@ -17,6 +17,11 @@ sources:
   - label: "European Union — Artificial Intelligence Act, Regulation (EU) 2024/1689"
     url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en"
 related: ["the-trust-layer-in-global-employment", "what-is-employer-of-record", "distributed-technical-teams"]
+nextStep:
+  title: "Review the record before the workflow grows."
+  description: "Use the Employment Integrity Review Brief to test proportionality, consent, human review, and the employee correction path."
+  label: "Open the integrity review"
+  href: "/briefings/employment-integrity-review-brief/"
 ---
 
 Employment integrity is sometimes reduced to the existence of a background check. That is too small a definition.

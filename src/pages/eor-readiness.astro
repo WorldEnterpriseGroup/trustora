@@ -1,15 +1,4 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import SectionLabel from '../components/editorial/SectionLabel.astro';
-import Field from '../components/primitives/Field.astro';
+import PageRedirectNotice from '../components/editorial/PageRedirectNotice.astro';
 ---
-
-<Layout title="EoR and specialist talent readiness | Trustora" description="A short readiness conversation for teams considering an Employer of Record model and specialist talent across the EU, Australia, or USA." currentPath="/eor-readiness/" darkHeader conversion>
-  <section class="conversion-page">
-    <div class="measure conversion-grid">
-      <div class="conversion-copy"><SectionLabel light>Before the offer</SectionLabel><h1>Make expertise and employment part of the same plan.</h1><p>Use this short brief to bring the country, technical role, timeline, and current worker relationship into one conversation before the paperwork starts.</p><ul class="conversion-list"><li>Country and employing model</li><li>AI, ML, quantum, or science role</li><li>Offer, benefits, and timing</li><li>Open questions and next steps</li></ul></div>
-      <div class="conversion-panel"><h2>Request a readiness call.</h2><p>Share the outline. We will help you see what is known, what needs local context, and what to decide next.</p><form class="form-stack" action="mailto:info@trustora.net" method="post" enctype="text/plain"><Field id="name" label="Your name" required placeholder="Your name" /><Field id="email" label="Work email" type="email" required placeholder="you@company.com" /><div class="field"><label for="stage">Where are you in the process?</label><select id="stage" name="stage"><option value="exploring">Exploring a new country</option><option value="candidate">Have a candidate in mind</option><option value="contractor">Working with a contractor</option><option value="entity">Comparing EoR with an entity build</option></select></div><div class="field"><label for="brief">What would make the call useful?</label><textarea id="brief" name="brief" placeholder="Country, role, timeline, or question."></textarea></div><p class="form-note" id="form-note">Please do not include passport, payroll, or other sensitive personal information.</p><button class="button" type="submit">Request a call <span aria-hidden="true">↗</span></button></form></div>
-    </div>
-    <p class="conversion-footnote">A readiness conversation is an operating discussion, not legal or tax advice.</p>
-  </section>
-</Layout>
+<PageRedirectNotice currentPath="/eor-readiness/" pageName="EoR readiness" />

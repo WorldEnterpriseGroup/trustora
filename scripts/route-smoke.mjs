@@ -30,8 +30,9 @@ function countMatches(html, expression) {
 const files = await walk(root);
 const htmlFiles = files.filter((file) => file.endsWith('.html'));
 const routes = htmlFiles.map(routeFromFile).filter(Boolean).sort();
+const indexableRoutes = [];
 
-const expectedRouteCount = 90;
+const expectedRouteCount = 96;
 if (routes.length !== expectedRouteCount) failures.push(`Expected ${expectedRouteCount} HTML routes, found ${routes.length}`);
 if (!files.some((file) => file.endsWith('/robots.txt'))) failures.push('robots.txt is missing');
 if (!files.some((file) => file.endsWith('/sitemap.xml'))) failures.push('sitemap.xml is missing');
@@ -42,6 +43,7 @@ for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   const route = routeFromFile(file);
   if (route === '/404/') continue;
+  if (!/<meta name="robots" content="noindex, nofollow"/.test(html)) indexableRoutes.push(route);
   if (!/<html[^>]+lang="en"/.test(html)) failures.push(`${route}: html lang is missing`);
   if (countMatches(html, /<h1\b/g) !== 1) failures.push(`${route}: expected exactly one h1`);
   if (!/<title>[^<]+<\/title>/.test(html)) failures.push(`${route}: title is missing`);
@@ -70,8 +72,45 @@ for (const file of htmlFiles) {
 
 const sitemap = await readFile(join(root, 'sitemap.xml'), 'utf8');
 if (!/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/.test(sitemap)) failures.push('sitemap is missing lastmod dates');
-for (const route of routes.filter((item) => item !== '/404/')) {
+for (const route of indexableRoutes) {
   if (!sitemap.includes(`https://trustora.net${route}`)) failures.push(`sitemap is missing ${route}`);
+}
+
+const careersIndex = await readFile(join(root, 'careers', 'index.html'), 'utf8');
+for (const marker of [
+  'Early-career / no experience',
+  'Mid-level / senior',
+  'https://usfellows.org/fellowships.html',
+  'https://usfellows.org/international-rd-scholars.html',
+  'https://usfellows.org/apply.html?program=International+R%26D+Scholar',
+  'data-role-option',
+]) {
+  if (!careersIndex.includes(marker)) failures.push(`careers index is missing architecture marker: ${marker}`);
+}
+
+const careerDetailSource = await readFile(new URL('../src/pages/careers/[slug].astro', import.meta.url), 'utf8');
+for (const marker of [
+  "career.data.status === 'Closed'",
+  "career.data.status === 'Talent pool'",
+  'noindex={isClosed}',
+]) {
+  if (!careerDetailSource.includes(marker)) failures.push(`career status lifecycle branch is missing: ${marker}`);
+}
+
+for (const [route, roleTitle] of [
+  ['/careers/contract-strategic-initiatives-manager/', 'Contract & Strategic Initiatives Manager'],
+  ['/careers/employee-intelligence-workforce-strategy-lead/', 'Senior Employee Intelligence & Workforce Strategy Lead'],
+]) {
+  const detail = await readFile(join(root, route.slice(1), 'index.html'), 'utf8');
+  if (detail.includes('Closed role')) {
+    if (!detail.includes('<meta name="robots" content="noindex, nofollow"')) failures.push(`${route}: closed role is not noindex`);
+    if (detail.includes('data-schema-version="trustora-careers-v1"')) failures.push(`${route}: closed role still renders an application form`);
+  } else {
+    if (!detail.includes('Paid Trustora opportunity')) failures.push(`${route}: paid opportunity marker is missing`);
+    if (!detail.includes('id="apply"')) failures.push(`${route}: direct application form is missing`);
+    const escapedRoleTitle = roleTitle.replaceAll('&', '&amp;');
+    if (!detail.includes(`name="role-title-or-problem"`) || !detail.includes(`value="${escapedRoleTitle}"`)) failures.push(`${route}: no-JavaScript role prefill is missing`);
+  }
 }
 
 if (failures.length) {

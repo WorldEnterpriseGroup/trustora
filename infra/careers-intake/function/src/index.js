@@ -133,13 +133,14 @@ function validHttpsUrl(value) {
 
 function normalizeInput(input) {
   const value = input || {};
-  const applicationId = guid(value['application-id']);
+  const suppliedApplicationId = clean(value['application-id'], 64);
+  const applicationId = suppliedApplicationId ? guid(suppliedApplicationId) : crypto.randomUUID();
   const email = clean(value.email, 254).toLowerCase();
   const roleInterests = Array.isArray(value['role-interests']) ? value['role-interests'].map((item) => clean(item, 160)).filter(Boolean).slice(0, 12) : clean(value['role-interests'], 160) ? [clean(value['role-interests'], 160)] : [];
   const professionalLanguages = Array.isArray(value['professional-languages']) ? value['professional-languages'].map((item) => clean(item, 80)).filter(Boolean).slice(0, 16) : clean(value['professional-languages'], 80) ? [clean(value['professional-languages'], 80)] : [];
   const links = [value['resume-link'], value.linkedin, value.github, value['portfolio-or-publications']].map((item) => clean(item, 500));
   const required = [applicationId, clean(value['full-name'], 160), email, clean(value['current-country'], 80), clean(value['time-zone'], 120), clean(value['role-title-or-problem'], 180), clean(value['work-authorization'], 160), clean(value['work-model'], 80), clean(value.availability, 100)];
-  if (required.some((item) => !item) || !validEmail(email) || links.some((item) => !validHttpsUrl(item)) || value['applicant-consent'] !== 'yes' || clean(value.website, 20)) return { error: 'invalid_application' };
+  if (required.some((item) => !item) || (suppliedApplicationId && !applicationId) || !validEmail(email) || links.some((item) => !validHttpsUrl(item)) || value['applicant-consent'] !== 'yes' || clean(value.website, 20)) return { error: 'invalid_application' };
   if (value['business-unit'] !== 'Trustora' || value['schema-version'] !== 'trustora-careers-v1') return { error: 'invalid_schema' };
   return {
     applicationId,

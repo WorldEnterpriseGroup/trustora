@@ -11,7 +11,7 @@ import { media } from '../data/media';
 import { services } from '../data/services';
 import { intelligenceAreas, trustoraPrinciples } from '../data/site';
 import { mediaManifest } from '../data/site';
-import { getPublishedArticles } from '../utils/articles';
+import { eorOperatingBriefPath, getPublishedArticles } from '../utils/articles';
 
 const articles = (await getPublishedArticles()).slice(0, 3);
 ---
@@ -28,6 +28,7 @@ const articles = (await getPublishedArticles()).slice(0, 3);
         <h1>Put specialist talent to work <em>— reliably, everywhere it matters.</em></h1>
         <p class="hero-home-lede">Trustora is a Pakistan-based Employer of Record partner for companies building with AI, machine learning, quantum, physics, and the applied sciences. We help clients organize specialist employment across EU, Australia, and USA contexts with a clear local operating layer.</p>
         <div class="hero-actions">
+          <a class="button button-brief" href={eorOperatingBriefPath}>Read the EoR Operating Brief <span aria-hidden="true">↗</span></a>
           <a class="button" href="/contact/">Discuss a specialist hire <span aria-hidden="true">↗</span></a>
           <a class="button button-quiet" href="/what-is-eor/">How EoR works <span aria-hidden="true">↓</span></a>
         </div>

@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+interface Props {
+  pageName: string;
+  currentPath: string;
+  destination?: string;
+}
+
+const {
+  pageName,
+  currentPath,
+  destination = '/what-is-eor/',
+} = Astro.props;
+---
+
+<Layout
+  title={`${pageName} moved`}
+  description={`The ${pageName} page has moved to ${destination} and now redirects automatically.`}
+  currentPath={currentPath}
+  refreshAfterSeconds={0}
+  refreshTo={destination}
+>
+  <section class="section cream-field">
+    <div class="measure">
+      <p class="section-label">Moved content</p>
+      <h1>{pageName} has moved.</h1>
+      <p class="section-intro">
+        We consolidated this section under Trustora's published operating brief.
+        If your browser does not auto-redirect, use the link below.
+      </p>
+      <p><a class="inline-link" href={destination}>Open the updated page now ↗</a></p>
+    </div>
+  </section>
+</Layout>

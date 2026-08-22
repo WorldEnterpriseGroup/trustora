@@ -32,7 +32,7 @@ The latest sequential production-build run found these follow-ups:
 
 3. **Careers intake is provisioned:** the careers route has a structured, consent-aware application form, JSON Schema, Node 24 Azure Function boundary, Trustora Dataverse Business Unit/table/key/security boundary, and shared Front Door route. The protected `PUBLIC_CAREERS_API_URL` pipeline variable is enabled after a synthetic submission/replay test.
 
-4. **Sitemap freshness is synthetic:** `src/pages/sitemap.xml.ts` assigns the current build date to every URL. The audit warns when all `<lastmod>` values are identical. Use article/briefing/service update dates where available and omit `lastmod` where there is no meaningful editorial date.
+4. **Sitemap freshness is content-backed where available:** article routes use their `updatedAt` or `publishedAt` values, while routes without a meaningful editorial date omit `<lastmod>`. The audit still warns if a future build regresses to one identical date for every URL.
 
 5. **Custom-domain behavior is outside the Astro artifact:** the repository contains `CNAME`, but Astro does not emit `dist/CNAME`; `.gitlab-ci.yml` publishes `dist/` as GitLab Pages artifacts. Confirm `trustora.net` is configured in GitLab Pages project settings, or make the deployment explicitly copy the domain file. The root `.nojekyll` is similarly not emitted by the Astro build and is only relevant if GitHub Pages remains a supported target.
 
@@ -56,7 +56,6 @@ Front Door can provide the public edge, WAF/routing, and TLS boundary, but it is
 | Exception | Current status | Owner before production hardening |
 | --- | --- | --- |
 | `mailto:` forms | Temporary no-JavaScript fallback | Web/CRM implementation |
-| Identical sitemap `lastmod` values | Warning | Content/platform owner |
 | `CNAME` absent from `dist/` | Deployment warning | GitLab Pages/edge owner |
 | Static security headers | Not verifiable from source | Hosting/edge owner |
 | Trustora CRM / Function / Front Door resources | Provisioned 2026-08-12; custom-host POP propagation is pending Azure edge convergence | CRM/platform owner |

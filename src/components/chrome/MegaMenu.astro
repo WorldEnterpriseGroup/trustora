@@ -1,5 +1,6 @@
 ---
 import { navigationPanel } from '../../data/site';
+import { eorOperatingBriefPath } from '../../utils/articles';
 
 interface Props { mobile?: boolean; }
 const { mobile = false } = Astro.props;
@@ -7,16 +8,35 @@ const { mobile = false } = Astro.props;
 
 {mobile ? (
   <div class="mobile-mega-directory">
-    <p class="mega-kicker">Capabilities</p>
-    <div class="mobile-mega-links">{navigationPanel.capabilities.map((item) => <a href={item.href}>{item.title}</a>)}</div>
-    <p class="mega-kicker">Adjacent options</p>
-    <div class="mobile-mega-links mobile-mega-links--two">{navigationPanel.adjacent.map((item) => <a href={item.href}>{item.title}</a>)}</div>
-    <p class="mega-kicker">Industries</p>
-    <div class="mobile-mega-links mobile-mega-links--two">{navigationPanel.industries.map((item) => <a href={item.href}>{item.title}</a>)}</div>
-    <p class="mega-kicker">Explore & company</p>
-    <div class="mobile-mega-links mobile-mega-links--two">
-      {navigationPanel.explore.map((item) => <a href={item.href}>{item.label}</a>)}
-      {navigationPanel.company.map((item) => <a href={item.href}>{item.label}</a>)}
+    <a class="mobile-mega-feature" href={eorOperatingBriefPath}>
+      <span class="mega-kicker">Featured brief</span>
+      <strong>{navigationPanel.feature.title}</strong>
+      <span>{navigationPanel.feature.description}</span>
+      <span class="mobile-mega-feature-link">Read the operating brief <span aria-hidden="true">↗</span></span>
+    </a>
+    <div class="mobile-mega-groups">
+      <details class="mobile-mega-group" open>
+        <summary>Capabilities <span aria-hidden="true">+</span></summary>
+        <div class="mobile-mega-links">
+          <a class="mobile-mega-view-all" href="/services/">View all capabilities <span aria-hidden="true">↗</span></a>
+          {navigationPanel.capabilities.map((item) => <a href={item.href}>{item.title}</a>)}
+        </div>
+      </details>
+      <details class="mobile-mega-group">
+        <summary>Adjacent options <span aria-hidden="true">+</span></summary>
+        <div class="mobile-mega-links mobile-mega-links--two">{navigationPanel.adjacent.map((item) => <a href={item.href}>{item.title}</a>)}</div>
+      </details>
+      <details class="mobile-mega-group">
+        <summary>Industries <span aria-hidden="true">+</span></summary>
+        <div class="mobile-mega-links mobile-mega-links--two">{navigationPanel.industries.map((item) => <a href={item.href}>{item.title}</a>)}</div>
+      </details>
+      <details class="mobile-mega-group">
+        <summary>Explore & company <span aria-hidden="true">+</span></summary>
+        <div class="mobile-mega-links mobile-mega-links--two">
+          {navigationPanel.explore.map((item) => <a href={item.href}>{item.label}</a>)}
+          {navigationPanel.company.map((item) => <a href={item.href}>{item.label}</a>)}
+        </div>
+      </details>
     </div>
   </div>
 ) : (

@@ -17,6 +17,11 @@ sources:
   - label: "World Economic Forum — The Future of Jobs Report 2025"
     url: "https://www.weforum.org/publications/the-future-of-jobs-report-2025/"
 related: ["eor-with-employee-intelligence", "distributed-technical-teams", "the-trust-layer-in-global-employment"]
+nextStep:
+  title: "Translate the role before you search."
+  description: "Use the Frontier Talent & Employee Intelligence Brief to connect scientific capability to team boundaries, employment, equipment, and support."
+  label: "Open the frontier talent brief"
+  href: "/briefings/frontier-talent-and-employee-intelligence-brief/"
 ---
 
 Quantum hiring is often treated as a scarcity problem. There are not enough people with the right background, so the company searches harder and broadens the title.

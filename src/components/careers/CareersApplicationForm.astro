@@ -1,4 +1,16 @@
 ---
+interface RoleOption {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  roleTitle?: string;
+  roleOptions?: RoleOption[];
+}
+
+const { roleTitle = '', roleOptions = [] } = Astro.props;
+
 const countries = [
   'Pakistan',
   'India',
@@ -93,6 +105,7 @@ const roleTracks = [
   ['role-science', 'Science, research, laboratory, and technical operations'],
   ['role-people', 'People operations, EoR delivery, and employee experience'],
   ['role-client', 'Client solutions, partnerships, and international growth'],
+  ['role-govcon', 'GovCon / Strategic Initiatives'],
   ['role-internship', 'Internship, apprenticeship, and early-career programs'],
   ['role-other', 'Another role that fits the Trustora mission'],
 ];
@@ -148,6 +161,9 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
         <input type="hidden" name="application-id" value="" />
         <label class="sr-only" for="career-website">Leave this field empty</label>
         <input id="career-website" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="career-form__honeypot" />
+        <div hidden aria-hidden="true">
+          {roleOptions.map((role) => <span data-role-option data-role-id={role.id} data-role-title={role.title}></span>)}
+        </div>
 
         <fieldset class="career-form__fieldset">
           <legend><span>01</span> About you</legend>
@@ -212,7 +228,7 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
           <legend><span>02</span> The work you want to do</legend>
           <div class="career-form__field">
             <label for="role-title">Role title or problem you want to solve <span aria-hidden="true">*</span></label>
-            <input id="role-title" name="role-title-or-problem" type="text" required placeholder="e.g. ML evaluation engineer, SICM analyst, quantum researcher" />
+            <input id="role-title" name="role-title-or-problem" type="text" required value={roleTitle} placeholder="e.g. ML evaluation engineer, SICM analyst, quantum researcher" />
           </div>
           <fieldset class="career-form__check-fieldset">
             <legend>Areas that interest you</legend>
@@ -359,7 +375,7 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
             <input id="applicant-consent" name="applicant-consent" type="checkbox" value="yes" required />
             <span>I confirm that this information is accurate to the best of my knowledge, contains no confidential third-party material, and may be used by Trustora to evaluate my application. <span aria-hidden="true">*</span></span>
           </label>
-          <p id="application-note">The form uses the secure careers endpoint when configured; until then it opens an email fallback. The production integration validates, protects, and routes this record into the Trustora Business Unit in dream.crm.dynamics.com.</p>
+          <p id="application-note">The form uses the secure careers endpoint when configured. With JavaScript enabled, it reports whether the intake request was accepted; with JavaScript disabled, it submits as a normal form POST and follows the endpoint response. When the secure endpoint is not configured, it opens an email fallback instead. A submission acknowledgement confirms only that the intake service accepted the request; it does not confirm human review, persistence, or a role. The production integration validates, protects, and routes this record into the Trustora Business Unit in dream.crm.dynamics.com.</p>
           <button class="button" type="submit">Send application outline <span aria-hidden="true">↗</span></button>
         </div>
       </form>
@@ -368,10 +384,41 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
 </section>
 
 <script>
+  const createApplicationId = () => {
+    const cryptoApi = globalThis.crypto;
+    if (typeof cryptoApi?.randomUUID === 'function') return cryptoApi.randomUUID();
+    if (typeof cryptoApi?.getRandomValues === 'function') {
+      try {
+        const bytes = new Uint8Array(16);
+        cryptoApi.getRandomValues(bytes);
+        bytes[6] = (bytes[6] & 0x0f) | 0x40;
+        bytes[8] = (bytes[8] & 0x3f) | 0x80;
+        return [...bytes].map((byte, index) => {
+          const value = byte.toString(16).padStart(2, '0');
+          return [4, 6, 8, 10].includes(index) ? `-${value}` : value;
+        }).join('');
+      } catch {
+        // Fall through to a format-valid, non-secret idempotency key.
+      }
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (character) => {
+      const value = Math.floor(Math.random() * 16);
+      const nibble = character === 'x' ? value : (value & 0x3) | 0x8;
+      return nibble.toString(16);
+    });
+  };
+
   document.querySelectorAll<HTMLFormElement>('[data-schema-version="trustora-careers-v1"]').forEach((form) => {
+    const roleField = form.elements.namedItem('role-title-or-problem') as HTMLInputElement | null;
+    const requestedRole = new URLSearchParams(globalThis.location.search).get('role')?.trim();
+    if (roleField && requestedRole && !roleField.value) {
+      const selectedRole = [...form.querySelectorAll<HTMLElement>('[data-role-option]')]
+        .find((role) => role.dataset.roleId === requestedRole || role.dataset.roleTitle === requestedRole);
+      if (selectedRole?.dataset.roleTitle) roleField.value = selectedRole.dataset.roleTitle;
+    }
     form.addEventListener('submit', async (event) => {
       const field = form.elements.namedItem('application-id') as HTMLInputElement | null;
-      if (field && !field.value) field.value = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      if (field && !field.value) field.value = createApplicationId();
       if (form.dataset.deliveryMode !== 'secure-api') return;
       event.preventDefault();
       if (form.dataset.submitting === 'true') return;
@@ -389,9 +436,9 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
         const result = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
         if (!result.ok) throw new Error('application_failed');
         form.reset();
-        if (note) note.textContent = 'Application received. The Trustora team will review the outline and follow up when there is a useful next conversation.';
+        if (note) note.textContent = 'Your application was submitted to the Trustora intake service. This confirms the intake service accepted the request; it does not confirm human review, persistence, or a role.';
       } catch {
-        if (note) note.textContent = 'We could not send the application right now. Please try again or use the email fallback at info@trustora.net.';
+        if (note) note.textContent = 'We could not submit your application to the Trustora intake service. Please try again or use the email fallback at info@trustora.net.';
       } finally {
         form.dataset.submitting = 'false';
         if (button) button.disabled = false;

@@ -3,6 +3,7 @@ import '../styles/global.css';
 import SiteHeader from '../components/chrome/SiteHeader.astro';
 import SiteFooter from '../components/chrome/SiteFooter.astro';
 import { site } from '../data/site';
+import { getSeoMetadata } from '../data/seo';
 
 interface Props {
   title: string;
@@ -16,6 +17,8 @@ interface Props {
   updatedAt?: Date;
   image?: string;
   seoTitle?: string;
+  refreshAfterSeconds?: number;
+  refreshTo?: string;
 }
 
 const {
@@ -30,10 +33,49 @@ const {
   updatedAt,
   image = site.socialImage,
   seoTitle = title,
+  refreshAfterSeconds,
+  refreshTo,
 } = Astro.props;
 
-const metaTitle = seoTitle.length > 60 ? `${seoTitle.slice(0, 57).trimEnd()}…` : seoTitle;
+const resolvedSeo = getSeoMetadata(currentPath, { title: seoTitle, description });
+const metaTitle = resolvedSeo.title.length > 60 ? `${resolvedSeo.title.slice(0, 57).trimEnd()}…` : resolvedSeo.title;
+const metaDescription = resolvedSeo.description;
 const socialImageAlt = `${site.name} — ${metaTitle}`;
+
+const interFontUrl =
+  `https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap&text=${encodeURIComponent(
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;!?'/()&@#-$%",
+  )}`;
+
+const careersApiOrigin = (() => {
+  const configuredUrl = import.meta.env.PUBLIC_CAREERS_API_URL?.trim();
+  if (!configuredUrl) return null;
+  try {
+    const url = new URL(configuredUrl);
+    return url.protocol === 'https:' ? url.origin : null;
+  } catch {
+    return null;
+  }
+})();
+const connectSources = ["'self'", ...(careersApiOrigin ? [careersApiOrigin] : [])].join(' ');
+const formActionSources = ["'self'", 'mailto:', ...(careersApiOrigin ? [careersApiOrigin] : [])].join(' ');
+const csp = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  `connect-src ${connectSources}`,
+  "img-src 'self' https: data:",
+  "font-src 'self' https://fonts.gstatic.com",
+  "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline'",
+  "frame-ancestors 'self'",
+  "object-src 'none'",
+  `form-action ${formActionSources}`,
+  'upgrade-insecure-requests',
+].join('; ') + ';';
+const refreshMeta =
+  typeof refreshAfterSeconds === 'number' && refreshTo
+    ? `${refreshAfterSeconds};URL=${new URL(refreshTo, site.url).toString()}`
+    : null;
 
 const canonical = new URL(currentPath, site.url).toString();
 const structuredData = type === 'article'
@@ -41,7 +83,7 @@ const structuredData = type === 'article'
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: title,
-      description,
+      description: metaDescription,
       mainEntityOfPage: canonical,
       datePublished: publishedAt?.toISOString(),
       dateModified: (updatedAt ?? publishedAt)?.toISOString(),
@@ -65,10 +107,21 @@ const structuredData = type === 'article'
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {refreshMeta && <meta http-equiv="refresh" content={refreshMeta} />}
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="accelerometer=(), autoplay=(), camera=(), cross-origin-isolated=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), payment=(), usb=(), xr-spatial-tracking=()" />
+    <meta name="description" content={metaDescription} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content={darkHeader || conversion ? '#0b2740' : '#f5f6f7'} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href={interFontUrl} />
+    <link rel="stylesheet" href={interFontUrl} />
+    <noscript><link rel="stylesheet" href={interFontUrl} /></noscript>
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
@@ -76,13 +129,13 @@ const structuredData = type === 'article'
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={metaTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, site.url).toString()} />
     <meta property="og:image:alt" content={socialImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={metaTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={new URL(image, site.url).toString()} />
     <meta name="twitter:image:alt" content={socialImageAlt} />
     <title>{metaTitle}</title>

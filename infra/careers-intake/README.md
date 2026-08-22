@@ -6,7 +6,8 @@ This folder contains the deployable Azure Function boundary for the Trustora car
 
 ```bash
 cd infra/careers-intake/function
-pnpm install
+npm install
+npm test
 func start
 ```
 

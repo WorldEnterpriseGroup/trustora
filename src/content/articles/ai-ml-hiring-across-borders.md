@@ -17,6 +17,11 @@ sources:
   - label: "European Union — Artificial Intelligence Act, Regulation (EU) 2024/1689"
     url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en"
 related: ["eor-with-employee-intelligence", "distributed-technical-teams", "eor-employee-experience"]
+nextStep:
+  title: "Give the specialist role an operating frame."
+  description: "Use the Specialist Talent Expansion Brief to connect the problem, country, employment model, and support around an AI or ML hire."
+  label: "Open the talent expansion brief"
+  href: "/briefings/specialist-talent-expansion-brief/"
 ---
 
 “We need an AI engineer” can mean a research scientist, an applied machine-learning engineer, an evaluation lead, a data engineer, an ML platform builder, a product engineer, or a technical manager who can make a system usable.

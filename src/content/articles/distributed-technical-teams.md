@@ -15,6 +15,11 @@ sources:
   - label: "ICO — Monitoring workers"
     url: "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/employment/monitoring-workers/data-protection-and-monitoring-workers/"
 related: ["eor-with-employee-intelligence", "eor-employee-experience", "eor-work-from-home-setup"]
+nextStep:
+  title: "Map the conditions around the team."
+  description: "Use the Frontier Talent & Employee Intelligence Brief to connect technical capability, access, manager coverage, employment, and working conditions."
+  label: "Open the frontier talent brief"
+  href: "/briefings/frontier-talent-and-employee-intelligence-brief/"
 ---
 
 Adding an expert in another country can expand a team’s capability. It can also expose every weak handoff in the operating model: unclear ownership, undocumented decisions, insecure access, time-zone dead zones, and a manager who does not know which employment question belongs where.

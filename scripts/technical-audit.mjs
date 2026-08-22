@@ -125,6 +125,29 @@ for (const file of htmlFiles) {
   else if (route !== '/404/') indexableRoutes.add(route);
 }
 
+const careersHtml = routeHtml.get('/careers/');
+const careersCspTag = careersHtml
+  ? tags(careersHtml, 'meta').find((tag) => attribute(tag, 'http-equiv')?.toLowerCase() === 'content-security-policy')
+  : null;
+const careersCsp = careersCspTag ? attribute(careersCspTag, 'content') ?? '' : '';
+const connectDirective = careersCsp.split(';').map((directive) => directive.trim()).find((directive) => directive.startsWith('connect-src ')) ?? '';
+const formActionDirective = careersCsp.split(';').map((directive) => directive.trim()).find((directive) => directive.startsWith('form-action ')) ?? '';
+if (!careersHtml || !careersCsp) failures.push('careers route is missing the generated Content-Security-Policy metadata');
+const configuredCareersUrl = process.env.PUBLIC_CAREERS_API_URL?.trim();
+if (configuredCareersUrl) {
+  try {
+    const configuredCareersOrigin = new URL(configuredCareersUrl);
+    if (configuredCareersOrigin.protocol !== 'https:') failures.push('PUBLIC_CAREERS_API_URL must use HTTPS');
+    const origin = configuredCareersOrigin.origin;
+    if (!connectDirective.split(/\s+/).includes(origin)) failures.push(`careers CSP connect-src does not allow configured API origin ${origin}`);
+    if (!formActionDirective.split(/\s+/).includes(origin)) failures.push(`careers CSP form-action does not allow configured API origin ${origin}`);
+  } catch {
+    failures.push('PUBLIC_CAREERS_API_URL is not a valid URL');
+  }
+} else if (connectDirective.split(/\s+/).some((value) => /^https?:\/\//i.test(value))) {
+  failures.push('careers CSP allows an external connect-src origin without PUBLIC_CAREERS_API_URL');
+}
+
 for (const [route, html] of routeHtml) {
   if (route === '/404/') continue;
   const canonicalTag = tags(html, 'link').find((tag) => attribute(tag, 'rel')?.toLowerCase() === 'canonical');
