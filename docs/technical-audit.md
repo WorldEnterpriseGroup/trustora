@@ -30,13 +30,13 @@ The latest sequential production-build run found these follow-ups:
 
 2. **All form delivery uses the D365 intake boundary:** contact, briefing, squeeze, and career forms use HTTPS `POST` transport to the Trustora Azure Function, with server-side validation, origin checks, rate limiting, and visible client feedback. Public inquiries create D365 Lead records; career applications remain in the restricted Trustora career-application table.
 
-3. **D365 intake is provisioned:** the careers route has a structured, consent-aware application form and restricted custom table; public inquiries use the standard Lead table through the same Trustora managed identity and owner-team boundary. The protected `PUBLIC_CAREERS_API_URL` and `PUBLIC_TRUSTORA_INTAKE_API_URL` pipeline variables are required for every build.
+3. **D365 intake is provisioned:** the careers route has a structured, consent-aware application form and restricted custom table; public inquiries use the standard Lead table through the same Trustora managed identity and owner-team boundary. The `PUBLIC_CAREERS_API_URL` and `PUBLIC_TRUSTORA_INTAKE_API_URL` build variables are required for every GitLab and GitHub Pages build.
 
 4. **Sitemap freshness is content-backed where available:** article routes use their `updatedAt` or `publishedAt` values, while routes without a meaningful editorial date omit `<lastmod>`. The audit still warns if a future build regresses to one identical date for every URL.
 
-5. **Custom-domain behavior is preserved in both build and packaging:** the tracked `public/CNAME` is emitted as `dist/CNAME`, and `.gitlab-ci.yml` explicitly copies the tracked root `CNAME` into the final `public/` Pages artifact as a packaging guard. `trustora.net` must still be configured in GitLab Pages project settings. The root `.nojekyll` is not part of the supported GitLab Pages deployment.
+5. **Custom-domain behavior is preserved in both build and packaging:** the tracked `public/CNAME` is emitted as `dist/CNAME`, `.gitlab-ci.yml` explicitly copies the tracked root `CNAME` into the GitLab Pages artifact, and `.github/workflows/pages.yml` copies it into the GitHub Pages artifact. `trustora.net` is configured on the GitHub Pages deployment; GitLab Pages remains the canonical CI artifact publication. The root `.nojekyll` is not part of the supported GitLab Pages deployment.
 
-6. **Static security headers are a hosting concern:** the generated files do not prove that the deployed host sends HSTS, `Content-Security-Policy`, `Referrer-Policy`, `Permissions-Policy`, or `X-Content-Type-Options`. Configure and verify those at GitLab Pages, Azure Front Door, or the selected edge. Do not add a broad CSP exception merely to accommodate future scripts.
+6. **Static security headers are a hosting concern:** the generated files do not prove that the deployed host sends HSTS, `Content-Security-Policy`, `Referrer-Policy`, `Permissions-Policy`, or `X-Content-Type-Options`. Configure and verify those at GitHub Pages, GitLab Pages, Azure Front Door, or the selected edge. Do not add a broad CSP exception merely to accommodate future scripts.
 
 ## Intake/CRM boundary
 
