@@ -47,18 +47,17 @@ const interFontUrl =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;!?'/()&@#-$%",
   )}`;
 
-const careersApiOrigin = (() => {
-  const configuredUrl = import.meta.env.PUBLIC_CAREERS_API_URL?.trim();
-  if (!configuredUrl) return null;
-  try {
-    const url = new URL(configuredUrl);
-    return url.protocol === 'https:' ? url.origin : null;
-  } catch {
-    return null;
-  }
-})();
-const connectSources = ["'self'", ...(careersApiOrigin ? [careersApiOrigin] : [])].join(' ');
-const formActionSources = ["'self'", 'mailto:', ...(careersApiOrigin ? [careersApiOrigin] : [])].join(' ');
+const requireHttpsEndpoint = (value: string | undefined, name: string) => {
+  if (!value) throw new Error(`${name} must be configured for D365-only form delivery`);
+  const url = new URL(value);
+  if (url.protocol !== 'https:') throw new Error(`${name} must use HTTPS`);
+  return url;
+};
+const publicIntakeEndpoint = requireHttpsEndpoint(import.meta.env.PUBLIC_TRUSTORA_INTAKE_API_URL?.trim(), 'PUBLIC_TRUSTORA_INTAKE_API_URL');
+const careersEndpoint = requireHttpsEndpoint(import.meta.env.PUBLIC_CAREERS_API_URL?.trim(), 'PUBLIC_CAREERS_API_URL');
+const apiOrigins = [...new Set([publicIntakeEndpoint.origin, careersEndpoint.origin])];
+const connectSources = ["'self'", ...apiOrigins].join(' ');
+const formActionSources = ["'self'", ...apiOrigins].join(' ');
 const csp = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -147,5 +146,6 @@ const structuredData = type === 'article'
     <main id="main-content"><slot /></main>
     {!conversion && <SiteFooter />}
     <script is:inline src="/scripts/corporate-email-validation.js"></script>
+    <script is:inline src="/scripts/d365-form-submit.js"></script>
   </body>
 </html>

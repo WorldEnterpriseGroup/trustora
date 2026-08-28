@@ -5,10 +5,10 @@ Status: provisioned 2026-08-12. This document remains the operating contract for
 ## Recommended shape
 
 ```text
-Astro careers form
+Astro public or careers form
   → Azure Function HTTP endpoint (managed identity, validation, rate limit)
   → private Blob intake ledger (short retention, optional)
-  → Dream Dataverse custom application row
+  → Dream Dataverse Lead or custom application row
   → internal alert / triage queue
 
 Trustora endpoint → taodoor Front Door route (WAF + TLS + no-cache)
@@ -27,6 +27,7 @@ The live hierarchy is:
 3. Custom table `tr_TrustoraCareerApplication`, entity set `tr_trustoracareerapplications`, publisher prefix `tr_`.
 4. Alternate key `tr_ApplicationIdKey` on `tr_submissionid`; the Function upserts by this key and never search-then-creates.
 5. The Function’s user-assigned managed identity is the non-interactive Dataverse application user and receives the Trustora Careers Intake role.
+6. Public contact, briefing, and squeeze submissions create standard Lead rows with a deterministic subject derived from the submission UUID; the Function assigns them to the Trustora owner team and treats replay as an idempotent success.
 
 Do not silently create the Business Unit, team, table, role, app user, or Front Door route. Those are external tenant changes and need a named CRM/platform owner plus an approved migration window.
 
@@ -105,7 +106,8 @@ The envelope is a projection, not a complete CRM schema. Store the minimum appli
 - Managed identity: `uai-trustora-careers-sy4lxie35bmuy`; Dataverse app user is assigned only to the Trustora boundary.
 - Function endpoint: `https://careers-api.trustora.net/api/careers-application` through the Terraform-owned shared `taodoor-standard` Front Door profile.
 - Front Door route: `trustora-careers-route`, limited to `/api/careers-application` and `/api/careers-health`, with WAF rate limiting and no-cache Function responses.
-- `PUBLIC_CAREERS_API_URL` is protected in the Trustora GitLab project and is consumed at the next static-site build.
+- `PUBLIC_CAREERS_API_URL` and `PUBLIC_TRUSTORA_INTAKE_API_URL` are protected in the Trustora GitLab project and are consumed at the next static-site build.
+- The Trustora Careers Intake role carries Local-depth Lead Create/Read/Write/Append/Append To/Assign plus Local-depth `prvReadAsyncOperation` (System Job), which Dataverse checks during owner validation.
 - Synthetic submission/replay passed twice with one CRM row; the controlled test row was deleted after verification.
 - The careers form does not accept document uploads. Resume/CV fields remain HTTPS links until malware scanning, private storage, retention, and access controls are separately approved.
 

@@ -2,6 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import SectionLabel from '../../components/editorial/SectionLabel.astro';
 import Field from '../../components/primitives/Field.astro';
+
+const intakeEndpoint = import.meta.env.PUBLIC_TRUSTORA_INTAKE_API_URL?.trim();
+if (!intakeEndpoint) throw new Error('PUBLIC_TRUSTORA_INTAKE_API_URL must be configured for D365-only form delivery');
+try {
+  if (new URL(intakeEndpoint).protocol !== 'https:') throw new Error('not_https');
+} catch {
+  throw new Error('PUBLIC_TRUSTORA_INTAKE_API_URL must be a valid HTTPS URL');
+}
 ---
 
 <Layout title="Talk to Trustora about EoR and specialist talent" description="Start a practical conversation about Employer of Record services and specialist employee intelligence across the EU, Australia, or USA." currentPath="/contact/">
@@ -12,7 +20,7 @@ import Field from '../../components/primitives/Field.astro';
         <h1>Bring us the country, the role, and the question.</h1>
         <p>We can talk about an EoR model, a specialist AI, ML, quantum, physics, science, or software role, a contractor transition, or the people-operations detail getting in the way.</p>
         <div class="contact-details">
-          <div class="contact-detail"><span>Direct email</span><a href="mailto:info@trustora.net">info@trustora.net</a></div>
+          <div class="contact-detail"><span>Secure intake</span><strong>Submit the form and your request is routed to D365 for review.</strong></div>
           <div class="contact-detail"><span>Client contexts</span><strong>Pakistan-based delivery · European Union · Australia · United States</strong></div>
           <div class="contact-detail"><span>Good to include</span><strong>Countries, time zones, headcount, roles, budget range, and decision deadline.</strong></div>
         </div>
@@ -22,7 +30,14 @@ import Field from '../../components/primitives/Field.astro';
       <div class="conversion-panel intake-panel">
         <h2>Prepare the first conversation.</h2>
         <p>Share the shape of the work. We will use it to bring the right EoR, talent, payroll, workplace, and local-context questions to the opening call.</p>
-        <form class="form-stack intake-form" action="mailto:info@trustora.net" method="post" enctype="text/plain">
+        <form class="form-stack intake-form" action={intakeEndpoint} method="post" enctype="application/x-www-form-urlencoded" data-d365-form data-intake-type="contact" data-source="trustora.net/contact/" data-schema-version="trustora-public-intake-v1" aria-describedby="form-note">
+          <input type="hidden" name="source" value="trustora.net/contact/" />
+          <input type="hidden" name="business-unit" value="Trustora" />
+          <input type="hidden" name="schema-version" value="trustora-public-intake-v1" />
+          <input type="hidden" name="intake-type" value="contact" />
+          <input type="hidden" name="application-id" value="" />
+          <label class="sr-only" for="contact-website">Leave this field empty</label>
+          <input id="contact-website" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="career-form__honeypot" />
           <fieldset class="intake-section">
             <legend>01 / Your organization</legend>
             <div class="intake-grid">
@@ -82,7 +97,7 @@ import Field from '../../components/primitives/Field.astro';
             <div class="field"><label for="questions">Questions you want Trustora to prepare for</label><textarea id="questions" name="questions" placeholder="List the questions, concerns, or comparisons you want addressed."></textarea></div>
           </fieldset>
 
-          <p class="form-note" id="form-note">Please do not include passport numbers, payroll records, health information, or other sensitive personal information. This static intake opens an email draft to the Trustora team; estimates are welcome and can be refined together.</p>
+          <p class="form-note" id="form-note">Please do not include passport numbers, payroll records, health information, or other sensitive personal information. This submission is validated by Trustora’s intake service and routed to D365 for review.</p>
           <label class="check-option check-option-wide"><input type="checkbox" name="safe-to-contact" value="yes" required /> I confirm this outline does not contain sensitive personal information and may be used to prepare an initial Trustora conversation.</label>
           <button class="button" type="submit">Send intake to Trustora <span aria-hidden="true">↗</span></button>
         </form>

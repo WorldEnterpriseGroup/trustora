@@ -125,6 +125,7 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
         { name: 'AZURE_CLIENT_ID', value: functionIdentity.properties.clientId }
         { name: 'DATAVERSE_URL', value: dataverseUrl }
         { name: 'TRUSTORA_APPLICATION_ENTITY_SET', value: applicationEntitySet }
+        { name: 'TRUSTORA_LEAD_ENTITY_SET', value: 'leads' }
         { name: 'TRUSTORA_APPLICATION_FIELD_PREFIX', value: applicationFieldPrefix }
         { name: 'TRUSTORA_TEAM_ID', value: trustoraTeamId }
         { name: 'ALLOWED_ORIGINS', value: join(allowedOrigins, ',') }

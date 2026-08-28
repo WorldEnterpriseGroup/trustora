@@ -110,9 +110,13 @@ const roleTracks = [
   ['role-other', 'Another role that fits the Trustora mission'],
 ];
 
-const careerEndpoint = import.meta.env.PUBLIC_CAREERS_API_URL?.trim() || 'mailto:info@trustora.net?subject=Trustora%20career%20application';
-const careerDeliveryMode = import.meta.env.PUBLIC_CAREERS_API_URL?.trim() ? 'secure-api' : 'email-fallback';
-const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-form-urlencoded' : 'text/plain';
+const careerEndpoint = import.meta.env.PUBLIC_CAREERS_API_URL?.trim();
+if (!careerEndpoint) throw new Error('PUBLIC_CAREERS_API_URL must be configured for D365-only form delivery');
+try {
+  if (new URL(careerEndpoint).protocol !== 'https:') throw new Error('not_https');
+} catch {
+  throw new Error('PUBLIC_CAREERS_API_URL must be a valid HTTPS URL');
+}
 ---
 
 <section class="section careers-application" id="apply" aria-labelledby="application-title">
@@ -143,13 +147,15 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
       <form
         class="career-form"
         method="post"
-        enctype={careerEncoding}
+        enctype="application/x-www-form-urlencoded"
+        data-d365-form
+        data-intake-type="career"
         data-intake-target="dream.crm.dynamics.com"
         data-business-unit="Trustora"
-        data-integration="azure-function-or-logic-app"
-        data-front-door-ready={careerDeliveryMode === 'secure-api' ? 'configured' : 'pending-provisioning'}
+        data-integration="azure-function-dataverse"
+        data-front-door-ready="configured"
         data-schema-version="trustora-careers-v1"
-        data-delivery-mode={careerDeliveryMode}
+        data-delivery-mode="d365"
         action={careerEndpoint}
         aria-describedby="application-note"
       >
@@ -375,7 +381,7 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
             <input id="applicant-consent" name="applicant-consent" type="checkbox" value="yes" required />
             <span>I confirm that this information is accurate to the best of my knowledge, contains no confidential third-party material, and may be used by Trustora to evaluate my application. <span aria-hidden="true">*</span></span>
           </label>
-          <p id="application-note">The form uses the secure careers endpoint when configured. With JavaScript enabled, it reports whether the intake request was accepted; with JavaScript disabled, it submits as a normal form POST and follows the endpoint response. When the secure endpoint is not configured, it opens an email fallback instead. A submission acknowledgement confirms only that the intake service accepted the request; it does not confirm human review, persistence, or a role. The production integration validates, protects, and routes this record into the Trustora Business Unit in dream.crm.dynamics.com.</p>
+          <p id="application-note">This form posts through the Trustora HTTPS intake boundary into the Trustora Business Unit in dream.crm.dynamics.com. A submission acknowledgement confirms that the intake service accepted the request; it does not confirm human review, persistence, or a role.</p>
           <button class="button" type="submit">Send application outline <span aria-hidden="true">↗</span></button>
         </div>
       </form>
@@ -384,30 +390,6 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
 </section>
 
 <script>
-  const createApplicationId = () => {
-    const cryptoApi = globalThis.crypto;
-    if (typeof cryptoApi?.randomUUID === 'function') return cryptoApi.randomUUID();
-    if (typeof cryptoApi?.getRandomValues === 'function') {
-      try {
-        const bytes = new Uint8Array(16);
-        cryptoApi.getRandomValues(bytes);
-        bytes[6] = (bytes[6] & 0x0f) | 0x40;
-        bytes[8] = (bytes[8] & 0x3f) | 0x80;
-        return [...bytes].map((byte, index) => {
-          const value = byte.toString(16).padStart(2, '0');
-          return [4, 6, 8, 10].includes(index) ? `-${value}` : value;
-        }).join('');
-      } catch {
-        // Fall through to a format-valid, non-secret idempotency key.
-      }
-    }
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (character) => {
-      const value = Math.floor(Math.random() * 16);
-      const nibble = character === 'x' ? value : (value & 0x3) | 0x8;
-      return nibble.toString(16);
-    });
-  };
-
   document.querySelectorAll<HTMLFormElement>('[data-schema-version="trustora-careers-v1"]').forEach((form) => {
     const roleField = form.elements.namedItem('role-title-or-problem') as HTMLInputElement | null;
     const requestedRole = new URLSearchParams(globalThis.location.search).get('role')?.trim();
@@ -416,34 +398,6 @@ const careerEncoding = careerDeliveryMode === 'secure-api' ? 'application/x-www-
         .find((role) => role.dataset.roleId === requestedRole || role.dataset.roleTitle === requestedRole);
       if (selectedRole?.dataset.roleTitle) roleField.value = selectedRole.dataset.roleTitle;
     }
-    form.addEventListener('submit', async (event) => {
-      const field = form.elements.namedItem('application-id') as HTMLInputElement | null;
-      if (field && !field.value) field.value = createApplicationId();
-      if (form.dataset.deliveryMode !== 'secure-api') return;
-      event.preventDefault();
-      if (form.dataset.submitting === 'true') return;
-      form.dataset.submitting = 'true';
-      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      const note = form.querySelector<HTMLElement>('#application-note');
-      if (button) button.disabled = true;
-      if (note) {
-        note.setAttribute('aria-live', 'polite');
-        note.textContent = 'Sending your application outline securely…';
-      }
-      try {
-        const body = new URLSearchParams();
-        new FormData(form).forEach((value, key) => { if (typeof value === 'string') body.append(key, value); });
-        const result = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
-        if (!result.ok) throw new Error('application_failed');
-        form.reset();
-        if (note) note.textContent = 'Your application was submitted to the Trustora intake service. This confirms the intake service accepted the request; it does not confirm human review, persistence, or a role.';
-      } catch {
-        if (note) note.textContent = 'We could not submit your application to the Trustora intake service. Please try again or use the email fallback at info@trustora.net.';
-      } finally {
-        form.dataset.submitting = 'false';
-        if (button) button.disabled = false;
-      }
-    });
   });
 </script>
 
