@@ -14,14 +14,14 @@ The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts ar
 | Briefings | 12 | Give early-stage and executive readers a decision instrument | Brief preview → access gate → use-in-the-room outcomes → working questions |
 | Comparisons | 3 | Clarify EoR versus entity, contractor, and PEO models | Thesis → comparison table → caveats → next step |
 | Workplace / employee experience | 3 | Make the conditions around work visible | Workplace matrix or employee journey → library → brief |
-| Conversion / squeeze | 15 | Capture context for a brief or readiness conversation | Reduced header → working material → `mailto:` fallback |
+| Conversion / squeeze | 15 | Capture context for a brief or readiness conversation | Reduced header → working material → D365 intake |
 | Company / careers / utility / legal | 10 | Explain Trustora, segment career routes, provide contact, legal, and recovery paths | Page-specific document composition |
 
 Career entries use `status: Open`, `Talent pool`, or `Closed`. Closed entries remain available as noindex status pages without an application form and are excluded from the public sitemap; draft entries are not generated.
 
 ## Conversion routes
 
-The squeeze pages use a reduced header and a dominant form. They intentionally use `mailto:info@trustora.net` because the site is static; the form still works without client-side JavaScript by opening an email draft. The full contact intake additionally asks for work timezone, staff count, role families, SaaS-team scope, budget (default `$250,000`), timeline, workplace model, employee support priorities, and decision context.
+The squeeze pages use a reduced header and a dominant form. They post to the Trustora HTTPS intake boundary and write a D365 Lead; the form still submits without client-side JavaScript. The full contact intake additionally asks for work timezone, staff count, role families, SaaS-team scope, budget (default `$250,000`), timeline, workplace model, employee support priorities, and decision context.
 
 ## Verification gates
 

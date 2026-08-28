@@ -8,6 +8,13 @@ import { squeezePages } from '../../data/squeezePages';
 interface Props { pageKey: SqueezePageKey; }
 const { pageKey } = Astro.props;
 const page = squeezePages[pageKey];
+const intakeEndpoint = import.meta.env.PUBLIC_TRUSTORA_INTAKE_API_URL?.trim();
+if (!intakeEndpoint) throw new Error('PUBLIC_TRUSTORA_INTAKE_API_URL must be configured for D365-only form delivery');
+try {
+  if (new URL(intakeEndpoint).protocol !== 'https:') throw new Error('not_https');
+} catch {
+  throw new Error('PUBLIC_TRUSTORA_INTAKE_API_URL must be a valid HTTPS URL');
+}
 ---
 
 <Layout title={`${page.title} | Trustora`} description={page.description} currentPath={page.path} darkHeader conversion>
@@ -23,16 +30,25 @@ const page = squeezePages[pageKey];
         <span class="panel-index">Trustora / working material</span>
         <h2>Access the brief.</h2>
         <p>Share the outline of the decision. We will use the context to make the next conversation more useful.</p>
-        <form class="form-stack" action="mailto:info@trustora.net" method="post" enctype="text/plain" data-corporate-email-only>
+        <form class="form-stack" action={intakeEndpoint} method="post" enctype="application/x-www-form-urlencoded" data-d365-form data-intake-type="squeeze" data-source={`trustora.net${page.path}`} data-schema-version="trustora-public-intake-v1" data-corporate-email-only>
+          <input type="hidden" name="source" value={`trustora.net${page.path}`} />
+          <input type="hidden" name="business-unit" value="Trustora" />
+          <input type="hidden" name="schema-version" value="trustora-public-intake-v1" />
+          <input type="hidden" name="intake-type" value="squeeze" />
+          <input type="hidden" name="squeeze-key" value={pageKey} />
+          <input type="hidden" name="application-id" value="" />
+          <label class="sr-only" for={`${pageKey}-website`}>Leave this field empty</label>
+          <input id={`${pageKey}-website`} type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="d365-form__honeypot" />
           <Field id={`${pageKey}-name`} name="name" label="Your name" required placeholder="Your name" />
           <Field id={`${pageKey}-email`} name="email" label="Work email" type="email" required placeholder="you@company.com" />
           <Field id={`${pageKey}-company`} name="company" label="Company" placeholder="Company name" />
           <div class="field"><label for={`${pageKey}-region`}>Primary region</label><select id={`${pageKey}-region`} name="region"><option>European Union</option><option>Australia</option><option>United States</option><option>More than one region</option></select></div>
           <div class="field"><label for={`${pageKey}-context`}>What are you deciding?</label><textarea id={`${pageKey}-context`} name="context" placeholder="Country, role, timing, or question."></textarea></div>
           <p class="form-note">Company email required. Gmail, Yahoo, Hotmail, and Outlook.com accounts are not eligible for this brief. Please do not include sensitive personal information. This is an operational starting point, not legal, tax, immigration, or employment advice.</p>
+          <fieldset class="check-fieldset d365-consent-fieldset"><legend>Permission to contact</legend><label class="check-option"><input type="checkbox" name="safe-to-contact" value="yes" required /> I confirm this outline does not contain sensitive personal information and may be used to prepare an initial Trustora conversation.</label></fieldset>
           <button class="button" type="submit">Request the brief <span aria-hidden="true">↗</span></button>
         </form>
-        <p class="squeeze-fallback">This static site opens an email draft to <a href="mailto:info@trustora.net">info@trustora.net</a>. Prefer to read first? <a href={page.fallbackHref}>{page.fallbackLabel} ↗</a></p>
+        <p class="squeeze-fallback">Submissions are routed to D365 for Trustora review. Prefer to read first? <a href={page.fallbackHref}>{page.fallbackLabel} ↗</a></p>
       </div>
     </div>
     <section class="measure squeeze-proof-strip" role="region" aria-label="Working principles">

@@ -6,7 +6,7 @@ This audit is intentionally separate from `scripts/deep-audit.mjs`. The deep aud
 - internal route links and fragment targets;
 - JSON-LD parsing and Article canonical alignment;
 - mobile viewport metadata and external-link safety;
-- form control names, grouped choices, file-upload encoding, and the static `mailto:` boundary;
+- form control names, grouped choices, file-upload encoding, and the D365 HTTPS intake boundary;
 - robots policy, custom-domain deployment assumptions, and static-hosting recovery output;
 - source-map/debug-file exposure, credential-like strings, local development URLs, and unsanitized `set:html` usage.
 
@@ -28,19 +28,19 @@ The latest sequential production-build run found these follow-ups:
 
 1. **Creative uniqueness:** the current production artifact passes the strict global media check: 59 active assignments produce 59 unique emitted creative URLs. The source library contains 66 unique AVIF masters, with unused masters retained for future editorial assignments.
 
-2. **Most form delivery is still an email-client fallback:** the brief, squeeze, EoR, and contact routes submit a `POST` to `mailto:info@trustora.net`. That has no server-side validation, abuse protection, delivery guarantee, retention control, CRM routing, or structured error state. The careers form is wired for the protected `PUBLIC_CAREERS_API_URL` pipeline variable; the current working tree still needs its normal site publish before that endpoint appears in the public static artifact.
+2. **All form delivery uses the D365 intake boundary:** contact, briefing, squeeze, and career forms use HTTPS `POST` transport to the Trustora Azure Function, with server-side validation, origin checks, rate limiting, and visible client feedback. Public inquiries create D365 Lead records; career applications remain in the restricted Trustora career-application table.
 
-3. **Careers intake is provisioned:** the careers route has a structured, consent-aware application form, JSON Schema, Node 24 Azure Function boundary, Trustora Dataverse Business Unit/table/key/security boundary, and shared Front Door route. The protected `PUBLIC_CAREERS_API_URL` pipeline variable is enabled after a synthetic submission/replay test.
+3. **D365 intake is provisioned:** the careers route has a structured, consent-aware application form and restricted custom table; public inquiries use the standard Lead table through the same Trustora managed identity and owner-team boundary. The protected `PUBLIC_CAREERS_API_URL` and `PUBLIC_TRUSTORA_INTAKE_API_URL` pipeline variables are required for every build.
 
 4. **Sitemap freshness is content-backed where available:** article routes use their `updatedAt` or `publishedAt` values, while routes without a meaningful editorial date omit `<lastmod>`. The audit still warns if a future build regresses to one identical date for every URL.
 
-5. **Custom-domain behavior is outside the Astro artifact:** the repository contains `CNAME`, but Astro does not emit `dist/CNAME`; `.gitlab-ci.yml` publishes `dist/` as GitLab Pages artifacts. Confirm `trustora.net` is configured in GitLab Pages project settings, or make the deployment explicitly copy the domain file. The root `.nojekyll` is similarly not emitted by the Astro build and is only relevant if GitHub Pages remains a supported target.
+5. **Custom-domain behavior is preserved in both build and packaging:** the tracked `public/CNAME` is emitted as `dist/CNAME`, and `.gitlab-ci.yml` explicitly copies the tracked root `CNAME` into the final `public/` Pages artifact as a packaging guard. `trustora.net` must still be configured in GitLab Pages project settings. The root `.nojekyll` is not part of the supported GitLab Pages deployment.
 
 6. **Static security headers are a hosting concern:** the generated files do not prove that the deployed host sends HSTS, `Content-Security-Policy`, `Referrer-Policy`, `Permissions-Policy`, or `X-Content-Type-Options`. Configure and verify those at GitLab Pages, Azure Front Door, or the selected edge. Do not add a broad CSP exception merely to accommodate future scripts.
 
 ## Intake/CRM boundary
 
-The static site must not contain Dynamics, Azure Function, Logic App, or Front Door credentials. A future intake endpoint should accept only the fields needed for the conversation, validate them server-side, rate-limit abuse, reject sensitive documents unless the upload flow is designed for them, and create the Dynamics record through a secret-backed integration. Career applications need a separate data-retention and access policy from public contact leads.
+The static site must not contain Dynamics, Azure Function, Logic App, or Front Door credentials. The intake endpoint accepts only the fields needed for the conversation, validates them server-side, rate-limits abuse, rejects sensitive documents, and creates the D365 record through the managed-identity integration. Career applications retain a separate data-retention and access policy from public contact leads.
 
 The preferred low-overhead shape is:
 
@@ -55,7 +55,6 @@ Front Door can provide the public edge, WAF/routing, and TLS boundary, but it is
 
 | Exception | Current status | Owner before production hardening |
 | --- | --- | --- |
-| `mailto:` forms | Temporary no-JavaScript fallback | Web/CRM implementation |
-| `CNAME` absent from `dist/` | Deployment warning | GitLab Pages/edge owner |
+| D365 intake forms | HTTPS Function boundary with D365 routing; runtime and CRM authorization require the health/replay checks | Web/CRM implementation |
 | Static security headers | Not verifiable from source | Hosting/edge owner |
 | Trustora CRM / Function / Front Door resources | Provisioned 2026-08-12; custom-host POP propagation is pending Azure edge convergence | CRM/platform owner |

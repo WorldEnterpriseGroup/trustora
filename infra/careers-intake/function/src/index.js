@@ -6,8 +6,11 @@ const MAX_BODY_BYTES = boundedInteger(process.env.MAX_BODY_BYTES, 1_024, 32 * 1_
 const RATE_LIMIT_PER_HOUR = boundedInteger(process.env.RATE_LIMIT_PER_HOUR, 1, 100, 5);
 const DATAVERSE_URL = normalizeDataverseUrl(process.env.DATAVERSE_URL);
 const ENTITY_SET = clean(process.env.TRUSTORA_APPLICATION_ENTITY_SET, 80).replace(/[^a-zA-Z0-9_]/g, '');
+const LEAD_ENTITY_SET = clean(process.env.TRUSTORA_LEAD_ENTITY_SET || 'leads', 80).replace(/[^a-zA-Z0-9_]/g, '');
 const FIELD_PREFIX = clean(process.env.TRUSTORA_APPLICATION_FIELD_PREFIX, 20).replace(/[^a-zA-Z0-9_]/g, '');
 const TRUSTORA_TEAM_ID = guid(process.env.TRUSTORA_TEAM_ID);
+const PUBLIC_SCHEMA_VERSION = 'trustora-public-intake-v1';
+const PUBLIC_INTAKE_TYPES = new Set(['contact', 'briefing', 'squeeze']);
 const ALLOWED_ORIGINS = new Set((process.env.ALLOWED_ORIGINS || 'https://trustora.net,https://www.trustora.net')
   .split(',').map((value) => normalizeOrigin(value)).filter(Boolean));
 const credential = new DefaultAzureCredential();
@@ -112,8 +115,7 @@ async function parseBody(request) {
   }
   const params = new URLSearchParams(raw);
   const data = Object.fromEntries(params.entries());
-  data['role-interests'] = params.getAll('role-interests');
-  data['professional-languages'] = params.getAll('professional-languages');
+  for (const key of ['role-interests', 'professional-languages', 'roles', 'capabilities']) data[key] = params.getAll(key);
   return { data };
 }
 
@@ -129,6 +131,11 @@ function validHttpsUrl(value) {
   } catch {
     return false;
   }
+}
+
+function validPublicSource(value) {
+  const source = clean(value, 300);
+  return /^trustora\.net\/[a-z0-9][a-z0-9/_-]*\/?$/i.test(source);
 }
 
 function normalizeInput(input) {
@@ -187,6 +194,10 @@ function dataverseReady() {
   return Boolean(DATAVERSE_URL && ENTITY_SET && FIELD_PREFIX && TRUSTORA_TEAM_ID);
 }
 
+function publicIntakeReady() {
+  return Boolean(DATAVERSE_URL && LEAD_ENTITY_SET && TRUSTORA_TEAM_ID);
+}
+
 async function dataverseRequest(path, options = {}) {
   if (!DATAVERSE_URL) throw new Error('dataverse_not_configured');
   const token = await credential.getToken(`${DATAVERSE_URL}/.default`);
@@ -196,7 +207,11 @@ async function dataverseRequest(path, options = {}) {
     headers: { accept: 'application/json', 'content-type': 'application/json', Authorization: `Bearer ${token.token}`, ...(options.headers || {}) },
     signal: AbortSignal.timeout(10_000),
   });
-  if (!result.ok) throw new Error(`dataverse_${result.status}`);
+  if (!result.ok) {
+    const details = await result.json().catch(() => null);
+    const code = clean(details?.error?.code, 80).replace(/[^a-zA-Z0-9._-]/g, '_');
+    throw new Error(`dataverse_${result.status}${code ? `_${code}` : ''}`);
+  }
   return result;
 }
 
@@ -249,6 +264,147 @@ async function upsertApplication(application) {
   return result.headers.get('odata-entityid') || null;
 }
 
+function splitName(value) {
+  const parts = clean(value, 160).split(/\s+/).filter(Boolean);
+  const lastName = parts.pop() || 'Trustora inquiry';
+  return { firstName: parts.join(' '), lastName };
+}
+
+function publicDetails(value) {
+  const fields = [
+    ['title', 'Role or title'],
+    ['primary-region', 'Primary employment region'],
+    ['countries', 'Countries where staff will work'],
+    ['work-timezone', 'Primary work time zone'],
+    ['collaboration-window', 'Collaboration window'],
+    ['staff-count', 'Staff needed'],
+    ['team-stage', 'Team stage'],
+    ['roles', 'Roles needed'],
+    ['saas-team', 'SaaS team scope'],
+    ['budget', 'Indicative budget'],
+    ['budget-basis', 'Budget basis'],
+    ['timeline', 'Timeline'],
+    ['target-date', 'Target start or decision date'],
+    ['employment-model', 'Employment model'],
+    ['entity-status', 'Local entity status'],
+    ['workplace-model', 'Workplace model'],
+    ['employee-support', 'Employee support priorities'],
+    ['capabilities', 'Additional capabilities'],
+    ['briefing-slug', 'Briefing'],
+    ['squeeze-key', 'Squeeze page'],
+    ['region', 'Brief region'],
+    ['context', 'Decision context'],
+    ['decision', 'Decision being made'],
+    ['constraints', 'Known constraints or risks'],
+    ['questions', 'Questions for Trustora'],
+  ];
+  const lines = [];
+  for (const [key, label] of fields) {
+    const raw = Array.isArray(value[key]) ? value[key].join(', ') : value[key];
+    const normalized = multiline(raw, 2000);
+    if (normalized) lines.push(`${label}: ${normalized}`);
+  }
+  return lines.join('\n');
+}
+
+function normalizePublicIntake(input) {
+  const value = input || {};
+  const suppliedSubmissionId = clean(value['application-id'] || value['submission-id'], 64);
+  const submissionId = suppliedSubmissionId ? guid(suppliedSubmissionId) : crypto.randomUUID();
+  const intakeType = clean(value['intake-type'], 32).toLowerCase();
+  const name = clean(value.name || value['full-name'], 160);
+  const email = clean(value.email, 254).toLowerCase();
+  const source = clean(value.source, 300);
+  const company = clean(value.company, 200);
+  const title = clean(value.title, 180);
+  const required = [submissionId, intakeType, name, email, source];
+  if (
+    required.some((item) => !item)
+    || (suppliedSubmissionId && !submissionId)
+    || !PUBLIC_INTAKE_TYPES.has(intakeType)
+    || !validEmail(email)
+    || !validPublicSource(source)
+    || value['safe-to-contact'] !== 'yes'
+    || clean(value.website, 20)
+  ) return { error: 'invalid_public_intake' };
+  if (value['business-unit'] !== 'Trustora' || value['schema-version'] !== PUBLIC_SCHEMA_VERSION) return { error: 'invalid_schema' };
+
+  const { firstName, lastName } = splitName(name);
+  const receivedAt = new Date().toISOString();
+  const description = [
+    `Submission ID: ${submissionId}`,
+    `Intake type: ${intakeType}`,
+    `Source: ${source}`,
+    `Consent: safe-to-contact=yes`,
+    `Received at: ${receivedAt}`,
+    publicDetails(value),
+  ].filter(Boolean).join('\n');
+
+  return {
+    submissionId,
+    intakeType,
+    name,
+    firstName,
+    lastName,
+    email,
+    company,
+    title,
+    source,
+    description: multiline(description, 12_000),
+    receivedAt,
+  };
+}
+
+function publicLeadSubject(intake) {
+  return `Trustora ${intake.intakeType} intake — ${intake.submissionId}`;
+}
+
+function publicLeadFields(intake) {
+  return {
+    subject: publicLeadSubject(intake),
+    firstname: intake.firstName || null,
+    lastname: intake.lastName,
+    emailaddress1: intake.email,
+    companyname: intake.company || null,
+    jobtitle: intake.title || null,
+    description: intake.description,
+    'ownerid@odata.bind': `/teams(${TRUSTORA_TEAM_ID})`,
+  };
+}
+
+async function findPublicIntake(intake) {
+  const subject = encodeURIComponent(odataString(publicLeadSubject(intake)));
+  const query = `${LEAD_ENTITY_SET}?$select=leadid&$filter=subject%20eq%20${subject}&$top=1`;
+  const result = await dataverseRequest(query, { method: 'GET' });
+  const body = await result.json();
+  return body?.value?.[0]?.leadid || null;
+}
+
+async function createPublicIntake(intake) {
+  const existing = await findPublicIntake(intake);
+  if (existing) return { leadId: existing, created: false };
+  const result = await dataverseRequest(LEAD_ENTITY_SET, {
+    method: 'POST',
+    body: JSON.stringify(publicLeadFields(intake)),
+  });
+  return { leadId: result.headers.get('odata-entityid') || null, created: true };
+}
+
+function isPublicIntake(data) {
+  return data?.['schema-version'] === PUBLIC_SCHEMA_VERSION || Boolean(data?.['intake-type']);
+}
+
+async function publicLeadHealth() {
+  if (!publicIntakeReady()) return { ok: false, error: 'not_configured' };
+  try {
+    await dataverseRequest(`${LEAD_ENTITY_SET}?$select=leadid&$top=1`, { method: 'GET' });
+    return { ok: true };
+  } catch (error) {
+    const code = clean(error?.message, 80);
+    return { ok: false, error: code.startsWith('dataverse_') ? code : 'unavailable' };
+  }
+}
+
 app.http('careerApplication', {
   methods: ['POST', 'OPTIONS'],
   authLevel: 'anonymous',
@@ -258,16 +414,24 @@ app.http('careerApplication', {
     if (request.method === 'OPTIONS') return response(204, {}, headers);
     if (request.headers.get('origin') && !ALLOWED_ORIGINS.has(request.headers.get('origin'))) return response(403, { error: 'origin_not_allowed' }, headers);
     if (rateLimited(request)) return response(429, { error: 'rate_limited' }, headers);
-    if (!dataverseReady()) return response(503, { error: 'intake_not_configured' }, headers);
     try {
       const parsed = await parseBody(request);
       if (parsed.error) return response(400, { error: parsed.error }, headers);
+      if (isPublicIntake(parsed.data)) {
+        if (!publicIntakeReady()) return response(503, { error: 'public_intake_not_configured' }, headers);
+        const intake = normalizePublicIntake(parsed.data);
+        if (intake.error) return response(400, { error: intake.error }, headers);
+        const result = await createPublicIntake(intake);
+        return response(201, { ok: true, submissionId: intake.submissionId, intakeType: intake.intakeType, created: result.created }, headers);
+      }
+      if (!dataverseReady()) return response(503, { error: 'intake_not_configured' }, headers);
       const application = normalizeInput(parsed.data);
       if (application.error) return response(400, { error: application.error }, headers);
       await upsertApplication(application);
       return response(201, { ok: true, applicationId: application.applicationId }, headers);
     } catch (error) {
-      request?.logger?.error?.('Trustora careers intake failed', { code: clean(error?.message, 80) });
+      const code = clean(error?.message, 120);
+      request?.logger?.error?.('Trustora careers intake failed', { code });
       return response(502, { error: 'intake_unavailable' }, headers);
     }
   },
@@ -277,7 +441,7 @@ app.http('careerHealth', {
   methods: ['GET'],
   authLevel: 'anonymous',
   route: 'careers-health',
-  handler: async () => response(200, { ok: true, service: 'trustora-careers-intake', configured: dataverseReady() }),
+  handler: async () => response(200, { ok: true, service: 'trustora-careers-intake', configured: dataverseReady(), publicIntakeConfigured: publicIntakeReady(), publicLeadHealth: await publicLeadHealth() }),
 });
 
-export { normalizeInput, applicationFields };
+export { normalizeInput, applicationFields, normalizePublicIntake, publicLeadFields, publicLeadSubject };

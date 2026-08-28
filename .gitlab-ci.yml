@@ -25,6 +25,8 @@ before_script:
 verify:
   stage: verify
   script:
+    - test -n "$PUBLIC_CAREERS_API_URL"
+    - test -n "$PUBLIC_TRUSTORA_INTAKE_API_URL"
     - pnpm run check
     - pnpm run build
     - pnpm run test
@@ -47,6 +49,8 @@ pages:
     - rm -rf public
     - mkdir -p public
     - cp -a dist/. public/
+    # Astro does not emit the repository-root custom-domain marker.
+    - cp CNAME public/CNAME
     - |
       for forbidden in '.claude' '.mcp.json' 'CLAUDE.md' 'plan.md' '.gitlab-ci.yml' 'docs' 'package.json' 'pnpm-lock.yaml'; do
         if [ -e "public/$forbidden" ]; then

@@ -100,6 +100,7 @@ function printWarnings() {
 }
 
 const config = await readFile(join(projectRoot, 'astro.config.mjs'), 'utf8');
+const pagesPipeline = await readFile(join(projectRoot, '.gitlab-ci.yml'), 'utf8').catch(() => '');
 const configuredSite = config.match(/site:\s*['"]([^'"]+)['"]/)?.[1];
 if (!configuredSite) failures.push('astro.config.mjs does not declare a site URL');
 const siteUrl = new URL(configuredSite ?? 'https://trustora.net');
@@ -133,19 +134,31 @@ const careersCsp = careersCspTag ? attribute(careersCspTag, 'content') ?? '' : '
 const connectDirective = careersCsp.split(';').map((directive) => directive.trim()).find((directive) => directive.startsWith('connect-src ')) ?? '';
 const formActionDirective = careersCsp.split(';').map((directive) => directive.trim()).find((directive) => directive.startsWith('form-action ')) ?? '';
 if (!careersHtml || !careersCsp) failures.push('careers route is missing the generated Content-Security-Policy metadata');
-const configuredCareersUrl = process.env.PUBLIC_CAREERS_API_URL?.trim();
-if (configuredCareersUrl) {
-  try {
-    const configuredCareersOrigin = new URL(configuredCareersUrl);
-    if (configuredCareersOrigin.protocol !== 'https:') failures.push('PUBLIC_CAREERS_API_URL must use HTTPS');
-    const origin = configuredCareersOrigin.origin;
-    if (!connectDirective.split(/\s+/).includes(origin)) failures.push(`careers CSP connect-src does not allow configured API origin ${origin}`);
-    if (!formActionDirective.split(/\s+/).includes(origin)) failures.push(`careers CSP form-action does not allow configured API origin ${origin}`);
-  } catch {
-    failures.push('PUBLIC_CAREERS_API_URL is not a valid URL');
+function configuredEndpoint(name) {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    failures.push(`${name} is required for D365-only form delivery`);
+    return null;
   }
-} else if (connectDirective.split(/\s+/).some((value) => /^https?:\/\//i.test(value))) {
-  failures.push('careers CSP allows an external connect-src origin without PUBLIC_CAREERS_API_URL');
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'https:') failures.push(`${name} must use HTTPS`);
+    return url;
+  } catch {
+    failures.push(`${name} is not a valid URL`);
+    return null;
+  }
+}
+
+const configuredPublicEndpoint = configuredEndpoint('PUBLIC_TRUSTORA_INTAKE_API_URL');
+const configuredCareersEndpoint = configuredEndpoint('PUBLIC_CAREERS_API_URL');
+const configuredEndpointOrigins = [configuredPublicEndpoint, configuredCareersEndpoint].filter(Boolean).map((url) => url.origin);
+for (const origin of new Set(configuredEndpointOrigins)) {
+  if (!connectDirective.split(/\s+/).includes(origin)) failures.push(`careers CSP connect-src does not allow configured API origin ${origin}`);
+  if (!formActionDirective.split(/\s+/).includes(origin)) failures.push(`careers CSP form-action does not allow configured API origin ${origin}`);
+}
+if (!configuredEndpointOrigins.length && connectDirective.split(/\s+/).some((value) => /^https?:\/\//i.test(value))) {
+  failures.push('careers CSP allows an external API origin without a configured intake endpoint');
 }
 
 for (const [route, html] of routeHtml) {
@@ -193,9 +206,19 @@ for (const [route, html] of routeHtml) {
     const action = attribute(formTag, 'action');
     if (!action) failures.push(`${route}: form has no action`);
     if (!attribute(formTag, 'method')) failures.push(`${route}: form has no method`);
-    if (action?.startsWith('mailto:')) {
-      addWarning(`${route}: mailto form has no server-side validation, abuse protection, delivery guarantee, or CRM routing`);
-      if (attribute(formTag, 'method')?.toLowerCase() === 'post') addWarning(`${route}: mailto form uses POST semantics that depend on the visitor's mail client`);
+    const isD365Form = /\bdata-d365-form(?:\s|=|>)/i.test(formTag);
+    const intakeType = attribute(formTag, 'data-intake-type');
+    if (!isD365Form) {
+      failures.push(`${route}: form is not marked for D365 intake delivery`);
+    } else {
+      if (attribute(formTag, 'method')?.toLowerCase() !== 'post') failures.push(`${route}: D365 form must use POST`);
+      if (!/enctype="application\/x-www-form-urlencoded"/i.test(formTag)) failures.push(`${route}: D365 form must use URL-encoded transport`);
+      const expectedEndpoint = intakeType === 'career' ? configuredCareersEndpoint : configuredPublicEndpoint;
+      if (!intakeType) failures.push(`${route}: D365 form has no intake type`);
+      if (expectedEndpoint && action !== expectedEndpoint.toString()) failures.push(`${route}: D365 form action does not match its configured HTTPS intake endpoint`);
+    }
+    if (action?.toLowerCase().startsWith('mailto:')) {
+      failures.push(`${route}: mailto form delivery is prohibited; route submissions through D365`);
     }
     if (!/<button\b[^>]*type="submit"[^>]*>\s*[^<]+/i.test(body) && !/<input\b[^>]*type="submit"/i.test(body)) {
       failures.push(`${route}: form has no named submit control`);
@@ -275,7 +298,8 @@ if (await readFile(robotsPath, 'utf8').then(() => true).catch(() => false)) {
 const cnamePath = join(projectRoot, 'CNAME');
 const cname = await readFile(cnamePath, 'utf8').then((value) => value.trim()).catch(() => '');
 if (cname !== expectedHost) failures.push(`CNAME does not match the configured site host (${cname || 'missing'} vs ${expectedHost})`);
-if (!outputFiles.some((file) => relative(outputRoot, file) === 'CNAME')) {
+const pagesCopiesCname = /(?:^|\n)\s*-\s*cp\s+CNAME\s+public\/CNAME\s*(?:#.*)?$/m.test(pagesPipeline);
+if (!outputFiles.some((file) => relative(outputRoot, file) === 'CNAME') && !pagesCopiesCname) {
   addWarning('dist/CNAME is absent; the GitLab Pages custom domain must be configured in project settings or the deployment must explicitly copy CNAME');
 }
 if (!(await readFile(join(projectRoot, '.nojekyll'), 'utf8').then(() => true).catch(() => false))) addWarning('.nojekyll is absent; retain it if GitHub Pages remains a supported deployment target');
