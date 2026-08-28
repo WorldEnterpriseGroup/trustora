@@ -2,7 +2,7 @@
 
 Trustora is an Astro 7 editorial website for Employer of Record services and Employee Intelligence: the employment, people-operations, and specialist-talent layer around teams working in AI, machine learning, quantum, physics, sciences, and shipped software.
 
-The site is a static, multipage build published through GitLab Pages at [trustora.net](https://trustora.net). It includes the main EoR narrative, capability detail pages, industry and location briefs, insights, comparison pages, workplace guidance, squeeze pages, and a detailed client-intake form.
+The site is a static, multipage build whose canonical source is published through GitLab and synchronized to GitHub Pages at [trustora.net](https://trustora.net). It includes the main EoR narrative, capability detail pages, industry and location briefs, insights, comparison pages, workplace guidance, squeeze pages, and a detailed client-intake form.
 
 ## Stack
 
@@ -12,6 +12,7 @@ The site is a static, multipage build published through GitLab Pages at [trustor
 - Sharp-backed AVIF image processing
 - Native HTML, CSS, and small progressive-enhancement scripts for navigation, form validation, and D365 intake submission
 - GitLab Pages deployment defined in `.gitlab-ci.yml`; the pipeline publishes the generated `dist/` artifact and preserves the custom-domain marker
+- GitHub Pages workflow in `.github/workflows/pages.yml`; GitLab remains the source-of-truth push path and the synchronized `gh-pages` branch builds and deploys the same artifact
 
 ## Local development
 
@@ -31,7 +32,7 @@ pnpm run preview # serve the latest dist/ build locally
 
 ## Repository and deployment source of truth
 
-The canonical repository is [WorldEnterpriseGroup/trustora on GitLab](https://git.developerdojo.org/WorldEnterpriseGroup/trustora). GitLab CI validates the project and publishes the default branch through GitLab Pages. The GitHub remote is a mirror/reference only; do not make website changes there or treat GitHub Pages as an active deployment target.
+The canonical repository is [WorldEnterpriseGroup/trustora on GitLab](https://git.developerdojo.org/WorldEnterpriseGroup/trustora). GitLab CI validates and publishes the default branch through GitLab Pages, and the GitLab-to-GitHub branch sync triggers the checked-in GitHub Pages workflow for the public custom domain. Make source changes in GitLab; GitHub is the synchronized deployment target, not a second source of truth.
 
 The production build emits the generated route set, including the recovery route, plus `robots.txt` and `sitemap.xml`. Route counts are intentionally verified from `dist/` rather than maintained as a second hard-coded list; the route families and conversion pages are documented in [docs/route-ledger.md](docs/route-ledger.md).
 
@@ -56,7 +57,7 @@ Every editorial photograph is a distinct AVIF source with intrinsic dimensions, 
 
 ## Forms and deployment boundary
 
-The site is intentionally static, but no form uses an email-client fallback. Contact, briefing, and squeeze-page forms post URL-encoded data to `PUBLIC_TRUSTORA_INTAKE_API_URL`; career forms post to `PUBLIC_CAREERS_API_URL`. Both HTTPS endpoints terminate at the Trustora Azure Function boundary and route accepted submissions into D365. Builds fail closed when either protected endpoint variable is absent or not HTTPS.
+The site is intentionally static, but no form uses an email-client fallback. Contact, briefing, and squeeze-page forms post URL-encoded data to `PUBLIC_TRUSTORA_INTAKE_API_URL`; career forms post to `PUBLIC_CAREERS_API_URL`. Both HTTPS endpoints terminate at the Trustora Azure Function boundary and route accepted submissions into D365. Builds fail closed when either GitLab/GitHub build variable is absent or not HTTPS.
 
 The careers integration contract, public-intake contract, schema, and Function source live in [docs/careers-intake-crm.md](docs/careers-intake-crm.md), [docs/careers-intake-contract.schema.json](docs/careers-intake-contract.schema.json), and [infra/careers-intake/](infra/careers-intake/). The Function uses managed identity, Dataverse upsert for careers, and D365 Lead creation with submission-id replay protection for public inquiries. No CRM credentials belong in the Astro build.
 
