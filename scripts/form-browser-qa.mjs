@@ -9,6 +9,37 @@ const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const outputRoot = join(projectRoot, 'dist');
 const expectedCounts = { squeeze: 13, briefing: 11, contact: 1, career: 4 };
 const expectedTotal = Object.values(expectedCounts).reduce((total, count) => total + count, 0);
+const viewportMatrix = [
+  { name: 'desktop', width: 1440, height: 900 },
+  { name: 'mobile', width: 390, height: 844 },
+];
+const representativeRoutes = [
+  { name: 'home', route: '/', ctaSelector: '.hero-home .hero-actions a[href="/contact/"]' },
+  {
+    name: 'contact form',
+    route: '/contact/',
+    intakeType: 'contact',
+    ctaSelector: 'form[data-d365-form][data-intake-type="contact"] button[type="submit"]',
+  },
+  {
+    name: 'squeeze form',
+    route: '/eor-for-ai-ml-teams/',
+    intakeType: 'squeeze',
+    ctaSelector: 'form[data-d365-form][data-intake-type="squeeze"] button[type="submit"]',
+  },
+  {
+    name: 'briefing form',
+    route: '/briefings/employer-of-record-operating-brief/',
+    intakeType: 'briefing',
+    ctaSelector: 'form[data-d365-form][data-intake-type="briefing"] button[type="submit"]',
+  },
+  {
+    name: 'career form',
+    route: '/careers/contract-strategic-initiatives-manager/',
+    intakeType: 'career',
+    ctaSelector: '.career-detail-hero a[href="#apply"]',
+  },
+];
 const publicEndpoint = requiredUrl('PUBLIC_TRUSTORA_INTAKE_API_URL');
 const careerEndpoint = requiredUrl('PUBLIC_CAREERS_API_URL');
 
@@ -83,6 +114,60 @@ function contentType(file) {
     '.txt': 'text/plain; charset=utf-8',
     '.xml': 'application/xml; charset=utf-8',
   }[extname(file).toLowerCase()] || 'application/octet-stream';
+}
+
+async function assertNoHorizontalOverflow(page, representative, viewport) {
+  const dimensions = await page.evaluate(() => ({
+    viewportWidth: window.innerWidth,
+    documentScrollWidth: document.documentElement.scrollWidth,
+    bodyScrollWidth: document.body?.scrollWidth ?? 0,
+  }));
+  const scrollWidth = Math.max(dimensions.documentScrollWidth, dimensions.bodyScrollWidth);
+  assert.ok(
+    scrollWidth <= dimensions.viewportWidth + 1,
+    `${representative.route}: ${viewport.name} viewport has horizontal overflow (${scrollWidth}px > ${dimensions.viewportWidth}px)`,
+  );
+}
+
+async function assertVisibleCta(page, representative, viewport) {
+  const cta = page.locator(representative.ctaSelector);
+  assert.equal(await cta.count(), 1, `${representative.route}: expected one ${representative.name} CTA at ${viewport.name}`);
+  assert.equal(await cta.isVisible(), true, `${representative.route}: ${representative.name} CTA is not visible at ${viewport.name}`);
+  const box = await cta.boundingBox();
+  assert.ok(box && box.width > 0 && box.height > 0, `${representative.route}: ${representative.name} CTA has no visible box at ${viewport.name}`);
+}
+
+async function assertFormContract(form, route) {
+  const metadata = await form.evaluate((element) => ({
+    action: element.action,
+    method: element.method,
+    enctype: element.enctype,
+    intakeType: element.dataset.intakeType || '',
+  }));
+  assert.equal(metadata.action, expectedEndpoint(route.type), `${route.route}: form action does not use the configured D365 endpoint`);
+  assert.equal(new URL(metadata.action).protocol, 'https:', `${route.route}: form action must use HTTPS`);
+  assert.equal(metadata.method.toLowerCase(), 'post', `${route.route}: form must use POST`);
+  assert.equal(metadata.enctype, 'application/x-www-form-urlencoded', `${route.route}: form must use URL-encoded transport`);
+  assert.equal(metadata.intakeType, route.type, `${route.route}: wrong form intake type`);
+}
+
+async function testViewportRoute(browser, baseUrl, representative, route, viewport) {
+  const page = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
+  try {
+    const pageResponse = await page.goto(`${baseUrl}${representative.route}`, { waitUntil: 'domcontentloaded', timeout: 20_000 });
+    assert.equal(pageResponse?.status(), 200, `${representative.route}: page returned HTTP ${pageResponse?.status() ?? 'no response'}`);
+    assert.equal(await page.locator('a[href^="mailto:"]').count(), 0, `${representative.route}: mailto link is present`);
+    await assertNoHorizontalOverflow(page, representative, viewport);
+    await assertVisibleCta(page, representative, viewport);
+
+    if (route) {
+      const form = page.locator(`form[data-d365-form][data-intake-type="${route.type}"]`);
+      assert.equal(await form.count(), 1, `${representative.route}: expected one representative D365 form at ${viewport.name}`);
+      await assertFormContract(form.first(), route);
+    }
+  } finally {
+    await page.close();
+  }
 }
 
 async function startLocalServer() {
@@ -213,8 +298,8 @@ function assertSubmissionBody(body, route) {
   }
 }
 
-async function testRoute(browser, baseUrl, route) {
-  const page = await browser.newPage();
+async function testRoute(browser, baseUrl, route, viewport, outcome = 'success') {
+  const page = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
   try {
     const pageResponse = await page.goto(`${baseUrl}${route.route}`, { waitUntil: 'domcontentloaded', timeout: 20_000 });
     assert.equal(pageResponse?.status(), 200, `${route.route}: page returned HTTP ${pageResponse?.status() ?? 'no response'}`);
@@ -223,18 +308,7 @@ async function testRoute(browser, baseUrl, route) {
     const forms = page.locator('form[data-d365-form]');
     assert.equal(await forms.count(), 1, `${route.route}: expected exactly one D365 form`);
     const form = forms.first();
-    const metadata = await form.evaluate((element) => ({
-      action: element.action,
-      method: element.method,
-      enctype: element.enctype,
-      intakeType: element.dataset.intakeType || '',
-      schema: element.querySelector('[name="schema-version"]')?.value || '',
-      source: element.querySelector('[name="source"]')?.value || '',
-    }));
-    assert.equal(metadata.action, expectedEndpoint(route.type), `${route.route}: form action does not use the configured D365 endpoint`);
-    assert.equal(metadata.method.toLowerCase(), 'post', `${route.route}: form must use POST`);
-    assert.equal(metadata.enctype, 'application/x-www-form-urlencoded', `${route.route}: form must use URL-encoded transport`);
-    assert.equal(metadata.intakeType, route.type, `${route.route}: wrong form intake type`);
+    await assertFormContract(form, route);
 
     await assertFallback(page, baseUrl, route);
 
@@ -242,7 +316,10 @@ async function testRoute(browser, baseUrl, route) {
     await page.route(expectedEndpoint(route.type), async (interceptedRoute) => {
       const request = interceptedRoute.request();
       captured = { method: request.method(), body: request.postData() || '' };
-      await interceptedRoute.fulfill({ status: 201, contentType: 'application/json', body: '{"ok":true}' });
+      const response = outcome === 'success'
+        ? { status: 201, body: '{"ok":true}' }
+        : { status: 503, body: '{"ok":false}' };
+      await interceptedRoute.fulfill({ ...response, contentType: 'application/json' });
     });
     const seenChoiceNames = new Set();
     const controls = form.locator('input,select,textarea');
@@ -253,7 +330,15 @@ async function testRoute(browser, baseUrl, route) {
     }));
     assert.equal(validity.valid, true, `${route.route}: required controls are invalid (${validity.invalid.join(', ')})`);
     await form.locator('button[type="submit"],input[type="submit"]').first().click();
-    await form.locator('[data-d365-status][data-state="success"]').waitFor({ state: 'visible', timeout: 10_000 });
+    const status = form.locator(`[data-d365-status][data-state="${outcome}"]`);
+    await status.waitFor({ state: 'visible', timeout: 10_000 });
+    assert.equal(await status.isVisible(), true, `${route.route}: ${outcome} status is not visible`);
+    const statusText = (await status.textContent()) || '';
+    if (outcome === 'success') {
+      assert.match(statusText, /accepted by the Trustora intake service/i, `${route.route}: success status text is missing`);
+    } else {
+      assert.match(statusText, /could not submit this form/i, `${route.route}: error status text is missing`);
+    }
     assert.equal(captured?.method, 'POST', `${route.route}: browser did not POST to the D365 endpoint`);
     assertSubmissionBody(parseBody(captured?.body, route), route);
   } finally {
@@ -268,15 +353,34 @@ async function main() {
     assert.equal(routes.filter((route) => route.type === type).length, count, `expected ${count} ${type} form routes`);
   }
 
+  const matrixRoutes = representativeRoutes.map((representative) => {
+    const route = routes.find((candidate) => candidate.route === representative.route);
+    if (representative.intakeType) {
+      assert.ok(route, `${representative.route}: representative form route was not discovered`);
+      assert.equal(route.type, representative.intakeType, `${representative.route}: representative form type changed`);
+    }
+    return { ...representative, formRoute: route };
+  });
+  const representativeFormRoutes = matrixRoutes.filter(({ formRoute }) => formRoute);
   const preview = await startLocalServer();
   const browser = await chromium.launch({ headless: true });
   try {
-    for (const route of routes) await testRoute(browser, preview.baseUrl, route);
+    for (const viewport of viewportMatrix) {
+      for (const representative of matrixRoutes) {
+        await testViewportRoute(browser, preview.baseUrl, representative, representative.formRoute, viewport);
+      }
+    }
+    for (const route of routes) await testRoute(browser, preview.baseUrl, route, viewportMatrix[0]);
+    for (const representative of representativeFormRoutes) {
+      await testRoute(browser, preview.baseUrl, representative.formRoute, viewportMatrix[1]);
+      await testRoute(browser, preview.baseUrl, representative.formRoute, viewportMatrix[1], 'error');
+    }
   } finally {
     await browser.close();
     await preview.stop();
   }
-  console.log(`Form browser QA passed: ${routes.length} forms (${expectedCounts.squeeze} squeezes, ${expectedCounts.briefing} briefings, ${expectedCounts.contact} contact, ${expectedCounts.career} careers) and ${expectedCounts.squeeze} squeeze fallbacks.`);
+  const matrixDescription = viewportMatrix.map(({ name, width, height }) => `${name} ${width}x${height}`).join(', ');
+  console.log(`Form browser QA passed: ${routes.length} forms (${expectedCounts.squeeze} squeezes, ${expectedCounts.briefing} briefings, ${expectedCounts.contact} contact, ${expectedCounts.career} careers), ${expectedCounts.squeeze} squeeze fallbacks, and ${matrixRoutes.length} representative routes across ${matrixDescription}; success/error status coverage ran on ${representativeFormRoutes.length} representative forms.`);
 }
 
 main().catch((error) => {

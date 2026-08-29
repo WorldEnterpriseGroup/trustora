@@ -8,9 +8,10 @@ This audit is intentionally separate from `scripts/deep-audit.mjs`. The deep aud
 - mobile viewport metadata and external-link safety;
 - form control names, grouped choices, file-upload encoding, and the D365 HTTPS intake boundary;
 - robots policy, custom-domain deployment assumptions, and static-hosting recovery output;
-- source-map/debug-file exposure, credential-like strings, local development URLs, and unsanitized `set:html` usage.
+- source-map/debug-file exposure, credential-like strings, local development URLs, and unsanitized `set:html` usage;
+- release synchronization evidence, including the protected GitLab-to-GitHub `gh-pages` reconciliation boundary.
 
-The release pipeline adds two complementary checks beyond this static audit: `pnpm run qa:browser` exercises every rendered D365 form and squeeze fallback against a local build, and `pnpm run qa:live` invokes the protected D365 round-trip smoke through the existing Tao Door endpoint. The live smoke is deliberately secret-gated and cleans its UUID-scoped fixtures before reporting success.
+The release pipeline adds two complementary checks beyond this static audit: `pnpm run qa:browser` exercises every rendered D365 form and squeeze fallback against a local build, then checks a representative public-route matrix at desktop (1440×900) and mobile (390×844) sizes for CTA visibility, horizontal overflow, and HTTPS form actions. The same harness asserts visible success and mocked error feedback on the representative form families. `pnpm run qa:live` invokes the protected D365 round-trip smoke through the existing Tao Door endpoint. The live smoke is deliberately secret-gated and cleans its UUID-scoped fixtures before reporting success.
 
 ## Run it
 
@@ -41,6 +42,8 @@ The latest sequential production-build run found these follow-ups:
 6. **Static security headers are a hosting concern:** the generated files do not prove that the deployed host sends HSTS, `Content-Security-Policy`, `Referrer-Policy`, `Permissions-Policy`, or `X-Content-Type-Options`. Configure and verify those at GitHub Pages, GitLab Pages, Azure Front Door, or the selected edge. Do not add a broad CSP exception merely to accommodate future scripts.
 
 7. **Release QA is fail-closed:** GitLab and GitHub Pages both run the technical audit and browser matrix before publication. Their deployment jobs also depend on a protected live D365 smoke that checks all four intake families and requires deterministic cleanup. A missing or invalid smoke secret blocks the release rather than silently skipping CRM verification.
+
+8. **GitLab-to-GitHub release reconciliation is protected and non-force:** the `sync-github` job runs only for the protected default branch, pushes `HEAD` to GitHub `gh-pages` without a force option, and immediately compares the remote ref with both the checked-out `HEAD` and `CI_COMMIT_SHA`. A missing or mismatched remote SHA fails the release; the check does not change the source-of-truth branch or CSP policy.
 
 ## Intake/CRM boundary
 
