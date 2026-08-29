@@ -309,9 +309,9 @@ if (!pagesPipeline.includes('pnpm run qa:live')) failures.push('GitLab release p
 if (!pagesPipeline.includes('$D365_SMOKE_TOKEN')) failures.push('GitLab live D365 smoke job does not receive its protected smoke token');
 if (!/pages:[\s\S]*?job:\s*live-intake-smoke/.test(pagesPipeline)) failures.push('GitLab Pages deployment is not gated by the live D365 smoke job');
 if (!pagesPipeline.includes('sync-github:')) failures.push('GitLab release pipeline does not synchronize the protected default branch to GitHub');
-if (!pagesPipeline.includes('$GITHUB_SYNC_TOKEN')) failures.push('GitLab GitHub-sync job does not receive its protected sync token');
+if (!pagesPipeline.includes('$GITHUB_SYNC_KEY_B64')) failures.push('GitLab GitHub-sync job does not receive its protected deploy key');
 if (!/sync-github:[\s\S]*?job:\s*pages/.test(pagesPipeline)) failures.push('GitLab GitHub synchronization is not gated by the successful Pages job');
-if (!pagesPipeline.includes('git push https://github.com/WorldEnterpriseGroup/trustora.git')) failures.push('GitLab GitHub-sync job does not push the validated commit to the GitHub gh-pages branch');
+if (!pagesPipeline.includes('git push ssh://git@ssh.github.com:443/WorldEnterpriseGroup/trustora.git')) failures.push('GitLab GitHub-sync job does not push the validated commit to the GitHub gh-pages branch');
 if (!githubPipeline.includes('pnpm run audit:technical')) failures.push('GitHub Pages workflow does not run the technical audit');
 if (!githubPipeline.includes('pnpm run qa:browser')) failures.push('GitHub Pages workflow does not run the browser form QA');
 if (!githubPipeline.includes('pnpm run qa:live')) failures.push('GitHub Pages workflow does not run the protected live D365 smoke');
