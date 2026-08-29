@@ -89,7 +89,7 @@ pages:
 sync-github:
   stage: sync
   image:
-    name: alpine/git:2.54.0
+    name: mcr.microsoft.com/playwright:v1.62.1-noble
     entrypoint: ['']
   before_script: []
   needs:
