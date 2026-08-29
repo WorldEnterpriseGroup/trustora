@@ -88,17 +88,17 @@ pages:
 
 sync-github:
   stage: sync
-  image: debian:bookworm-slim
-  before_script:
-    - apt-get update
-    - apt-get install -y --no-install-recommends ca-certificates git openssh-client
+  image:
+    name: alpine/git:2.54.0
+    entrypoint: ['']
+  before_script: []
   needs:
     - job: pages
       artifacts: false
   script:
     - test -n "$GITHUB_SYNC_KEY_B64"
     - install -m 700 -d "$CI_PROJECT_DIR/.sync-ssh"
-    - printf '%s' "$GITHUB_SYNC_KEY_B64" | base64 --decode > "$CI_PROJECT_DIR/.sync-ssh/id_ed25519"
+    - printf '%s' "$GITHUB_SYNC_KEY_B64" | base64 -d > "$CI_PROJECT_DIR/.sync-ssh/id_ed25519"
     - chmod 600 "$CI_PROJECT_DIR/.sync-ssh/id_ed25519"
     - ssh-keyscan -H github.com > "$CI_PROJECT_DIR/.sync-ssh/known_hosts"
     - export GIT_SSH_COMMAND="ssh -i $CI_PROJECT_DIR/.sync-ssh/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=$CI_PROJECT_DIR/.sync-ssh/known_hosts -o StrictHostKeyChecking=yes"
