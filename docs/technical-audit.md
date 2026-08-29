@@ -10,6 +10,8 @@ This audit is intentionally separate from `scripts/deep-audit.mjs`. The deep aud
 - robots policy, custom-domain deployment assumptions, and static-hosting recovery output;
 - source-map/debug-file exposure, credential-like strings, local development URLs, and unsanitized `set:html` usage.
 
+The release pipeline adds two complementary checks beyond this static audit: `pnpm run qa:browser` exercises every rendered D365 form and squeeze fallback against a local build, and `pnpm run qa:live` invokes the protected D365 round-trip smoke through the existing Tao Door endpoint. The live smoke is deliberately secret-gated and cleans its UUID-scoped fixtures before reporting success.
+
 ## Run it
 
 Run the build first, then run the audits sequentially. Do not run `astro build` and `pnpm test` in parallel: the build and test processes can otherwise inspect a changing `dist/` directory and produce misleading route counts or media results.
@@ -37,6 +39,8 @@ The latest sequential production-build run found these follow-ups:
 5. **Custom-domain behavior is preserved in both build and packaging:** the tracked `public/CNAME` is emitted as `dist/CNAME`, `.gitlab-ci.yml` explicitly copies the tracked root `CNAME` into the GitLab Pages artifact, and `.github/workflows/pages.yml` copies it into the GitHub Pages artifact. `trustora.net` is configured on the GitHub Pages deployment; GitLab Pages remains the canonical CI artifact publication. The root `.nojekyll` is not part of the supported GitLab Pages deployment.
 
 6. **Static security headers are a hosting concern:** the generated files do not prove that the deployed host sends HSTS, `Content-Security-Policy`, `Referrer-Policy`, `Permissions-Policy`, or `X-Content-Type-Options`. Configure and verify those at GitHub Pages, GitLab Pages, Azure Front Door, or the selected edge. Do not add a broad CSP exception merely to accommodate future scripts.
+
+7. **Release QA is fail-closed:** GitLab and GitHub Pages both run the technical audit and browser matrix before publication. Their deployment jobs also depend on a protected live D365 smoke that checks all four intake families and requires deterministic cleanup. A missing or invalid smoke secret blocks the release rather than silently skipping CRM verification.
 
 ## Intake/CRM boundary
 

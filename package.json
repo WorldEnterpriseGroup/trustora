@@ -9,7 +9,9 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "node scripts/route-smoke.mjs && node scripts/deep-audit.mjs",
-    "audit:technical": "node scripts/technical-audit.mjs"
+    "audit:technical": "node scripts/technical-audit.mjs",
+    "qa:browser": "node scripts/form-browser-qa.mjs",
+    "qa:live": "node scripts/live-intake-smoke.mjs"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "astro": "^7.2.0",
+    "playwright": "1.62.1",
     "sharp": "^0.35.3",
     "typescript": "^5.9.3"
   }

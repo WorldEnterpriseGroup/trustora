@@ -5,6 +5,8 @@ param applicationFieldPrefix string
 param trustoraTeamId string
 param allowedOrigins array
 param tags object
+@secure()
+param d365SmokeToken string
 
 var suffix = uniqueString(resourceGroup().id)
 var storageAccountName = 'sttrcr${suffix}'
@@ -131,6 +133,7 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
         { name: 'ALLOWED_ORIGINS', value: join(allowedOrigins, ',') }
         { name: 'RATE_LIMIT_PER_HOUR', value: '5' }
         { name: 'MAX_BODY_BYTES', value: '16384' }
+        { name: 'D365_SMOKE_TOKEN', value: d365SmokeToken }
       ]
     }
   }
