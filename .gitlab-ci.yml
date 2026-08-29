@@ -5,6 +5,7 @@ stages:
   - live-smoke
   - build
   - deploy
+  - sync
 
 variables:
   COREPACK_HOME: "$CI_PROJECT_DIR/.corepack"
@@ -84,3 +85,27 @@ pages:
     expire_in: never
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+sync-github:
+  stage: sync
+  image: debian:bookworm-slim
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends ca-certificates git openssh-client
+  needs:
+    - job: pages
+      artifacts: false
+  script:
+    - test -n "$GITHUB_SYNC_KEY_B64"
+    - install -m 700 -d "$CI_PROJECT_DIR/.sync-ssh"
+    - printf '%s' "$GITHUB_SYNC_KEY_B64" | base64 --decode > "$CI_PROJECT_DIR/.sync-ssh/id_ed25519"
+    - chmod 600 "$CI_PROJECT_DIR/.sync-ssh/id_ed25519"
+    - ssh-keyscan -H github.com > "$CI_PROJECT_DIR/.sync-ssh/known_hosts"
+    - export GIT_SSH_COMMAND="ssh -i $CI_PROJECT_DIR/.sync-ssh/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=$CI_PROJECT_DIR/.sync-ssh/known_hosts -o StrictHostKeyChecking=yes"
+    - git remote add github-sync git@github.com:WorldEnterpriseGroup/trustora.git
+    - git push github-sync "HEAD:gh-pages"
+    - synced_sha="$(git ls-remote github-sync refs/heads/gh-pages | awk '{print $1}')"
+    - test "$synced_sha" = "$CI_COMMIT_SHA"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - when: never
