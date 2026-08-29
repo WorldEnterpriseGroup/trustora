@@ -548,6 +548,9 @@
   .principle-row { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; }
   .principle-row p { grid-column: 2; }
   .briefing-grid, .briefing-library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .expertise-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .expertise-item:nth-child(odd) { border-left: 0; }
+  .expertise-item:nth-child(n + 3) { border-top: 1px solid var(--line); }
   .briefing-detail-grid, .faq-layout { grid-template-columns: 1fr; }
   .faq-intro { position: static; }
   .briefing-thesis-grid { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -603,6 +606,8 @@
   .hero-media { min-height: 18rem; }
   .proof-band, .article-grid { grid-template-columns: 1fr; }
   .briefing-grid, .briefing-library-grid, .outcome-grid, .capability-links, .question-grid { grid-template-columns: 1fr; }
+  .expertise-grid { grid-template-columns: 1fr; }
+  .expertise-item + .expertise-item { border-top: 1px solid var(--line); border-left: 0; }
   .check-grid { grid-template-columns: 1fr; }
   .matrix-grid { grid-template-columns: 1fr; }
   .question-card, .outcome-grid > div { border-left: 0 !important; }
