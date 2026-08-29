@@ -27,6 +27,8 @@ Useful checks:
 pnpm run check   # Astro and TypeScript diagnostics
 pnpm run build   # production output in dist/
 pnpm test        # route smoke test plus deep accessibility/SEO/media audit
+pnpm run audit:technical # deployment-safety and D365 form contract audit
+pnpm run qa:browser      # Playwright contract for every rendered form and squeeze fallback
 pnpm run preview # serve the latest dist/ build locally
 ```
 
@@ -60,6 +62,8 @@ Every editorial photograph is a distinct AVIF source with intrinsic dimensions, 
 The site is intentionally static, but no form uses an email-client fallback. Contact, briefing, and squeeze-page forms post URL-encoded data to `PUBLIC_TRUSTORA_INTAKE_API_URL`; career forms post to `PUBLIC_CAREERS_API_URL`. Both HTTPS endpoints terminate at the Trustora Azure Function boundary and route accepted submissions into D365. Builds fail closed when either GitLab/GitHub build variable is absent or not HTTPS.
 
 The careers integration contract, public-intake contract, schema, and Function source live in [docs/careers-intake-crm.md](docs/careers-intake-crm.md), [docs/careers-intake-contract.schema.json](docs/careers-intake-contract.schema.json), and [infra/careers-intake/](infra/careers-intake/). The Function uses managed identity, Dataverse upsert for careers, and D365 Lead creation with submission-id replay protection for public inquiries. No CRM credentials belong in the Astro build.
+
+Every release is gated twice: `qa:browser` runs against the freshly built static artifact and stubs only the browser transport, while the protected `qa:live` job runs `POST /api/careers-health?smoke=d365` through the shared Tao Door route and verifies real D365 create, replay, field/owner mapping, and cleanup for contact, briefing, squeeze, and career submissions. GitLab requires `D365_SMOKE_TOKEN` as a protected masked variable; the synchronized GitHub Pages workflow requires the matching repository secret. The token is also a secure Bicep parameter for the Function app setting and is never committed.
 
 ## Content and brand
 

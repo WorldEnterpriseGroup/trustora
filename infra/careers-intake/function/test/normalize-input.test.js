@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeInput, normalizePublicIntake, publicLeadFields, publicLeadSubject } from '../src/index.js';
+import { normalizeInput, normalizePublicIntake, publicLeadFields, publicLeadSubject, smokeAuthorized } from '../src/index.js';
 
 const baseApplication = {
   'full-name': 'Example Applicant',
@@ -82,4 +82,8 @@ test('generates a UUID for public intake without a browser idempotency key', () 
 test('rejects public intake without explicit consent or with a foreign source', () => {
   assert.equal(normalizePublicIntake({ ...basePublicIntake, 'safe-to-contact': 'no' }).error, 'invalid_public_intake');
   assert.equal(normalizePublicIntake({ ...basePublicIntake, source: 'example.org/contact/' }).error, 'invalid_public_intake');
+});
+
+test('fails closed when the protected smoke header is missing', () => {
+  assert.equal(smokeAuthorized({ headers: new Headers() }), false);
 });

@@ -9,12 +9,14 @@ const ENTITY_SET = clean(process.env.TRUSTORA_APPLICATION_ENTITY_SET, 80).replac
 const LEAD_ENTITY_SET = clean(process.env.TRUSTORA_LEAD_ENTITY_SET || 'leads', 80).replace(/[^a-zA-Z0-9_]/g, '');
 const FIELD_PREFIX = clean(process.env.TRUSTORA_APPLICATION_FIELD_PREFIX, 20).replace(/[^a-zA-Z0-9_]/g, '');
 const TRUSTORA_TEAM_ID = guid(process.env.TRUSTORA_TEAM_ID);
+const D365_SMOKE_TOKEN = clean(process.env.D365_SMOKE_TOKEN, 256);
 const PUBLIC_SCHEMA_VERSION = 'trustora-public-intake-v1';
 const PUBLIC_INTAKE_TYPES = new Set(['contact', 'briefing', 'squeeze']);
 const ALLOWED_ORIGINS = new Set((process.env.ALLOWED_ORIGINS || 'https://trustora.net,https://www.trustora.net')
   .split(',').map((value) => normalizeOrigin(value)).filter(Boolean));
 const credential = new DefaultAzureCredential();
 const requestCounts = new Map();
+let smokeInProgress = false;
 
 function clean(value, max = 500) {
   return String(value ?? '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max);
@@ -405,6 +407,222 @@ async function publicLeadHealth() {
   }
 }
 
+function smokeAuthorized(request) {
+  if (!D365_SMOKE_TOKEN) return false;
+  const supplied = request.headers.get('x-trustora-smoke-token') || '';
+  const suppliedBuffer = Buffer.from(supplied);
+  const expectedBuffer = Buffer.from(D365_SMOKE_TOKEN);
+  return suppliedBuffer.length === expectedBuffer.length && crypto.timingSafeEqual(suppliedBuffer, expectedBuffer);
+}
+
+function smokeCheck(condition) {
+  if (!condition) throw new Error('d365_smoke_assertion_failed');
+}
+
+async function eventually(label, read, timeout = 15_000) {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeout) {
+    try {
+      const value = await read();
+      if (value) return value;
+    } catch {
+      // Dataverse can briefly lag after a write; retry until the bounded deadline.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 300));
+  }
+  throw new Error(`d365_smoke_timeout_${label}`);
+}
+
+async function eventuallyGone(label, read, timeout = 15_000) {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeout) {
+    try {
+      if (await read()) return true;
+    } catch {
+      // Dataverse can briefly lag while a delete is committed; retry until the bounded deadline.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 300));
+  }
+  throw new Error(`d365_smoke_timeout_${label}`);
+}
+
+async function careerApplicationRows(application) {
+  const filter = `${field('submissionid')} eq ${odataString(application.applicationId)}`;
+  const result = await dataverseRequest(`${ENTITY_SET}?$filter=${encodeURIComponent(filter)}&$top=5`, { method: 'GET' });
+  return (await result.json())?.value || [];
+}
+
+function careerApplicationId(row) {
+  const expectedKey = `${ENTITY_SET.replace(/s$/, '')}id`;
+  const expectedValue = guid(row?.[expectedKey]);
+  if (expectedValue) return expectedValue;
+  for (const [key, value] of Object.entries(row || {})) {
+    if (key.toLowerCase() === field('submissionid').toLowerCase() || key.toLowerCase().endsWith('_value')) continue;
+    const candidate = guid(value);
+    if (candidate && key.toLowerCase().endsWith('id')) return candidate;
+  }
+  return '';
+}
+
+function publicSmokeInput(intakeType, route, marker) {
+  const applicationId = crypto.randomUUID();
+  const input = {
+    'application-id': applicationId,
+    'intake-type': intakeType,
+    name: 'Trustora CI Smoke',
+    email: `trustora-ci-smoke+${applicationId}@trustora.net`,
+    company: 'Trustora CI Smoke',
+    title: 'D365 release smoke',
+    source: `trustora.net${route}`,
+    'business-unit': 'Trustora',
+    'schema-version': PUBLIC_SCHEMA_VERSION,
+    'safe-to-contact': 'yes',
+    website: '',
+    context: marker,
+  };
+  if (intakeType === 'briefing') input['briefing-slug'] = route.split('/').filter(Boolean).at(-1);
+  if (intakeType === 'squeeze') input['squeeze-key'] = route.split('/').filter(Boolean).at(-1);
+  return input;
+}
+
+function careerSmokeInput(marker) {
+  const applicationId = crypto.randomUUID();
+  return {
+    'application-id': applicationId,
+    'full-name': 'Trustora CI Smoke',
+    email: `trustora-career-smoke+${applicationId}@trustora.net`,
+    'current-country': 'United States',
+    'time-zone': 'America/New_York',
+    'role-title-or-problem': 'D365 release smoke',
+    'work-authorization': 'I will need guidance',
+    'work-model': 'Remote',
+    availability: 'Within one month',
+    'work-evidence': marker,
+    'applicant-consent': 'yes',
+    'business-unit': 'Trustora',
+    'schema-version': 'trustora-careers-v1',
+    website: '',
+    source: 'trustora.net/careers',
+  };
+}
+
+async function verifyPublicSmoke(intake) {
+  const created = await createPublicIntake(intake);
+  smokeCheck(created.created === true);
+  const leadId = await eventually('public_create', () => findPublicIntake(intake));
+  const result = await dataverseRequest(`${LEAD_ENTITY_SET}(${leadId})?$select=leadid,subject,emailaddress1,companyname,jobtitle,description,_ownerid_value`, { method: 'GET' });
+  const row = await result.json();
+  smokeCheck(guid(row.leadid) === leadId.toLowerCase());
+  smokeCheck(row.subject === publicLeadSubject(intake));
+  smokeCheck(row.emailaddress1 === intake.email);
+  smokeCheck(row.companyname === intake.company);
+  smokeCheck(row.jobtitle === intake.title);
+  smokeCheck(row._ownerid_value?.toLowerCase() === TRUSTORA_TEAM_ID);
+  smokeCheck(row.description?.includes(`Submission ID: ${intake.submissionId}`));
+  smokeCheck(row.description?.includes(`Source: ${intake.source}`));
+  smokeCheck(row.description?.includes('Consent: safe-to-contact=yes'));
+  const replay = await createPublicIntake(intake);
+  smokeCheck(replay.created === false);
+  smokeCheck((await findPublicIntake(intake))?.toLowerCase() === leadId.toLowerCase());
+  return leadId;
+}
+
+async function verifyCareerSmoke(application) {
+  await upsertApplication(application);
+  const firstRows = await eventually('career_create', async () => {
+    const rows = await careerApplicationRows(application);
+    return rows.length === 1 ? rows : null;
+  });
+  const firstId = careerApplicationId(firstRows[0]);
+  smokeCheck(Boolean(firstId));
+  const firstRow = firstRows[0];
+  smokeCheck(firstRow[field('submissionid')] === application.applicationId);
+  smokeCheck(firstRow[field('name')] === application.name);
+  smokeCheck(firstRow[field('email')] === application.email);
+  smokeCheck(firstRow[field('source')] === application.source);
+  smokeCheck(firstRow[field('consent')] === true);
+  smokeCheck(firstRow[field('consentscope')] === 'career-application-review');
+  smokeCheck(firstRow[field('status')] === 'New');
+  smokeCheck(firstRow._ownerid_value?.toLowerCase() === TRUSTORA_TEAM_ID);
+  await upsertApplication(application);
+  const replayRows = await eventually('career_replay', async () => {
+    const rows = await careerApplicationRows(application);
+    return rows.length === 1 ? rows : null;
+  });
+  smokeCheck(careerApplicationId(replayRows[0]) === firstId);
+  return firstId;
+}
+
+async function runD365Smoke() {
+  if (!publicIntakeReady() || !dataverseReady()) throw new Error('d365_smoke_not_configured');
+  const marker = `Trustora D365 CI smoke ${crypto.randomUUID()}`;
+  const publicInputs = [
+    publicSmokeInput('contact', '/contact/', marker),
+    publicSmokeInput('briefing', '/briefings/employer-of-record-operating-brief/', marker),
+    publicSmokeInput('squeeze', '/specialist-hiring-intake/', marker),
+  ].map(normalizePublicIntake);
+  const careerInput = normalizeInput(careerSmokeInput(marker));
+  publicInputs.forEach((input) => smokeCheck(!input.error));
+  smokeCheck(!careerInput.error);
+
+  const leadIds = [];
+  let stage = 'setup';
+  try {
+    for (const intake of publicInputs) {
+      stage = `public_${intake.intakeType}`;
+      leadIds.push(await verifyPublicSmoke(intake));
+    }
+    stage = 'career';
+    await verifyCareerSmoke(careerInput);
+    return { ok: true, service: 'trustora-careers-intake', smoke: true, checked: ['contact', 'briefing', 'squeeze', 'career'], cleaned: true };
+  } catch (error) {
+    error.smokeStage = stage;
+    throw error;
+  } finally {
+    const cleanupErrors = [];
+    for (const intake of publicInputs) {
+      try {
+        const leadId = await findPublicIntake(intake);
+        if (leadId) await dataverseRequest(`${LEAD_ENTITY_SET}(${leadId})`, { method: 'DELETE' });
+      } catch {
+        cleanupErrors.push('public_delete');
+      }
+    }
+    if (!careerInput.error) {
+      try {
+        const rows = await careerApplicationRows(careerInput);
+        for (const row of rows) {
+          const applicationId = careerApplicationId(row);
+          if (!applicationId) cleanupErrors.push('career_id');
+          else await dataverseRequest(`${ENTITY_SET}(${applicationId})`, { method: 'DELETE' });
+        }
+      } catch {
+        cleanupErrors.push('career_delete');
+      }
+    }
+    for (const intake of publicInputs) {
+      try {
+        await eventuallyGone('public_cleanup_verify', async () => (await findPublicIntake(intake)) === null);
+      } catch {
+        cleanupErrors.push('public_verify');
+      }
+    }
+    if (!careerInput.error) {
+      try {
+        await eventuallyGone('career_cleanup_verify', async () => (await careerApplicationRows(careerInput)).length === 0);
+      } catch {
+        cleanupErrors.push('career_verify');
+      }
+    }
+    if (cleanupErrors.length) {
+      const error = new Error('d365_smoke_cleanup_failed');
+      error.smokeStage = 'cleanup';
+      error.smokeCleanup = [...new Set(cleanupErrors)];
+      throw error;
+    }
+  }
+}
+
 app.http('careerApplication', {
   methods: ['POST', 'OPTIONS'],
   authLevel: 'anonymous',
@@ -438,10 +656,27 @@ app.http('careerApplication', {
 });
 
 app.http('careerHealth', {
-  methods: ['GET'],
+  methods: ['GET', 'POST'],
   authLevel: 'anonymous',
   route: 'careers-health',
-  handler: async () => response(200, { ok: true, service: 'trustora-careers-intake', configured: dataverseReady(), publicIntakeConfigured: publicIntakeReady(), publicLeadHealth: await publicLeadHealth() }),
+  handler: async (request) => {
+    const smokeRequested = new URL(request.url).searchParams.get('smoke') === 'd365';
+    if (smokeRequested) {
+      if (request.method !== 'POST' || !smokeAuthorized(request)) return response(404, { error: 'not_found' });
+      if (smokeInProgress) return response(409, { ok: false, error: 'smoke_in_progress' });
+      smokeInProgress = true;
+      try {
+        return response(200, await runD365Smoke());
+      } catch (error) {
+        request?.logger?.error?.('Trustora D365 smoke failed', { code: clean(error?.message, 120) });
+        return response(502, { ok: false, error: 'smoke_failed', stage: clean(error?.smokeStage, 40) || 'unknown', cleanup: Array.isArray(error?.smokeCleanup) ? error.smokeCleanup.slice(0, 8) : undefined });
+      } finally {
+        smokeInProgress = false;
+      }
+    }
+    if (request.method !== 'GET') return response(405, { error: 'method_not_allowed' });
+    return response(200, { ok: true, service: 'trustora-careers-intake', configured: dataverseReady(), publicIntakeConfigured: publicIntakeReady(), publicLeadHealth: await publicLeadHealth() });
+  },
 });
 
-export { normalizeInput, applicationFields, normalizePublicIntake, publicLeadFields, publicLeadSubject };
+export { normalizeInput, applicationFields, normalizePublicIntake, publicLeadFields, publicLeadSubject, smokeAuthorized };

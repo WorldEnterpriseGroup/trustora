@@ -107,7 +107,7 @@ The envelope is a projection, not a complete CRM schema. Store the minimum appli
 - Function endpoint: `https://careers-api.trustora.net/api/careers-application` through the Terraform-owned shared `taodoor-standard` Front Door profile.
 - Front Door route: `trustora-careers-route`, limited to `/api/careers-application` and `/api/careers-health`, with WAF rate limiting and no-cache Function responses.
 - `PUBLIC_CAREERS_API_URL` and `PUBLIC_TRUSTORA_INTAKE_API_URL` are protected in the Trustora GitLab project and are consumed at the next static-site build.
-- The Trustora Careers Intake role carries Local-depth Lead Create/Read/Write/Append/Append To/Assign plus Local-depth `prvReadAsyncOperation` (System Job), which Dataverse checks during owner validation.
+- The Trustora Careers Intake role carries Local-depth Lead and Trustora career-application Create/Read/Write/Append/Append To/Assign/Delete plus Local-depth `prvReadAsyncOperation` (System Job), which Dataverse checks during owner validation. Delete is used only by the token-protected CI smoke to remove its UUID-scoped fixtures.
 - Synthetic submission/replay passed twice with one CRM row; the controlled test row was deleted after verification.
 - The careers form does not accept document uploads. Resume/CV fields remain HTTPS links until malware scanning, private storage, retention, and access controls are separately approved.
 

@@ -24,6 +24,10 @@ param allowedOrigins array = [
   'https://www.trustora.net'
 ]
 
+@description('Protected CI smoke token. Supply it through a secure deployment parameter; never commit it.')
+@secure()
+param d365SmokeToken string
+
 var tags = {
   environment: 'production'
   managedBy: 'iac'
@@ -50,6 +54,7 @@ module infrastructure 'careers.bicep' = {
     trustoraTeamId: trustoraTeamId
     allowedOrigins: allowedOrigins
     tags: tags
+    d365SmokeToken: d365SmokeToken
   }
 }
 

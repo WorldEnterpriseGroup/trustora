@@ -101,6 +101,7 @@ function printWarnings() {
 
 const config = await readFile(join(projectRoot, 'astro.config.mjs'), 'utf8');
 const pagesPipeline = await readFile(join(projectRoot, '.gitlab-ci.yml'), 'utf8').catch(() => '');
+const githubPipeline = await readFile(join(projectRoot, '.github/workflows/pages.yml'), 'utf8').catch(() => '');
 const configuredSite = config.match(/site:\s*['"]([^'"]+)['"]/)?.[1];
 if (!configuredSite) failures.push('astro.config.mjs does not declare a site URL');
 const siteUrl = new URL(configuredSite ?? 'https://trustora.net');
@@ -302,6 +303,16 @@ const pagesCopiesCname = /(?:^|\n)\s*-\s*cp\s+CNAME\s+public\/CNAME\s*(?:#.*)?$/
 if (!outputFiles.some((file) => relative(outputRoot, file) === 'CNAME') && !pagesCopiesCname) {
   addWarning('dist/CNAME is absent; the GitLab Pages custom domain must be configured in project settings or the deployment must explicitly copy CNAME');
 }
+if (!pagesPipeline.includes('pnpm run audit:technical')) failures.push('GitLab release pipeline does not run the technical audit');
+if (!pagesPipeline.includes('pnpm run qa:browser')) failures.push('GitLab release pipeline does not run the browser form QA');
+if (!pagesPipeline.includes('pnpm run qa:live')) failures.push('GitLab release pipeline does not run the protected live D365 smoke');
+if (!pagesPipeline.includes('$D365_SMOKE_TOKEN')) failures.push('GitLab live D365 smoke job does not receive its protected smoke token');
+if (!/pages:[\s\S]*?job:\s*live-intake-smoke/.test(pagesPipeline)) failures.push('GitLab Pages deployment is not gated by the live D365 smoke job');
+if (!githubPipeline.includes('pnpm run audit:technical')) failures.push('GitHub Pages workflow does not run the technical audit');
+if (!githubPipeline.includes('pnpm run qa:browser')) failures.push('GitHub Pages workflow does not run the browser form QA');
+if (!githubPipeline.includes('pnpm run qa:live')) failures.push('GitHub Pages workflow does not run the protected live D365 smoke');
+if (!githubPipeline.includes('secrets.D365_SMOKE_TOKEN')) failures.push('GitHub live D365 smoke job does not receive its repository smoke secret');
+if (!githubPipeline.includes('needs: [build, live-intake-smoke]')) failures.push('GitHub Pages deployment is not gated by the live D365 smoke job');
 if (!(await readFile(join(projectRoot, '.nojekyll'), 'utf8').then(() => true).catch(() => false))) addWarning('.nojekyll is absent; retain it if GitHub Pages remains a supported deployment target');
 
 for (const file of outputFiles) {
