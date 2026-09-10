@@ -22,7 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "astro": "^7.2.0",
+    "astro": "^7.2.8",
     "playwright": "1.62.1",
     "sharp": "^0.35.3",
     "typescript": "^5.9.3"
