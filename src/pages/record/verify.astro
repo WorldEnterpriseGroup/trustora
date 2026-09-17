@@ -1,0 +1,67 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora source register | Record Room"
+  description="Dated Trustora findings beside their sources, with status classes and limits."
+  currentPath="/record/verify/"
+  kicker="04 · Record / Verify"
+  crumb="Source register"
+  jump={[
+    { href: '#verify-worksheet-title', label: 'Dated source records' },
+    { href: '#matrix-title', label: 'Findings and source basis' },
+    { href: '#correction-title', label: 'Source discrepancies' },
+  ]}
+>
+  <h1>A dated verification register for Trustora.</h1>
+  <p class="record-dek">The register states the result beside its source and attribution. It distinguishes published entity facts, registry standing, published policy, company-reported experience, and information that Trustora does not publish.</p>
+  <p><strong>Reviewed {recordReviewed}</strong> · Static report release</p>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-verify']} alt={mediaManifest['record-verify'].alt} caption={mediaManifest['record-verify'].caption} credit={mediaManifest['record-verify'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="verify-worksheet-title">
+    <h2 id="verify-worksheet-title">Dated records in this release.</h2>
+    <div class="record-brief-grid">
+      <div><span class="record-chip-label">Receipt · Pakistan entity</span><h3>Companies Act, 2017</h3><p>Single-member private limited company; incorporation number and dates withheld until approved for publication.</p><p>Checked {recordReviewed}; company-reported.</p></div>
+      <div><span class="record-chip-label">Receipt · Operations policy</span><h3>Effective 1 September 2026</h3><p>44-page EoR Operations and Corporate Governance Policy; SharePoint source v17.0 modified 7 September 2026; SHA-256 pinned in <a href="/record/files/">documents</a>.</p><p>Owner: Executive Management; portal trustora.net.</p></div>
+      <div><span class="record-chip-label">Receipt · Public record</span><h3>Company facts and wording</h3><p>Legal identity, office, contact, posture, and boundary language reviewed for the {recordReviewed} static release.</p><p>Status: published wording; registries control at transaction time.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="matrix-title">
+    <h2 id="matrix-title">Current public findings and their exact boundaries.</h2>
+    <div class="record-definition">
+      <table>
+        <caption>Evidence register</caption>
+        <thead><tr><th scope="col">Record area</th><th scope="col">Status class</th><th scope="col">Source</th><th scope="col">Finding</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Corporate identity</th><td>Company-reported; numbers withheld</td><td><a href="/legal/entities/">Legal identity and boundaries</a></td><td>TRUSTORA (SMC-PRIVATE) LIMITED, single-member private limited company under the Companies Act, 2017, Pakistan. Incorporation number and dates not published.</td></tr>
+          <tr><th scope="row">Published office</th><td>Company-reported invoicing record</td><td><a href="/record/verify/">This register</a></td><td>P-460 Yasrab Colony, Faisalabad, Punjab, Pakistan. Approved for publication by the company; not independently verified against a registry extract here.</td></tr>
+          <tr><th scope="row">SECP / FBR / EOBI / social security</th><td>Registries maintained; numbers withheld</td><td><a href="/legal/policy/">EoR operations policy</a></td><td>SECP incorporation and annual filings, FBR/NTN withholding, EOBI and provincial social-security registrations maintained. Numbers not published.</td></tr>
+          <tr><th scope="row">Operations policy</th><td>Published company document</td><td><a href="/record/files/">Document register</a></td><td>EoR Operations and Corporate Governance Policy, effective 1 September 2026, 44 pages, SHA-256 pinned. Also at <a href="/legal/policy/">/legal/policy/</a>.</td></tr>
+          <tr><th scope="row">Leadership</th><td>Company statement</td><td><a href="/record/leadership/">Leadership</a></td><td>Abdul Rehman, operations and delivery lead. Background as stated by the company; individual history kept separate from company record.</td></tr>
+          <tr><th scope="row">Operating experience</th><td>Company-reported</td><td><a href="/record/ops/">Business status</a></td><td>Client operating work including website operations and tax coordination; growth figures are company-reported, not audited outcomes.</td></tr>
+          <tr><th scope="row">PSEB / certifications</th><td>No certification asserted</td><td><a href="/record/verify/">This register</a></td><td>No PSEB, ISO, CMMI, or other certification claimed in the public record.</td></tr>
+          <tr><th scope="row">US entity</th><td>No US entity</td><td><a href="/legal/entities/">Legal identity and boundaries</a></td><td>No US legal entity, EIN, SAM registration, UEI, or CAGE held.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="correction-title">
+    <h2 id="correction-title">Conflicting source results remain visible and attributable.</h2>
+    <p>The published office is a company-approved invoicing record, not a registry extract. Registry numbers are maintained but withheld, so no number is asserted or contradicted here. No source is silently promoted to resolve a gap.</p>
+    <div class="record-brief-grid">
+      <div><span class="record-chip-label">Published entity</span><h3>Identity and office</h3><p>Legal name, form, jurisdiction, and published office from Trustora's public company record.</p></div>
+      <div><span class="record-chip-label">Registry standing</span><h3>Categories, not numbers</h3><p>SECP, FBR, EOBI, and social-security standing in categories; numbers control at transaction time and are withheld here.</p></div>
+      <div><span class="record-chip-label">Company material</span><h3>Statements with limits</h3><p>Policy, experience, and background statements are declarations with the limits printed here.</p></div>
+    </div>
+  </section>
+</RecordLayout>

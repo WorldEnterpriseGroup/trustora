@@ -1,0 +1,112 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora registration records | Record Room"
+  description="Trustora's Pakistan statutory posture across SECP, FBR, EOBI, and social security, with service mapping and boundaries."
+  currentPath="/record/federal/"
+  kicker="03 · Record / Registration"
+  crumb="Registration records"
+  jump={[
+    { href: '#map-title', label: 'Entity and service mapping' },
+    { href: '#record-award-title', label: 'Awards and past performance' },
+    { href: '#policy-title', label: 'Current status and roadmap' },
+  ]}
+>
+  <h1>Trustora (SMC-Private) Limited in public records.</h1>
+  <p class="record-dek">A dated reference sheet for entity identity, Pakistan statutory registrations, service mapping, and operating boundaries. The page states the available facts directly and keeps registry record, company statements, and unpublished information in separate categories.</p>
+  <p>Report release: {recordReviewed}; static at build time</p>
+
+  <dl class="record-chip-row">
+    <div><dt>Legal form</dt><dd>SMC-Private Limited</dd></div>
+    <div><dt>Published office</dt><dd>Faisalabad, Punjab</dd></div>
+    <div><dt>Statutory standing</dt><dd>Registrations maintained</dd></div>
+    <div><dt>Certifications</dt><dd>None asserted</dd></div>
+  </dl>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-federal']} alt={mediaManifest['record-federal'].alt} caption={mediaManifest['record-federal'].caption} credit={mediaManifest['record-federal'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="map-title">
+    <h2 id="map-title">The published Trustora entity record.</h2>
+    <dl class="record-chip-row">
+      <div><dt>Legal name</dt><dd>TRUSTORA (SMC-PRIVATE) LIMITED</dd></div>
+      <div><dt>Legal form</dt><dd>Single-member private limited, Companies Act 2017</dd></div>
+      <div><dt>Jurisdiction</dt><dd>Islamic Republic of Pakistan</dd></div>
+      <div><dt>Published office</dt><dd>P-460 Yasrab Colony, Faisalabad, Punjab</dd></div>
+      <div><dt>SECP</dt><dd>Registered; number withheld</dd></div>
+      <div><dt>FBR / NTN</dt><dd>Maintained; number withheld</dd></div>
+      <div><dt>EOBI / social security</dt><dd>Maintained; numbers withheld</dd></div>
+      <div><dt>Public contact</dt><dd><a href="mailto:info@trustora.net">info@trustora.net</a></dd></div>
+    </dl>
+    <h3>Primary service set</h3>
+    <p>The primary service is <strong>Employer of Record administration</strong>: contracts, onboarding, payroll, benefits, records, and employee support. Corridors: <strong>Pakistan</strong> (entity on record), <strong>EU, Australia, and US</strong> (country-by-country review through engagement terms and qualified local partners where required).</p>
+    <p><strong>Operating model:</strong> employment administration layer around specialist work; clients keep day-to-day direction.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Registry family, standing, and scope</caption>
+        <thead><tr><th scope="col">Registry family</th><th scope="col">Standing</th><th scope="col">Description / scope</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">SECP incorporation</th><td>Registered; numbers withheld</td><td>Corporate incorporation and annual compliance filings under the Companies Act, 2017</td></tr>
+          <tr><th scope="row">FBR taxation</th><td>Maintained; numbers withheld</td><td>National Tax Number registration and corporate income-tax withholding compliance</td></tr>
+          <tr><th scope="row">EOBI</th><td>Maintained; numbers withheld</td><td>Federal pension and disability-scheme compliance for covered employees</td></tr>
+          <tr><th scope="row">Provincial social security</th><td>Maintained; numbers withheld</td><td>Registration across applicable jurisdictions (including SESSI, PESSI, IESSI where applicable)</td></tr>
+          <tr><th scope="row">PSEB / certifications</th><td>None asserted</td><td>No PSEB registration, ISO, CMMI, or other certification claimed</td></tr>
+          <tr><th scope="row">US registrations</th><td>No US entity</td><td>No US legal entity, EIN, SAM registration, UEI, or CAGE held</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The entries above describe Trustora's registered or published standing; generic service families are used and no PSIC, NAICS, or PSC code numbers are asserted. They do not establish contract awards.</p>
+  </section>
+
+  <section aria-labelledby="record-award-title">
+    <h2 id="record-award-title">Awards and past performance.</h2>
+    <div class="record-brief-grid">
+      <div><span class="record-chip-label">Company record</span><h3>No audited past performance published</h3><p>Trustora publishes no audited contract outcomes, customer awards, or customer names in this record. Company-reported operating experience is labeled separately in business status.</p></div>
+      <div><span class="record-chip-label">Financial record</span><h3>No public financials published</h3><p>This static Record Room does not invent revenue, rates, headcount, or balance-sheet values. Financial information is unavailable in the public company record.</p></div>
+      <div><span class="record-chip-label">Company-reported context</span><h3>Operating experience, labeled</h3><p>Client operating work including website operations and tax coordination, with growth figures stated as company reports, lives in <a href="/record/ops/">business status</a> — not here as audited outcomes.</p></div>
+    </div>
+    <aside class="record-status-panel" aria-label="Engagement register snapshot">
+      <h3>Engagement register snapshot.</h3>
+      <dl>
+        <div><dt>Scope</dt><dd>Client engagements under written terms; no public award register exists for Pakistan EoR administration.</dd></div>
+        <div><dt>Saved finding</dt><dd>No audited engagement rows are published. Company-reported operating experience lives in <a href="/record/ops/">business status</a> with its attribution label.</dd></div>
+        <div><dt>Live check</dt><dd>No live registry lookup applies. Current standing is confirmed per engagement through SECP, FBR, EOBI, and social-security records at transaction time.</dd></div>
+      </dl>
+    </aside>
+  </section>
+
+  <section aria-labelledby="policy-title">
+    <h2 id="policy-title">Current status language and forward work.</h2>
+    <div class="record-definition">
+      <table>
+        <caption>Area, current statement, and boundary</caption>
+        <thead><tr><th scope="col">Area</th><th scope="col">Current statement</th><th scope="col">Boundary</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">SECP standing</th><td><strong>Registered</strong></td><td>Number, filing date, and annual-return details withheld until approved for publication.</td></tr>
+          <tr><th scope="row">Tax and statutory schemes</th><td><strong>Maintained</strong></td><td>NTN, EOBI, and social-security numbers withheld; kept current per engagement terms.</td></tr>
+          <tr><th scope="row">Certifications</th><td>No certification asserted</td><td>No PSEB, ISO, CMMI, or other certification is claimed.</td></tr>
+          <tr><th scope="row">US posture</th><td>No US entity</td><td>US corridors served through engagement terms and qualified local partners where required.</td></tr>
+          <tr><th scope="row">Engagement role</th><td>EoR administration layer</td><td>A potential engagement is not an award, vehicle, or past-performance record.</td></tr>
+          <tr><th scope="row">Policy</th><td>Published 1 September 2026</td><td>44-page operations policy with pinned hash in <a href="/record/files/">documents</a>; also at <a href="/legal/policy/">/legal/policy/</a>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Sources: <a href="/legal/entities/">legal identity and boundaries</a>, <a href="/legal/policy/">EoR operations policy</a>, and <a href="/country-parameters/">country parameters</a> (reviewed {recordReviewed}).</p>
+  </section>
+
+  <footer class="record-sources">
+    <h2>Record scope and limits</h2>
+    <ul>
+      <li><strong>Establishes:</strong> the published company identity, office, contact, registry categories, service set, and operating boundaries retained in the build.</li>
+      <li><strong>Does not establish:</strong> an award, customer, financial result, certification, or US registration.</li>
+      <li><strong>Source date:</strong> findings shown here were reviewed for {recordReviewed}; a current engagement decision still requires transaction-time records.</li>
+    </ul>
+  </footer>
+</RecordLayout>

@@ -57,6 +57,7 @@ export const navigationPanel = {
   ],
   company: [
     { href: '/about/', label: 'About Trustora' },
+    { href: '/record/', label: 'Record Room' },
     { href: '/careers/', label: 'Careers' },
     { href: '/contact/', label: 'Contact' },
     { href: '/faq/', label: 'EoR FAQ' },
@@ -68,7 +69,6 @@ export const navigationPanel = {
     description: 'A practical decision instrument for the next specialist hire, market entry, or employment-model review.',
   },
 } as const;
-
 export const footerNavigation = [
   { href: '/what-is-eor/', label: 'What is EoR?' },
   { href: '/eor/', label: 'EoR for growing teams' },
@@ -77,6 +77,7 @@ export const footerNavigation = [
   { href: '/country-parameters/', label: 'Country parameters' },
   { href: '/careers/', label: 'Careers' },
   { href: '/contact/', label: 'Start a conversation' },
+  { href: '/record/', label: 'Record Room' },
   { href: '/legal/privacy/', label: 'Privacy' },
   { href: '/legal/policy/', label: 'Operations policy' },
 ];
@@ -357,6 +358,18 @@ export const mediaManifest = {
   'service-embedded-workflow': { src: 'service-embedded-workflow', alt: 'An African platform engineer testing an employee-workflow integration beside a small server rack.', caption: 'A connected employment workflow still needs clear owners, permissions, and handoffs.', credit: 'Trustora generated editorial image · illustrative', role: 'Service / workflow integration' },
   'service-performance-coaching': { src: 'service-performance-coaching', alt: 'A Black manager coaching a Muslim AI researcher in a glass office using abstract project milestones.', caption: 'Specialist development starts with context about the work and a human conversation about growth.', credit: 'Trustora generated editorial image · illustrative', role: 'Service / performance and development' },
   'insights-corporate-editorial': { src: 'insights-corporate-editorial', alt: 'A South Asian strategy director working with abstract charts on a laptop in a modern conference room.', caption: 'Serious global employment questions deserve focused analysis and practical judgment.', credit: 'Trustora generated editorial image · illustrative', role: 'Insights / editorial orientation' },
+  'record-facts': { src: 'record-facts', alt: 'A fountain pen resting on a spiral-bound book.', caption: 'Company facts stay useful when identity, standing, and capability sit together.', credit: 'Trustora brand archive', role: 'Record / company facts' },
+  'record-leadership': { src: 'record-leadership', alt: 'A single empty office room with a desk and chairs.', caption: 'Leadership is a named role with clear boundaries.', credit: 'Trustora brand archive', role: 'Record / leadership' },
+  'record-marketing': { src: 'record-marketing', alt: 'A single office with a white table and black chairs.', caption: 'Positioning describes the work and who each route serves.', credit: 'Trustora brand archive', role: 'Record / market profile' },
+  'record-journeys': { src: 'record-journeys', alt: 'A rubber stamp, scissors, and a card arranged on a table.', caption: 'Each reader takes a different route through the same record.', credit: 'Trustora brand archive', role: 'Record / decision briefs' },
+  'record-federal': { src: 'record-federal', alt: 'A collection of vintage rubber stamps and plaques on display.', caption: 'Standing is what a registry can confirm on a date.', credit: 'Trustora brand archive', role: 'Record / registration records' },
+  'record-verify': { src: 'record-verify', alt: 'An office desk with a smartphone and financial charts.', caption: 'Every finding keeps its source beside it.', credit: 'Trustora brand archive', role: 'Record / source register' },
+  'record-files': { src: 'record-files', alt: 'Stacks of paper documents and file folders.', caption: 'One policy file carries the operating standard.', credit: 'Trustora brand archive', role: 'Record / documents' },
+  'record-nav': { src: 'record-nav', alt: 'A single conference room with a white table and black chairs.', caption: 'Routes are destinations with a job, not just addresses.', credit: 'Trustora brand archive', role: 'Record / site map' },
+  'record-metrics': { src: 'record-metrics', alt: 'A calculator sitting on a table next to a laptop.', caption: 'Count what the build emits, not what readers do.', credit: 'Trustora brand archive', role: 'Record / content inventory' },
+  'record-screens': { src: 'record-screens', alt: 'A single laptop computer sitting on a table.', caption: 'Compare live routes against their captured editions.', credit: 'Trustora brand archive', role: 'Record / visual archive' },
+  'record-ops': { src: 'record-ops', alt: 'A computer keyboard and mouse on a desk.', caption: 'Readiness is a practice you can see, not a claim you make.', credit: 'Trustora brand archive', role: 'Record / business status' },
+  'record-style': { src: 'record-style', alt: 'A pencil resting on a book in shallow focus.', caption: 'Paper, type, and material carry the record voice.', credit: 'Trustora brand archive', role: 'Record / brand guide' },
 } as const;
 
 export type MediaKey = keyof typeof mediaManifest;

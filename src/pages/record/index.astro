@@ -1,0 +1,151 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed, recordScopeNote, verificationBoundaryNote } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora company facts | Record Room"
+  description="Trustora's published legal identity, Pakistan registrations, operating posture, and capability record with verification boundaries."
+  currentPath="/record/"
+  kicker="01 Record / Facts"
+  crumb="Company facts"
+  jump={[
+    { href: '#brief-title', label: 'Company overview' },
+    { href: '#identity-title', label: 'Legal identity' },
+    { href: '#pathway-title', label: 'Industry classifications' },
+    { href: '#procurement-title', label: 'Acquisition status' },
+    { href: '#capabilities-title', label: 'Seven capability areas' },
+  ]}
+>
+  <h1 id="facts-title">Trustora (SMC-Private) Limited: company facts.</h1>
+  <p class="record-dek">A static company profile for clients, employees, and partners. Trustora is a Pakistan-based Employer of Record and specialist employee-intelligence company; the record below separates published registry facts, company-reported operating experience, and information Trustora does not publish.</p>
+
+  <dl class="record-chip-row">
+    <div><dt>Legal form</dt><dd>SMC-Private Limited</dd></div>
+    <div><dt>Published office</dt><dd>Faisalabad, Punjab</dd></div>
+    <div><dt>Public contact</dt><dd>info@trustora.net</dd></div>
+    <div><dt>Policy effective</dt><dd>1 September 2026</dd></div>
+  </dl>
+
+  <div class="record-actions">
+    <a class="button" href="/legal/policy/">Read the EoR policy <span aria-hidden="true">↗</span></a>
+    <a class="button button-quiet" href="/record/files/">Open the document register <span aria-hidden="true">↗</span></a>
+  </div>
+
+  <aside class="record-scope" aria-label="Record scope">
+    <h2>Record scope</h2>
+    <p>{recordScopeNote}</p>
+  </aside>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-facts']} alt={mediaManifest['record-facts'].alt} caption={mediaManifest['record-facts'].caption} credit={mediaManifest['record-facts'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="brief-title">
+    <h2 id="brief-title">A Pakistan entity with a defined EoR model.</h2>
+    <p>Trustora coordinates employment administration — contracts, payroll, benefits, onboarding, and employee support — while clients keep day-to-day direction of the work.</p>
+    <div class="record-brief-grid">
+      <div><span class="record-chip-label">Legal identity</span><h3>Trustora (SMC-Private) Limited</h3><p>Single-member private limited company under the Companies Act, 2017, Islamic Republic of Pakistan. Published office: P-460 Yasrab Colony, Faisalabad, Punjab.</p></div>
+      <div><span class="record-chip-label">Statutory standing</span><h3>Registrations maintained</h3><p>SECP incorporation, FBR/NTN withholding, EOBI and provincial social-security registrations are maintained and kept current. Registration numbers are withheld from the public record.</p></div>
+      <div><span class="record-chip-label">Company maturity</span><h3>Operating record, stated plainly</h3><p>Trustora publishes no audited financial statements, customer awards, customer names, or company performance metrics in this record. Company-reported operating experience is kept separate from registry facts.</p></div>
+    </div>
+    <dl class="record-chip-row">
+      <div><dt>Legal form</dt><dd>Single-member private limited, Companies Act 2017</dd></div>
+      <div><dt>Standing</dt><dd>Registrations maintained; numbers withheld</dd></div>
+      <div><dt>Office</dt><dd>Faisalabad, Punjab (invoicing record)</dd></div>
+    </dl>
+    <p><strong>Company record · Published company statement · Not yet published.</strong> Chips above carry the at-a-glance record; the sections below carry the evidence behind each value.</p>
+  </section>
+
+  <section aria-labelledby="identity-title">
+    <h2 id="identity-title">The identifiers and standing used for engagement.</h2>
+    <p>These values are reproduced from Trustora's published company record. Registration numbers are maintained but withheld until approved for publication; agency and registry records control at transaction time.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Trustora legal identity and published contact fields</caption>
+        <tbody>
+          <tr><th scope="row">Legal name</th><td>TRUSTORA (SMC-PRIVATE) LIMITED</td></tr>
+          <tr><th scope="row">Legal form</th><td>Single-member private limited company under the Companies Act, 2017</td></tr>
+          <tr><th scope="row">Jurisdiction</th><td>Islamic Republic of Pakistan</td></tr>
+          <tr><th scope="row">Published office</th><td>P-460 Yasrab Colony, Faisalabad, Punjab, Pakistan (company-reported invoicing record)</td></tr>
+          <tr><th scope="row">Incorporation number / date</th><td>Registered with SECP; number, filing date, and annual-return details withheld until approved for publication</td></tr>
+          <tr><th scope="row">Tax and statutory numbers</th><td>NTN, EOBI, and social-security numbers maintained; withheld from this public record</td></tr>
+          <tr><th scope="row">Certifications</th><td>No PSEB registration, ISO, CMMI, or other certification asserted</td></tr>
+          <tr><th scope="row">US standing</th><td>No US legal entity, EIN, SAM registration, UEI, or CAGE held</td></tr>
+          <tr><th scope="row">Public contact</th><td><a href="/contact/">trustora.net/contact/</a> · info@trustora.net</td></tr>
+          <tr><th scope="row">Website</th><td><a href="/">trustora.net</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <aside class="record-status-panel" aria-label="Dated registration statements">
+      <h3>Dated registration statements.</h3>
+      <dl>
+        <div><dt>SECP</dt><dd>Incorporation and annual compliance filings under the Companies Act, 2017. Numbers withheld; reviewed {recordReviewed}.</dd></div>
+        <div><dt>FBR / NTN</dt><dd>National Tax Number registration and corporate withholding compliance maintained. The NTN itself is not published.</dd></div>
+        <div><dt>EOBI / social security</dt><dd>Federal pension and applicable provincial social-security registrations (including SESSI, PESSI, IESSI where applicable) maintained. Numbers not published.</dd></div>
+        <div><dt>US posture</dt><dd>No US entity. US work is a client corridor served through engagement terms and qualified local partners where required.</dd></div>
+      </dl>
+    </aside>
+  </section>
+
+  <section aria-labelledby="pathway-title">
+    <h2 id="pathway-title">Industry classifications behind the service.</h2>
+    <p>What each registry covers, and the public wording Trustora uses for it. Service reach is not an entity claim: work outside Pakistan does not mean Trustora holds a separate entity or license in every country described on this site.</p>
+    <div class="record-numbered">
+      <article><span>01</span><div><h3>SECP incorporation</h3><p>Corporate incorporation and annual compliance filings under the Companies Act, 2017. Number and dates withheld until approved for publication.</p></div></article>
+      <article><span>02</span><div><h3>FBR taxation</h3><p>National Tax Number registration and corporate income-tax withholding compliance. The NTN is maintained but not published in this record.</p></div></article>
+      <article><span>03</span><div><h3>EOBI and social security</h3><p>Federal pension and disability-scheme compliance plus applicable provincial social-security registrations. Scheme numbers are not published.</p></div></article>
+      <article><span>04</span><div><h3>No certification or US registration</h3><p>No PSEB, ISO, or other certification is asserted. No US legal entity, EIN, SAM registration, UEI, or CAGE is held. Country-specific obligations are reviewed per engagement with qualified local professionals.</p></div></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="procurement-title">
+    <h2 id="procurement-title">Acquisition status and boundaries.</h2>
+    <p>Trustora can be evaluated as a Pakistan-registered EoR for engagements aligned to its services. Standing remains subject to the facts of each engagement and the advice of qualified local professionals.</p>
+    <div class="record-numbered">
+      <article><span>01</span><div><h3>Direct engagement</h3><p>Written engagement terms cover scope, pricing, delivery responsibilities, confidentiality, data protection, and liability before work begins.</p><span class="record-status-pill">Status: available for evaluation</span></div></article>
+      <article><span>02</span><div><h3>EoR bridge</h3><p>Trustora becomes the local administrative employer while the client directs the work, the manager relationship, and delivery outcomes.</p><span class="record-status-pill">Status: operating model</span></div></article>
+      <article><span>03</span><div><h3>Contractor transition</h3><p>Classification questions are surfaced early against the working reality; conclusions remain subject to applicable local rules and qualified advice.</p><span class="record-status-pill">Status: engagement path</span></div></article>
+      <article><span>04</span><div><h3>Mobility and workplace</h3><p>Cross-border move coordination and day-one readiness support through engagement terms and, where required, qualified local partners.</p><span class="record-status-pill">Status: engagement path</span></div></article>
+      <article><span>05</span><div><h3>Evidence available</h3><p>Public evidence consists of the Pakistan entity record, the published operations policy, service definitions, and this record. No audited financials or customer outcomes are published.</p><span class="record-status-pill">Status: bounded public record</span></div></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="capabilities-title">
+    <h2 id="capabilities-title">Seven capability areas Trustora organizes for clients.</h2>
+    <p>Capability descriptions below are company-reported service definitions from the public capabilities pages; they are not audited delivery outcomes.</p>
+    <div class="record-numbered">
+      <article><span>01</span><div><h3>Employer of Record</h3><p>The local employment layer: contracts, onboarding, payroll inputs, and a clear ownership map. <a href="/services/employer-of-record/">Read the service</a></p></div></article>
+      <article><span>02</span><div><h3>Employee intelligence</h3><p>Specialist people for AI, ML, quantum, physics, sciences, and shipped software. <a href="/services/employee-intelligence/">Read the service</a></p></div></article>
+      <article><span>03</span><div><h3>Global payroll</h3><p>Twice-monthly runs, local-currency pay, payslips, and statutory withholding per engagement terms. <a href="/services/global-payroll/">Read the service</a></p></div></article>
+      <article><span>04</span><div><h3>Contractor to employee</h3><p>A considered path from contractor to employee with classification questions surfaced early. <a href="/services/contractor-to-employee/">Read the service</a></p></div></article>
+      <article><span>05</span><div><h3>Global mobility</h3><p>Move coordination across employment, payroll, benefits, and specialist handoffs. <a href="/services/global-mobility/">Read the service</a></p></div></article>
+      <article><span>06</span><div><h3>People operations</h3><p>Onboarding, records, leave, employee questions, and offboarding support. <a href="/services/people-operations/">Read the service</a></p></div></article>
+      <article><span>07</span><div><h3>Compliance and verification</h3><p>Workforce compliance rhythm plus proportionate background and employment verification. <a href="/services/workforce-compliance/">Read the service</a></p></div></article>
+    </div>
+  </section>
+
+  <nav class="record-index-list" aria-label="Supporting record pages">
+    <h2>Supporting pages in this static report.</h2>
+    <a href="/record/leadership/"><strong>Leadership</strong><span>→</span></a>
+    <a href="/record/federal/"><strong>Registration records</strong><span>→</span></a>
+    <a href="/record/files/"><strong>Documents</strong><span>→</span></a>
+    <a href="/record/verify/"><strong>Source register</strong><span>→</span></a>
+    <a href="/record/marketing/"><strong>Market profile</strong><span>→</span></a>
+    <a href="/record/journeys/"><strong>Decision briefs</strong><span>→</span></a>
+    <a href="/record/nav/"><strong>Site map</strong><span>→</span></a>
+    <a href="/record/metrics/"><strong>Content inventory</strong><span>→</span></a>
+    <a href="/record/screens/"><strong>Visual archive</strong><span>→</span></a>
+    <a href="/record/ops/"><strong>Business status</strong><span>→</span></a>
+    <a href="/record/style/"><strong>Brand guide</strong><span>→</span></a>
+  </nav>
+
+  <footer class="record-sources">
+    <h2>Source register</h2>
+    <p>Legal identity and registration categories are stated in the <a href="/legal/entities/">legal identity note</a> and the <a href="/legal/policy/">EoR operations policy</a> (effective 1 September 2026), reviewed {recordReviewed}. Capability descriptions are Trustora service statements published under <a href="/services/">capabilities</a>.</p>
+    <p><strong>Verification boundary:</strong> {verificationBoundaryNote}</p>
+  </footer>
+</RecordLayout>

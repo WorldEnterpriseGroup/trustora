@@ -1,0 +1,94 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed, verificationBoundaryNote } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora market profile | Record Room"
+  description="Trustora's public position, intended readers per route, and published search metadata for key pages."
+  currentPath="/record/marketing/"
+  kicker="06 Record / Marketing"
+  crumb="Market profile"
+  jump={[
+    { href: '#record-marketing-company-title', label: 'Market position' },
+    { href: '#record-marketing-channels-title', label: 'Public information channels' },
+    { href: '#record-marketing-metadata-title', label: 'Published search metadata' },
+  ]}
+>
+  <h1>Trustora (SMC-Private) Limited: capability and market profile.</h1>
+  <p class="record-dek">Trustora is a Pakistan-based EoR and specialist employee-intelligence company. This report records the company's public position, the intended readers for each owned route, and the exact metadata currently published on three representative pages.</p>
+
+  <aside class="record-scope" aria-label="Company record">
+    <h2>Identity and status</h2>
+    <dl class="record-chip-row">
+      <div><dt>Legal name</dt><dd>TRUSTORA (SMC-PRIVATE) LIMITED</dd></div>
+      <div><dt>Standing</dt><dd>Registrations maintained</dd></div>
+      <div><dt>Office</dt><dd>Faisalabad, Punjab</dd></div>
+      <div><dt>HQ corridor</dt><dd>Pakistan entity</dd></div>
+      <div><dt>Primary service</dt><dd>Employer of Record</dd></div>
+      <div><dt>Classification</dt><dd>No certification asserted</dd></div>
+      <div><dt>Record reviewed</dt><dd>{recordReviewed}</dd></div>
+    </dl>
+  </aside>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-marketing']} alt={mediaManifest['record-marketing'].alt} caption={mediaManifest['record-marketing'].caption} credit={mediaManifest['record-marketing'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="record-marketing-company-title">
+    <h2 id="record-marketing-company-title">Trustora connects employment administration to specialist delivery.</h2>
+    <p>Trustora describes its role as the employment administration layer around specialist work: contracts, payroll, benefits, onboarding, and employee support, while clients keep day-to-day direction. Its public capability areas cover EoR, employee intelligence, payroll, contractor transitions, mobility, people operations, HRIS, benefits, compensation, talent search, verification, equipment and IT, compliance, entity services, embedded employment, and performance.</p>
+    <p>The company is established as a single-member private limited company under the Companies Act, 2017, Pakistan. Its published office is P-460 Yasrab Colony, Faisalabad, Punjab (company-reported invoicing record). Registration numbers are maintained but withheld until approved for publication.</p>
+    <p>Trustora states that it publishes no audited financial statements, customer awards, customer names, or company outcome metrics in this public record. Abdul Rehman's prior-role operating history and external operating context remain separate evidence categories.</p>
+    <dl class="record-chip-row">
+      <div><dt>Formation record</dt><dd>Companies Act, 2017 · Pakistan · numbers withheld</dd></div>
+      <div><dt>Statutory standing</dt><dd>SECP · FBR/NTN · EOBI · social security maintained</dd></div>
+      <div><dt>Evidence boundary</dt><dd>Positioning does not establish audited outcomes</dd></div>
+    </dl>
+    <p><strong>Position facts:</strong> EoR administration layer; specialist talent across AI, ML, quantum, physics, sciences, and software; corridors Pakistan (entity), EU, Australia, US (review). <strong>Source context:</strong> identity from <a href="/legal/entities/">legal identity</a>, standards from <a href="/legal/policy/">operations policy</a>, corridors from <a href="/country-parameters/">country parameters</a> — reviewed {recordReviewed}.</p>
+  </section>
+
+  <section aria-labelledby="record-marketing-channels-title">
+    <h2 id="record-marketing-channels-title">Each owned route has a defined information job.</h2>
+    <p>This inventory lists the content currently published at each route and the intended readers for whom that content is useful; it records content and intended readership only.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Published route, intended readers, and information provided</caption>
+        <thead><tr><th scope="col">Route</th><th scope="col">Intended readers</th><th scope="col">Published information</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="/">/</a></th><td>General and executive readers</td><td>Mission, company identity, capabilities, and primary calls to action.</td></tr>
+          <tr><th scope="row"><a href="/services/employer-of-record/">/services/employer-of-record/</a></th><td>Operators and hiring managers</td><td>EoR scope, setup, operation, and review path.</td></tr>
+          <tr><th scope="row"><a href="/country-parameters/">/country-parameters/</a></th><td>Clients planning a hire</td><td>Entity identity versus corridor questions per country.</td></tr>
+          <tr><th scope="row"><a href="/contact/">/contact/</a></th><td>Prospective clients</td><td>D365-routed intake for country, role, team, budget, and timeline.</td></tr>
+          <tr><th scope="row"><a href="/insights/">/insights/</a></th><td>Technical readers and researchers</td><td>Public articles and subject-matter context.</td></tr>
+          <tr><th scope="row"><a href="/record/">/record/</a></th><td>Clients, employees, partners</td><td>Static company facts, leadership, source boundaries, documents, and archive references.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="record-marketing-metadata-title">
+    <h2 id="record-marketing-metadata-title">Current title, description, and canonical values.</h2>
+    <p>These title and description values are copied from the site's SEO overrides for the three named routes in this build.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Source metadata inventory</caption>
+        <thead><tr><th scope="col">Route</th><th scope="col">Title</th><th scope="col">Description</th><th scope="col">Canonical</th><th scope="col">Source</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="/">/</a></th><td>Global hiring, made reliable | Trustora</td><td>Trustora pairs Employer of Record services with specialist talent and employee support for AI, science, software, and cross-border teams.</td><td>https://trustora.net/</td><td>SEO override in src/data/seo.ts</td></tr>
+          <tr><th scope="row"><a href="/services/">/services/</a></th><td>EoR services that keep global hiring moving | Trustora</td><td>Employ, pay, support, and grow specialist teams across borders with Trustora's country-aware EoR and employee intelligence services.</td><td>https://trustora.net/services/</td><td>SEO override in src/data/seo.ts</td></tr>
+          <tr><th scope="row"><a href="/contact/">/contact/</a></th><td>Plan your next global hire with Trustora</td><td>Share the role, country, and timing; Trustora will help frame a practical EoR and specialist-employment path.</td><td>https://trustora.net/contact/</td><td>SEO override in src/data/seo.ts</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Public contact:</strong> <a href="/contact/">trustora.net/contact/</a> · info@trustora.net</p>
+  </section>
+
+  <footer class="record-sources">
+    <h2>Contact routing</h2>
+    <p>General and engagement inquiries go through <a href="/contact/">the D365-routed intake</a>. Source register: <a href="/record/verify/">verification record</a>. {verificationBoundaryNote}</p>
+  </footer>
+</RecordLayout>

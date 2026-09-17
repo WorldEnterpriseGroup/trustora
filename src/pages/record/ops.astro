@@ -1,0 +1,97 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora business status | Record Room"
+  description="Trustora's current operating posture, company-reported experience, and evidence that is not published."
+  currentPath="/record/ops/"
+  kicker="10 · Record / Operations"
+  crumb="Business status"
+  jump={[
+    { href: '#ops-handoff-title', label: 'Business readiness' },
+    { href: '#actions-title', label: 'Future record fields' },
+    { href: '#docs-title', label: 'Source records' },
+  ]}
+>
+  <h1>Trustora business and delivery posture.</h1>
+  <p class="record-dek">A current, static operating record for clients, employees, and partners. It describes the company record, declared capability, held standing, roadmap work, and evidence that does not yet exist.</p>
+  <p>Record release: {recordReviewed}</p>
+
+  <div class="record-stat-band">
+    <div><strong>PK</strong><span>Entity jurisdiction</span></div>
+    <div><strong>7</strong><span>Capability areas on facts page</span></div>
+    <div><strong>1</strong><span>Company policy PDF</span></div>
+    <div><strong>0</strong><span>Audited outcomes published</span></div>
+  </div>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-ops']} alt={mediaManifest['record-ops'].alt} caption={mediaManifest['record-ops'].caption} credit={mediaManifest['record-ops'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="ops-handoff-title">
+    <h2 id="ops-handoff-title">Current operating facts and evidence status.</h2>
+    <div class="record-definition">
+      <table>
+        <caption>Business readiness register</caption>
+        <thead><tr><th scope="col">Area</th><th scope="col">Status class</th><th scope="col">Published finding</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Corporate identity</th><td>Company-reported; registry numbers withheld</td><td>TRUSTORA (SMC-PRIVATE) LIMITED, single-member private limited company under the Companies Act, 2017, Pakistan; published office P-460 Yasrab Colony, Faisalabad, Punjab.</td></tr>
+          <tr><th scope="row">Statutory standing</th><td>Registries maintained; numbers withheld</td><td>SECP, FBR/NTN, EOBI, and provincial social-security registrations maintained and kept current.</td></tr>
+          <tr><th scope="row">Certifications and US standing</th><td>No certification asserted; no US entity</td><td>No PSEB, ISO, CMMI, SAM, UEI, or CAGE asserted or held.</td></tr>
+          <tr><th scope="row">Service operation</th><td>Published policy plus live operation</td><td>EoR administration with twice-monthly payroll, written offers, payslips, and employee support per the operations policy effective 1 September 2026.</td></tr>
+          <tr><th scope="row">Operating experience</th><td>Company-reported</td><td>Client operating work including website operations and tax coordination; growth figures below are company statements, not audited outcomes.</td></tr>
+          <tr><th scope="row">Financial record</th><td>Not published</td><td>No audited financials, revenue, rates, headcount, balance-sheet values, or contract ceilings published in this record.</td></tr>
+          <tr><th scope="row">Security posture</th><td>Published baseline plus review rhythm</td><td>Security baseline, access controls, incident response, and annual policy review per the operations policy; certifications roadmap only where stated as roadmap.</td></tr>
+          <tr><th scope="row">Client identifiers</th><td>Not published</td><td>No client names, addresses, logos, metrics, or case studies published without written approval.</td></tr>
+          <tr><th scope="row">Evidence status</th><td>Registry facts plus labeled company reports</td><td>Standing rows above are verifiable categories; experience rows are company-reported with figures stated as reports, not audited outcomes. Future audited entries will carry references, periods, and sources.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Record basis</h3>
+    <p>The corporate identity row is grounded in Trustora's published company record. Statutory standing rows describe maintained categories with withheld numbers. The static release facts were reviewed {recordReviewed}; registry standing remains time-sensitive.</p>
+  </section>
+
+  <section aria-labelledby="actions-title">
+    <h2 id="actions-title">Company-reported operating experience.</h2>
+    <p>These are Trustora company statements about operating work, kept separate from registry facts. They are not audited contract outcomes, and no client names, addresses, or identifiers are published.</p>
+    <div class="record-numbered">
+      <article><span>01</span><div><h3>Operate websites end to end</h3><p>Company-reported: full website operations for client businesses, from build and release through ongoing management.</p></div></article>
+      <article><span>02</span><div><h3>Coordinate tax and payroll</h3><p>Company-reported: tax coordination and payroll operations around client engagements, with statutory withholding handled per engagement terms.</p></div></article>
+      <article><span>03</span><div><h3>Grow with clients</h3><p>Company-reported: engagements where client businesses grew from startup stages toward eight-figure valuations, and revenue grew from about one million to about five million. Figures are company statements, not audited results.</p></div></article>
+      <article><span>04</span><div><h3>Field a technical team</h3><p>Company-reported: a technical team available for client work across engineering, operations, and delivery. Team size and composition are engagement-specific and not published as a fixed headcount.</p></div></article>
+    </div>
+    <h3>Future evidence framework</h3>
+    <p>Future entries will add contract references, periods, scopes, roles, and independently supportable outcomes only when Trustora completes work approved for publication — with client written approval and registry backing where applicable. Financial figures will carry period, unit, and source. Until then, this section defines the fields without inventing values.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Future evidence fields with definitions and no invented values</caption>
+        <thead><tr><th scope="col">Record category</th><th scope="col">Framework for a future entry</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Past performance</th><td>Add engagement reference, client sector (never a name without approval), period, scope, Trustora role, and independently supportable outcome when Trustora completes publishable work.</td></tr>
+          <tr><th scope="row">Financial capacity</th><td>Add only figures authorized for public release, with period, unit, and source.</td></tr>
+          <tr><th scope="row">Security and compliance</th><td>Replace roadmap language with an issued certification or assessment only when an authoritative record exists.</td></tr>
+          <tr><th scope="row">Team capacity</th><td>Add dated team figures with engagement scope and source; no fixed headcount is claimed in this static report.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="docs-title">
+    <h2 id="docs-title">Public records that own the current claims.</h2>
+    <nav class="record-index-list" aria-label="Source records">
+      <a href="/legal/entities/"><strong>Legal identity and boundaries</strong><span>→</span></a>
+      <a href="/legal/policy/"><strong>EoR operations policy</strong><span>→</span></a>
+      <a href="/record/verify/"><strong>Verification register</strong><span>→</span></a>
+      <a href="/record/files/"><strong>Document register</strong><span>→</span></a>
+    </nav>
+    <footer class="record-sources">
+      <h2>Method and limits</h2>
+      <p>This page uses Trustora's published company record and the operations policy effective 1 September 2026. It does not create a company award, financial value, certification, or production metric. The evidence framework is ready for future records without presenting invented numbers.</p>
+    </footer>
+  </section>
+</RecordLayout>

@@ -99,6 +99,66 @@ export const seoOverrides: Readonly<Record<string, SeoMetadata>> = {
     description:
       'Access decision instruments for EoR, specialist talent, market entry, employee experience, and cross-border workforce risk.',
   },
+  '/record/': {
+    title: 'Trustora company facts | Record Room',
+    description:
+      'Trustora\u2019s published legal identity, Pakistan registrations, operating posture, and capability record with verification boundaries.',
+  },
+  '/record/leadership/': {
+    title: 'Trustora leadership | Record Room',
+    description:
+      'Trustora\u2019s publicly named operations lead, role boundaries, and attribution rules for individual versus company experience.',
+  },
+  '/record/marketing/': {
+    title: 'Trustora market profile | Record Room',
+    description:
+      'Trustora\u2019s public position, intended readers per route, and published search metadata for key pages.',
+  },
+  '/record/journeys/': {
+    title: 'Trustora decision briefs | Record Room',
+    description:
+      'Role-specific Trustora facts for hiring managers, reviewers, executives, and prospective employees.',
+  },
+  '/record/federal/': {
+    title: 'Trustora registration records | Record Room',
+    description:
+      'Trustora\u2019s Pakistan statutory posture across SECP, FBR, EOBI, and social security, with service mapping and boundaries.',
+  },
+  '/record/verify/': {
+    title: 'Trustora source register | Record Room',
+    description:
+      'Dated Trustora findings beside their sources, with status classes and limits.',
+  },
+  '/record/files/': {
+    title: 'Trustora documents | Record Room',
+    description:
+      'Trustora\u2019s published EoR policy PDF with hash, contents, and limits.',
+  },
+  '/record/nav/': {
+    title: 'Trustora site map | Record Room',
+    description:
+      'Trustora\u2019s route inventory by section, with section counts and links to record archive pages.',
+  },
+  '/record/metrics/': {
+    title: 'Trustora content inventory | Record Room',
+    description:
+      'Trustora\u2019s page inventory by section, with measurement rules and record archive references.',
+  },
+  '/record/screens/': {
+    title: 'Trustora visual archive | Record Room',
+    description:
+      'How Trustora\u2019s public pages are visually archived, with section coverage and inspection references.',
+  },
+  '/record/ops/': {
+    title: 'Trustora business status | Record Room',
+    description:
+      'Trustora\u2019s current operating posture, company-reported experience, and evidence that is not published.',
+  },
+  '/record/style/': {
+    title: 'Trustora brand guide | Record Room',
+    description:
+      'Trustora\u2019s public visual system: color tokens, measured contrast, typography, logos, wording, and contact routing.',
+  },
 
   '/services/employer-of-record/': {
     title: 'Hire globally without opening an entity | Trustora',

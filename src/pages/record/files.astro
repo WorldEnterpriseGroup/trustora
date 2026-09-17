@@ -1,0 +1,74 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed, policyEffective, policyPdf } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora documents | Record Room"
+  description="Trustora's published EoR policy PDF with hash, contents, and limits."
+  currentPath="/record/files/"
+  kicker="05 · Record / Files"
+  crumb="Documents"
+  jump={[
+    { href: '#files-quick-start-title', label: 'Company documents' },
+    { href: '#document-lineage-title', label: 'Document metadata' },
+    { href: '#company-pdfs-title', label: 'Source artifacts' },
+  ]}
+>
+  <h1>Public document register.</h1>
+  <p class="record-dek">The published operating policy is summarized here so a reader can understand its contents and evidence boundaries before opening the file. The register keeps company policy, attribution, and artifact metadata together.</p>
+  <div class="record-stat-band">
+    <div><strong>1</strong><span>Company PDF</span></div>
+    <div><strong>{policyPdf.pages}</strong><span>Pages</span></div>
+    <div><strong>{Math.round(policyPdf.bytes / 1024)}</strong><span>Kilobytes</span></div>
+    <div><strong>SHA-256</strong><span>Pinned hash</span></div>
+  </div>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-files']} alt={mediaManifest['record-files'].alt} caption={mediaManifest['record-files'].caption} credit={mediaManifest['record-files'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="files-quick-start-title">
+    <h2 id="files-quick-start-title">The company PDF carries the published operating standard.</h2>
+    <article>
+      <h3>Trustora EoR Operations and Corporate Governance Policy</h3>
+      <p>EoR operating standards for Pakistan employment administration and cross-border coordination: legal identity, statutory registrations, service-vs-entity boundaries, payroll rhythm, data protection, security, client engagement lifecycle, and governance. Effective {policyEffective}; also published as <a href="/legal/policy/">operations policy</a>.</p>
+      <p><strong>Establishes:</strong> Trustora's operating standards across the engagement lifecycle.</p>
+      <p><strong>Limit:</strong> The PDF states registration categories without publishing registration numbers. It does not establish contract awards, customer outcomes, financial results, certifications, or a US registration.</p>
+    </article>
+    <h3>Policy contents</h3>
+    <ul>
+      <li>Identity: TRUSTORA (SMC-PRIVATE) LIMITED, single-member private limited company under the Companies Act, 2017, Pakistan.</li>
+      <li>Statutory registrations: SECP incorporation and annual filings; FBR/NTN withholding; EOBI and provincial social-security compliance — categories stated, numbers withheld.</li>
+      <li>Service reach: engagement terms plus qualified local partners where required; no separate-entity claim per country.</li>
+      <li>Employment lifecycle: written offers before start, local-currency pay, twice-monthly payroll with payslips, leave, probation, performance, termination, and offboarding.</li>
+      <li>Protection: data protection, security baseline, incident response, grievances without retaliation, record keeping, and governance with annual review.</li>
+      <li>Boundaries: country-specific legal, tax, immigration, and employment advice stays with qualified local professionals.</li>
+    </ul>
+    <p><strong>Attribution rule:</strong> Registration categories are published; registration numbers are maintained but withheld. Company-reported operating experience is not inside this PDF. Public financials are not published.</p>
+    <p><a class="button" href={policyPdf.href}>Download {policyPdf.filename} <span aria-hidden="true">↗</span></a></p>
+  </section>
+
+  <section aria-labelledby="document-lineage-title">
+    <h2 id="document-lineage-title">Repository identity and public artifact metadata.</h2>
+    <h3>Download links and hashes</h3>
+    <div class="record-definition">
+      <table>
+        <caption>Public artifact metadata</caption>
+        <thead><tr><th scope="col">Artifact</th><th scope="col">Public URL</th><th scope="col">Pages</th><th scope="col">Size</th><th scope="col">SHA-256</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Trustora EoR Operations Policy <code>{policyPdf.filename}</code></th><td><a href={policyPdf.href}>Download PDF ↗</a></td><td>{policyPdf.pages}</td><td>{policyPdf.bytes} bytes</td><td><code>{policyPdf.sha256}</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The hash identifies the repository artifact used in this build. It does not validate the claims inside the document; the contents and limits above define its permitted use.</p>
+  </section>
+
+  <footer class="record-sources" id="company-pdfs-title">
+    <h2>Static document availability</h2>
+    <p>The company PDF is present in this build, alongside the HTML policy at <a href="/legal/policy/">/legal/policy/</a>. Registry numbers remain agency-controlled records; document corrections can be sent to <a href="/contact/">Trustora</a>. Record reviewed {recordReviewed}.</p>
+  </footer>
+</RecordLayout>

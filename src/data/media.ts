@@ -59,6 +59,18 @@ import serviceEmbeddedApi from '../assets/editorial/avif/service-embedded-api.av
 import serviceEmbeddedWorkflow from '../assets/editorial/avif/service-embedded-workflow.avif';
 import servicePerformanceCoaching from '../assets/editorial/avif/service-performance-coaching.avif';
 import insightsCorporateEditorial from '../assets/editorial/avif/insights-corporate-editorial.avif';
+import recordFacts from '../assets/editorial/avif/record-facts.avif';
+import recordLeadership from '../assets/editorial/avif/record-leadership.avif';
+import recordMarketing from '../assets/editorial/avif/record-marketing.avif';
+import recordJourneys from '../assets/editorial/avif/record-journeys.avif';
+import recordFederal from '../assets/editorial/avif/record-federal.avif';
+import recordVerify from '../assets/editorial/avif/record-verify.avif';
+import recordFiles from '../assets/editorial/avif/record-files.avif';
+import recordNav from '../assets/editorial/avif/record-nav.avif';
+import recordMetrics from '../assets/editorial/avif/record-metrics.avif';
+import recordScreens from '../assets/editorial/avif/record-screens.avif';
+import recordOps from '../assets/editorial/avif/record-ops.avif';
+import recordStyle from '../assets/editorial/avif/record-style.avif';
 
 export const media = {
   'team-table': teamTable,
@@ -122,4 +134,16 @@ export const media = {
   'service-embedded-workflow': serviceEmbeddedWorkflow,
   'service-performance-coaching': servicePerformanceCoaching,
   'insights-corporate-editorial': insightsCorporateEditorial,
+  'record-facts': recordFacts,
+  'record-leadership': recordLeadership,
+  'record-marketing': recordMarketing,
+  'record-journeys': recordJourneys,
+  'record-federal': recordFederal,
+  'record-verify': recordVerify,
+  'record-files': recordFiles,
+  'record-nav': recordNav,
+  'record-metrics': recordMetrics,
+  'record-screens': recordScreens,
+  'record-ops': recordOps,
+  'record-style': recordStyle,
 } as const;
