@@ -5,6 +5,8 @@ param applicationFieldPrefix string
 param trustoraTeamId string
 param allowedOrigins array
 param tags object
+@description('X-Azure-FDID of the taodoor-standard Front Door profile; only requests from it reach the Function.')
+param frontDoorId string
 @secure()
 param d365SmokeToken string
 
@@ -113,6 +115,26 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
     siteConfig: {
       minTlsVersion: '1.2'
       http20Enabled: true
+      // Only the taodoor-standard Front Door profile (WAF, TLS, rate limits) may
+      // reach the Function; direct *.azurewebsites.net calls get 403. Front Door
+      // health probes carry the same header. The SCM site keeps its own rules.
+      ipSecurityRestrictionsDefaultAction: 'Deny'
+      ipSecurityRestrictions: [
+        {
+          name: 'Allow-FrontDoor-taodoor-standard'
+          description: 'taodoor-standard Front Door only'
+          action: 'Allow'
+          priority: 100
+          tag: 'ServiceTag'
+          ipAddress: 'AzureFrontDoor.Backend'
+          headers: {
+            'x-azure-fdid': [
+              frontDoorId
+            ]
+          }
+        }
+      ]
+      scmIpSecurityRestrictionsUseMain: false
       cors: {
         allowedOrigins: allowedOrigins
         supportCredentials: false
