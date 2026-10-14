@@ -24,6 +24,9 @@ param allowedOrigins array = [
   'https://www.trustora.net'
 ]
 
+@description('X-Azure-FDID of the Terraform-owned taodoor-standard Front Door profile (FocusApiary/infrastructure, terraform/environments/focushive). Not a secret.')
+param frontDoorId string = '9640fdb7-bfd5-4890-a984-5a5a7217ad3d'
+
 @description('Protected CI smoke token. Supply it through a secure deployment parameter; never commit it.')
 @secure()
 param d365SmokeToken string
@@ -54,6 +57,7 @@ module infrastructure 'careers.bicep' = {
     trustoraTeamId: trustoraTeamId
     allowedOrigins: allowedOrigins
     tags: tags
+    frontDoorId: frontDoorId
     d365SmokeToken: d365SmokeToken
   }
 }
