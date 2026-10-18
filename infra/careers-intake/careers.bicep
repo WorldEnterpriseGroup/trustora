@@ -115,9 +115,12 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
     siteConfig: {
       minTlsVersion: '1.2'
       http20Enabled: true
+      ftpsState: 'Disabled'
       // Only the taodoor-standard Front Door profile (WAF, TLS, rate limits) may
       // reach the Function; direct *.azurewebsites.net calls get 403. Front Door
-      // health probes carry the same header. The SCM site keeps its own rules.
+      // health probes carry the same header. The SCM site keeps its own rules: it is not
+      // IP-restricted (operator workstations have no stable egress IP) but takes only
+      // Entra bearer tokens, because basic-auth publishing is off below.
       ipSecurityRestrictionsDefaultAction: 'Deny'
       ipSecurityRestrictions: [
         {
@@ -160,6 +163,28 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
     }
   }
   dependsOn: [applicationContainer, deploymentContainer, storageBlobContributor, storageQueueContributor, storageTableContributor]
+}
+
+// SCM (Kudu) and FTP accept no basic-auth credentials. `az functionapp deployment
+// source config-zip` uses the Entra token by itself when basic auth is off.
+// FocusApiary/infrastructure#509.
+resource scmBasicAuthPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2024-04-01' = {
+  parent: functionApp
+  name: 'scm'
+  properties: {
+    allow: false
+  }
+}
+
+resource ftpBasicAuthPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2024-04-01' = {
+  parent: functionApp
+  name: 'ftp'
+  properties: {
+    allow: false
+  }
+  dependsOn: [
+    scmBasicAuthPolicy
+  ]
 }
 
 resource storageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
