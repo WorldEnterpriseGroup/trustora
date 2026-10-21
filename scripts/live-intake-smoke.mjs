@@ -14,7 +14,7 @@ const response = await fetch(smokeUrl, {
   signal: AbortSignal.timeout(90_000),
 });
 const body = await response.json().catch(() => ({}));
-const diagnostics = [body.stage, ...(Array.isArray(body.cleanup) ? body.cleanup : [])].filter(Boolean).join(':');
+const diagnostics = [body.stage, body.cause, ...(Array.isArray(body.cleanup) ? body.cleanup : [])].filter(Boolean).join(':');
 assert.equal(response.status, 200, `live D365 smoke returned HTTP ${response.status}${diagnostics ? ` at ${diagnostics}` : ''}`);
 assert.equal(body.ok, true, 'live D365 smoke did not report ok=true');
 assert.equal(body.smoke, true, 'live D365 smoke did not report smoke=true');
