@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeInput, normalizePublicIntake, publicLeadFields, publicLeadSubject, smokeAuthorized } from '../src/index.js';
+import { normalizeInput, normalizePublicIntake, publicLeadFields, publicLeadSubject, smokeAuthorized, smokeErrorCode } from '../src/index.js';
 
 const baseApplication = {
   'full-name': 'Example Applicant',
@@ -86,4 +86,13 @@ test('rejects public intake without explicit consent or with a foreign source', 
 
 test('fails closed when the protected smoke header is missing', () => {
   assert.equal(smokeAuthorized({ headers: new Headers() }), false);
+});
+
+test('reduces smoke failures to bounded non-sensitive cause codes', () => {
+  assert.equal(smokeErrorCode(new Error('dataverse_403_0x80040220')), 'dataverse_403_0x80040220');
+  assert.equal(smokeErrorCode(new Error('dataverse_404')), 'dataverse_404');
+  assert.equal(smokeErrorCode(new Error('d365_smoke_timeout_career_create')), 'd365_smoke_timeout_career_create');
+  assert.equal(smokeErrorCode(Object.assign(new Error('The operation was aborted'), { name: 'TimeoutError' })), 'timeout');
+  assert.equal(smokeErrorCode(new Error('boom jane@example.com')), 'error');
+  assert.equal(smokeErrorCode(undefined), 'error');
 });

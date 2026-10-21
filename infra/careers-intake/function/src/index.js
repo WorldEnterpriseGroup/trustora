@@ -553,6 +553,14 @@ async function verifyCareerSmoke(application) {
   return firstId;
 }
 
+export function smokeErrorCode(error) {
+  const message = typeof error?.message === 'string' ? error.message : '';
+  const match = /^(dataverse_\d{3}(?:_[a-zA-Z0-9._-]{1,80})?|dataverse_[a-z_]+|d365_smoke_[a-z_]+)$/.exec(message);
+  if (match) return match[1];
+  if (error?.name === 'TimeoutError' || error?.name === 'AbortError') return 'timeout';
+  return 'error';
+}
+
 async function runD365Smoke() {
   if (!publicIntakeReady() || !dataverseReady()) throw new Error('d365_smoke_not_configured');
   const marker = `Trustora D365 CI smoke ${crypto.randomUUID()}`;
@@ -567,6 +575,7 @@ async function runD365Smoke() {
 
   const leadIds = [];
   let stage = 'setup';
+  let primaryError = null;
   try {
     for (const intake of publicInputs) {
       stage = `public_${intake.intakeType}`;
@@ -574,53 +583,65 @@ async function runD365Smoke() {
     }
     stage = 'career';
     await verifyCareerSmoke(careerInput);
-    return { ok: true, service: 'trustora-careers-intake', smoke: true, checked: ['contact', 'briefing', 'squeeze', 'career'], cleaned: true };
   } catch (error) {
     error.smokeStage = stage;
-    throw error;
-  } finally {
-    const cleanupErrors = [];
-    for (const intake of publicInputs) {
-      try {
-        const leadId = await findPublicIntake(intake);
-        if (leadId) await dataverseRequest(`${LEAD_ENTITY_SET}(${leadId})`, { method: 'DELETE' });
-      } catch {
-        cleanupErrors.push('public_delete');
-      }
-    }
-    if (!careerInput.error) {
-      try {
-        const rows = await careerApplicationRows(careerInput);
-        for (const row of rows) {
-          const applicationId = careerApplicationId(row);
-          if (!applicationId) cleanupErrors.push('career_id');
-          else await dataverseRequest(`${ENTITY_SET}(${applicationId})`, { method: 'DELETE' });
-        }
-      } catch {
-        cleanupErrors.push('career_delete');
-      }
-    }
-    for (const intake of publicInputs) {
-      try {
-        await eventuallyGone('public_cleanup_verify', async () => (await findPublicIntake(intake)) === null);
-      } catch {
-        cleanupErrors.push('public_verify');
-      }
-    }
-    if (!careerInput.error) {
-      try {
-        await eventuallyGone('career_cleanup_verify', async () => (await careerApplicationRows(careerInput)).length === 0);
-      } catch {
-        cleanupErrors.push('career_verify');
-      }
-    }
-    if (cleanupErrors.length) {
-      const error = new Error('d365_smoke_cleanup_failed');
-      error.smokeStage = 'cleanup';
-      error.smokeCleanup = [...new Set(cleanupErrors)];
-      throw error;
+    primaryError = error;
+  }
+
+  // Cleanup always runs. Each failed step records a bounded, non-sensitive
+  // cause (HTTP status plus Dataverse error code, never a body or identifier)
+  // so a failing smoke names what broke instead of a bare step label.
+  const cleanupErrors = [];
+  const cleanupStep = (label, error) => cleanupErrors.push(`${label}=${smokeErrorCode(error)}`);
+  for (const intake of publicInputs) {
+    try {
+      const leadId = await findPublicIntake(intake);
+      if (leadId) await dataverseRequest(`${LEAD_ENTITY_SET}(${leadId})`, { method: 'DELETE' });
+    } catch (error) {
+      cleanupStep('public_delete', error);
     }
   }
+  if (!careerInput.error) {
+    try {
+      const rows = await careerApplicationRows(careerInput);
+      for (const row of rows) {
+        const applicationId = careerApplicationId(row);
+        if (!applicationId) cleanupErrors.push('career_id');
+        else await dataverseRequest(`${ENTITY_SET}(${applicationId})`, { method: 'DELETE' });
+      }
+    } catch (error) {
+      cleanupStep('career_delete', error);
+    }
+  }
+  for (const intake of publicInputs) {
+    try {
+      await eventuallyGone('public_cleanup_verify', async () => (await findPublicIntake(intake)) === null);
+    } catch (error) {
+      cleanupStep('public_verify', error);
+    }
+  }
+  if (!careerInput.error) {
+    try {
+      await eventuallyGone('career_cleanup_verify', async () => (await careerApplicationRows(careerInput)).length === 0);
+    } catch (error) {
+      cleanupStep('career_verify', error);
+    }
+  }
+
+  // The primary failure is never masked by a cleanup failure: it keeps its
+  // own stage and gains the cleanup findings as extra context.
+  if (primaryError) {
+    primaryError.smokeCleanup = [...new Set(cleanupErrors)];
+    primaryError.smokeCause = smokeErrorCode(primaryError);
+    throw primaryError;
+  }
+  if (cleanupErrors.length) {
+    const error = new Error('d365_smoke_cleanup_failed');
+    error.smokeStage = 'cleanup';
+    error.smokeCleanup = [...new Set(cleanupErrors)];
+    throw error;
+  }
+  return { ok: true, service: 'trustora-careers-intake', smoke: true, checked: ['contact', 'briefing', 'squeeze', 'career'], cleaned: true };
 }
 
 app.http('careerApplication', {
@@ -669,7 +690,7 @@ app.http('careerHealth', {
         return response(200, await runD365Smoke());
       } catch (error) {
         request?.logger?.error?.('Trustora D365 smoke failed', { code: clean(error?.message, 120) });
-        return response(502, { ok: false, error: 'smoke_failed', stage: clean(error?.smokeStage, 40) || 'unknown', cleanup: Array.isArray(error?.smokeCleanup) ? error.smokeCleanup.slice(0, 8) : undefined });
+        return response(502, { ok: false, error: 'smoke_failed', stage: clean(error?.smokeStage, 40) || 'unknown', cleanup: Array.isArray(error?.smokeCleanup) ? error.smokeCleanup.slice(0, 8) : undefined, cause: error?.smokeCause });
       } finally {
         smokeInProgress = false;
       }
