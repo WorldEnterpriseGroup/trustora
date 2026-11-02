@@ -10,7 +10,7 @@ param location string = 'eastus'
 param dataverseUrl string = 'https://dream.crm.dynamics.com'
 
 @description('Dataverse custom table entity set.')
-param applicationEntitySet string = 'tr_trustoraacareerapplications'
+param applicationEntitySet string = 'tr_trustoracareerapplications'
 
 @description('Dataverse publisher prefix.')
 param applicationFieldPrefix string = 'tr_'
