@@ -80,6 +80,8 @@ deploy-function:
     - job: package-function
       artifacts: true
   variables:
+    # The template pulls ${IMAGE_REGISTRY}/mcr-proxy/azure-cli; unset it resolves to "/mcr-proxy/..." (job 1878683).
+    IMAGE_REGISTRY: "harbor.focuscell.org"
     AZURE_FUNCTION_APP: fn-trustora-careers-sy4lxie35bmuy
     AZURE_FUNCTION_RESOURCE_GROUP: rg-trustora-careers
     AZURE_FUNCTION_SUBSCRIPTION_ID: a12e3532-251b-4a98-af6c-44ccec9077ba
