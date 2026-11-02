@@ -17,7 +17,7 @@ src="${root}/infra/careers-intake/function"
 out="${1:-${root}/careers-function.zip}"
 case "${out}" in /*) ;; *) out="$(pwd)/${out}" ;; esac
 
-for tool in node npm zip; do
+for tool in node npm; do
   command -v "${tool}" >/dev/null || { echo "missing required tool: ${tool}" >&2; exit 1; }
 done
 node_major="$(node -p 'process.versions.node.split(".")[0]')"
@@ -37,5 +37,13 @@ else
   (cd "${work}" && npm install --omit=dev --no-audit --no-fund)
 fi
 rm -f "${out}"
-(cd "${work}" && zip -qr "${out}" host.json package.json src node_modules)
+if command -v zip >/dev/null; then
+  (cd "${work}" && zip -qr "${out}" host.json package.json src node_modules)
+elif command -v python3 >/dev/null; then
+  # CI images without zip: the stdlib writer produces the same archive layout.
+  (cd "${work}" && python3 -m zipfile -c "${out}" host.json package.json src node_modules)
+else
+  echo "missing required tool: zip (or python3)" >&2
+  exit 1
+fi
 echo "wrote ${out}"

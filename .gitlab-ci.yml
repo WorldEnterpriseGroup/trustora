@@ -48,11 +48,12 @@ verify:
 
 package-function:
   stage: verify
-  image: node:24-bookworm-slim
+  image: mcr.microsoft.com/playwright:v1.62.1-noble
   needs: []
-  # Same packaging the hand publish used (Node >= 24, production node_modules only).
-  before_script:
-    - command -v zip >/dev/null || { apt-get update -qq && apt-get install -y -qq --no-install-recommends zip; }
+  # Same packaging the hand publish used (Node >= 24, production node_modules only); the script
+  # falls back to python3's zipfile when the image has no `zip`. The global before_script
+  # (pnpm install) is not needed for packaging.
+  before_script: []
   script:
     - bash scripts/package-careers-function.sh careers-function.zip
   artifacts:
