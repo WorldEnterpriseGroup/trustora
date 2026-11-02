@@ -61,9 +61,6 @@ package-function:
     expire_in: 1 week
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      changes:
-        - infra/careers-intake/function/**/*
-        - scripts/package-careers-function.sh
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 # Publishes the Function to Azure. Runs on the scoped `azure-deploy` runner, which mounts the
