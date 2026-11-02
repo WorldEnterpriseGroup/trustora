@@ -1,7 +1,16 @@
 image: node:22-bookworm-slim
 
+# deploy-azure-function: certificate service principal (Website Contributor on the one Function App),
+# credentials only from the scoped runner's mounted Secret, never from CI variables
+# (WorldEnterpriseGroup/trustora#3, FocusApiary/infrastructure!1260, launch-sequence jobs/deploy-azure-function.yml).
+include:
+  - project: DroidOpsInc/launch-sequence
+    ref: main
+    file: /jobs/deploy-azure-function.yml
+
 stages:
   - verify
+  - deploy-function
   - live-smoke
   - build
   - deploy
@@ -37,11 +46,59 @@ verify:
     - pnpm exec playwright install chromium
     - pnpm run qa:browser
 
+package-function:
+  stage: verify
+  image: mcr.microsoft.com/playwright:v1.62.1-noble
+  needs: []
+  # Same packaging the hand publish used (Node >= 24, production node_modules only); the script
+  # falls back to python3's zipfile when the image has no `zip`. The global before_script
+  # (pnpm install) is not needed for packaging.
+  before_script: []
+  script:
+    - bash scripts/package-careers-function.sh careers-function.zip
+  artifacts:
+    paths:
+      - careers-function.zip
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# Publishes the Function to Azure. Runs on the scoped `azure-deploy` runner, which mounts the
+# ESO-delivered certificate Secret at /var/run/azure-deploy (client-id, tenant-id, sp.pem); there is no
+# credential in any GitLab CI variable and the template refuses to run if one is set.
+# AZURE_FUNCTION_DEPLOY_ENABLED is a switch, not a credential: leave it unset until the Admiral has applied
+# FocusApiary/infrastructure!1260 and the scoped runner plus ExternalSecret exist (infra README).
+deploy-function:
+  extends: .deploy:azure-function
+  stage: deploy-function
+  before_script: []
+  cache: []
+  needs:
+    - job: verify
+      artifacts: false
+    - job: package-function
+      artifacts: true
+  variables:
+    AZURE_FUNCTION_APP: fn-trustora-careers-sy4lxie35bmuy
+    AZURE_FUNCTION_RESOURCE_GROUP: rg-trustora-careers
+    AZURE_FUNCTION_SUBSCRIPTION_ID: a12e3532-251b-4a98-af6c-44ccec9077ba
+    AZURE_FUNCTION_ZIP: careers-function.zip
+    AZURE_FUNCTION_HEALTH_URL: https://careers-api.trustora.net/api/careers-health
+  environment:
+    name: careers-intake-function
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $AZURE_FUNCTION_DEPLOY_ENABLED == "true"'
+    - when: never
+
 live-intake-smoke:
   stage: live-smoke
   needs:
     - job: verify
       artifacts: false
+    - job: deploy-function
+      artifacts: false
+      optional: true
   script:
     - test -n "$D365_SMOKE_TOKEN"
     - pnpm run qa:live
