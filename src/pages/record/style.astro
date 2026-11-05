@@ -1,0 +1,185 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed, verificationBoundaryNote } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora brand guide | Record Room"
+  description="Trustora's public visual system: color tokens, measured contrast, typography, logos, wording, and contact routing."
+  currentPath="/record/style/"
+  kicker="12 Record / Style"
+  crumb="Brand guide"
+  jump={[
+    { href: '#record-style-palette-title', label: 'Brand palette' },
+    { href: '#record-style-workbench-title', label: 'Measured contrast' },
+    { href: '#record-style-type-title', label: 'Typography' },
+    { href: '#record-style-lockups-title', label: 'Logo downloads' },
+    { href: '#record-style-voice-title', label: 'Company boilerplate' },
+    { href: '#record-style-media-title', label: 'Creative assets' },
+    { href: '#record-style-presskit-title', label: 'Contact routing' },
+  ]}
+>
+  <h1>Trustora visual system and public assets.</h1>
+  <p class="record-dek">This reference records observable public-site values: the ink, deep-navy, paper, blue, and sky color system, Georgia and Inter typography, logo files, and available assets. It also records the public company description and wording boundaries required for accurate communication.</p>
+
+  <aside class="record-scope" aria-label="Source status">
+    <h2>Source status</h2>
+    <p><strong>Observed:</strong> values and assets present in the public build. <strong>Record scenes:</strong> all twelve record pages use freely licensed business photographs, each a distinct AVIF source used once site-wide; they depict illustrative business scenes, not Trustora people, facilities, or products.</p>
+  </aside>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-style']} alt={mediaManifest['record-style'].alt} caption={mediaManifest['record-style'].caption} credit={mediaManifest['record-style'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="record-style-palette-title">
+    <h2 id="record-style-palette-title">Public theme tokens.</h2>
+    <p>Hex values from the public token sheet are the durable reference when display, print, or color vision changes the appearance.</p>
+    <h3>Public site theme</h3>
+    <div class="record-definition">
+      <table>
+        <caption>Trustora public theme tokens</caption>
+        <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Role</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Ink</th><td><code>#152f45</code></td><td>Body text and headings on light fields</td></tr>
+          <tr><th scope="row">Deep</th><td><code>#0b2740</code></td><td>Dark fields, footer, record sidebar</td></tr>
+          <tr><th scope="row">Paper</th><td><code>#f5f6f7</code></td><td>Page background</td></tr>
+          <tr><th scope="row">Bright</th><td><code>#ffffff</code></td><td>Cards, panels, heroes</td></tr>
+          <tr><th scope="row">Blue</th><td><code>#1d5b8f</code></td><td>Primary business accent, links, fills</td></tr>
+          <tr><th scope="row">Sky</th><td><code>#9cc3e5</code></td><td>Illustration strokes and dark-field accents</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Record Room shell</h3>
+    <div class="record-definition">
+      <table>
+        <caption>Record Room shell tokens</caption>
+        <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Role</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Record blue deep</th><td><code>#134a75</code></td><td>Kickers, links, and focus states in the Record Room</td></tr>
+          <tr><th scope="row">Muted</th><td><code>#5e6c78</code></td><td>Captions and metadata</td></tr>
+          <tr><th scope="row">Mist</th><td><code>#e8f0f5</code></td><td>Scope boxes and scene panels</td></tr>
+          <tr><th scope="row">Blue</th><td><code>#1d5b8f</code></td><td>Secondary fills on tinted fields</td></tr>
+          <tr><th scope="row">Blue soft</th><td><code>#e8f0f6</code></td><td>Tinted fields and feature panels</td></tr>
+          <tr><th scope="row">Ink deep</th><td><code>#0b2740</code></td><td>Sidebar, footer, record chrome</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="record-style-workbench-title">
+    <h2 id="record-style-workbench-title">Calculated text pairs in the published palette.</h2>
+    <p>Ratios below use WCAG relative luminance for the listed sRGB foreground and background values. They describe the pair only, not a full-page conformance result.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Published color pairs and calculated contrast</caption>
+        <thead><tr><th scope="col">Pair</th><th scope="col">Foreground</th><th scope="col">Background</th><th scope="col">Ratio</th><th scope="col">Role</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Ink on paper</th><td><code>#152f45</code></td><td><code>#f5f6f7</code></td><td>12.7:1</td><td>Body copy on page background</td></tr>
+          <tr><th scope="row">White on deep</th><td><code>#fffdf8</code></td><td><code>#0b2740</code></td><td>15.0:1</td><td>Sidebar, footer, dark fields</td></tr>
+          <tr><th scope="row">Blue on white</th><td><code>#1d5b8f</code></td><td><code>#ffffff</code></td><td>7.1:1</td><td>Emphasis and actions on light cards</td></tr>
+          <tr><th scope="row">White on record blue deep</th><td><code>#ffffff</code></td><td><code>#134a75</code></td><td>9.3:1</td><td>Reversed action controls</td></tr>
+          <tr><th scope="row">Muted on white</th><td><code>#5e6c78</code></td><td><code>#ffffff</code></td><td>5.4:1</td><td>Captions and secondary copy</td></tr>
+          <tr><th scope="row">Gold on deep</th><td><code>#c7a24a</code></td><td><code>#0b2740</code></td><td>6.3:1</td><td>Dark-field accents</td></tr>
+          <tr><th scope="row">Blue on blue-soft</th><td><code>#1d5b8f</code></td><td><code>#e8f0f6</code></td><td>6.2:1</td><td>Tinted-field links and labels</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Source method: WCAG 2.2 contrast calculation for sRGB foreground/background pairs per <a href="https://www.w3.org/TR/WCAG22/#dfn-relative-luminance" rel="noopener">W3C relative luminance</a>. Screen-reader-only notes below every contrast table provide the text equivalent for readers who rely on assistive technology. Recheck text over photography or gradients against the actual pixels.</p>
+  </section>
+
+  <section aria-labelledby="record-style-type-title">
+    <h2 id="record-style-type-title">Georgia display and Inter body hierarchy.</h2>
+    <p>Clear before clever. Local where it matters. Human in the loop. Plain language supports a careful reading.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Public site type values</caption>
+        <thead><tr><th scope="col">Level</th><th scope="col">Token size</th><th scope="col">Family</th><th scope="col">Weight</th><th scope="col">Leading</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">H1</th><td><code>--step-4</code> · clamp(2.3rem, 1.72rem + 2.5vw, 4rem)</td><td>Georgia display</td><td>400</td><td>1.15</td></tr>
+          <tr><th scope="row">H2</th><td><code>--step-3</code> · clamp(1.9rem, 1.42rem + 2.1vw, 3.45rem)</td><td>Georgia display</td><td>400</td><td>1.2</td></tr>
+          <tr><th scope="row">H3</th><td><code>--step-2</code> · clamp(1.45rem, 1.22rem + 0.95vw, 2.1rem)</td><td>Georgia display</td><td>400</td><td>1.25</td></tr>
+          <tr><th scope="row">Body</th><td><code>--step-0</code> · clamp(0.98rem, 0.95rem + 0.12vw, 1.06rem)</td><td>Inter body</td><td>400</td><td>1.6</td></tr>
+          <tr><th scope="row">Mono / kickers</th><td><code>--step--1</code> · clamp(0.78rem, 0.75rem + 0.1vw, 0.88rem)</td><td>Mono stack</td><td>400</td><td>1.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="record-style-lockups-title">
+    <h2 id="record-style-lockups-title">Current lockups and direct downloads.</h2>
+    <p>Use the file that matches the field and placement. Asset paths are local to the published site.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Logo and share assets</caption>
+        <thead><tr><th scope="col">Asset</th><th scope="col">Path</th><th scope="col">Use</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Text logo</th><td><a href="/images/trustora-text-logo.svg">/images/trustora-text-logo.svg</a></td><td>Header, footer, sidebar, light fields (180 × 42)</td></tr>
+          <tr><th scope="row">Reversed lockup</th><td>Same text logo, inverted via CSS</td><td>Dark fields · sidebar, footer, record chrome</td></tr>
+          <tr><th scope="row">Mark</th><td><a href="/images/trustora-logo.svg">/images/trustora-logo.svg</a></td><td>Avatars and section markers</td></tr>
+          <tr><th scope="row">Favicon</th><td><a href="/images/favicon.svg">/images/favicon.svg</a></td><td>Browser chrome (SVG, with /favicon.ico fallback)</td></tr>
+          <tr><th scope="row">Favicon fallback</th><td><a href="/favicon.ico">/favicon.ico</a></td><td>ICO fallback for browsers that do not support SVG favicons</td></tr>
+          <tr><th scope="row">Social image</th><td><a href="/images/trustora-og-image.svg">/images/trustora-og-image.svg</a></td><td>Open Graph link previews</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="record-style-voice-title">
+    <h2 id="record-style-voice-title">Public company description.</h2>
+    <p>This paragraph records the public company description and its identifiers. It describes Trustora capabilities and current facts without claiming audited outcomes.</p>
+    <blockquote>
+      <p>Trustora (SMC-Private) Limited is a Pakistan-based Employer of Record and specialist employee-intelligence company for teams building with AI, machine learning, quantum, physics, and the applied sciences. Published office: P-460 Yasrab Colony, Faisalabad, Punjab, Pakistan (company-reported invoicing record). Registration numbers are maintained but not published; no PSEB, ISO, or other certification is asserted; no US entity is held.</p>
+    </blockquote>
+    <h3>Permitted roadmap language</h3>
+    <p>“Maintained but not published.” “Country-by-country review.” “Through engagement terms and qualified local partners where required.”</p>
+    <div class="record-brief-grid">
+      <div><span class="record-chip-label">Standing</span><h3>Maintained but not published</h3><p>Registrations are kept current; numbers appear only after written approval.</p></div>
+      <div><span class="record-chip-label">Corridors</span><h3>Country-by-country review</h3><p>Region labels never substitute for the employing country's facts.</p></div>
+      <div><span class="record-chip-label">Delivery</span><h3>Terms plus local partners</h3><p>Outside Pakistan, engagement terms and qualified local partners where required.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="record-style-media-title">
+    <h2 id="record-style-media-title">Record scene photographs and their limits.</h2>
+    <p>All twelve record pages use freely licensed object photographs: pens, notebooks, stamps, document stacks, calculators, keyboards, laptops, and single rooms. Each photograph is a distinct AVIF source used once site-wide. Photographs depict illustrative business objects, not Trustora people, teams, offices, or facilities, and carry no misleading impression of headcount or premises.</p>
+    <div class="record-definition">
+      <table>
+        <caption>Record scene photographs</caption>
+        <thead><tr><th scope="col">Record page</th><th scope="col">Photograph</th><th scope="col">Archive</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="/record/">Company facts</a></th><td>Fountain pen resting on a spiral book</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/leadership/">Leadership</a></th><td>Single empty office room with desk and chairs</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/marketing/">Market profile</a></th><td>Single office with white table and black chairs</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/journeys/">Decision briefs</a></th><td>Rubber stamp, scissors, and card on a table</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/federal/">Registration records</a></th><td>Vintage rubber stamps and plaques on display</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/verify/">Source register</a></th><td>Desk with smartphone and financial charts</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/files/">Documents</a></th><td>Stacks of paper documents and file folders</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/nav/">Site map</a></th><td>Single conference room with table and chairs</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/metrics/">Content inventory</a></th><td>Calculator on a table next to a laptop</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/screens/">Visual archive</a></th><td>Single laptop computer on a table</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/ops/">Business status</a></th><td>Computer keyboard and mouse on a desk</td><td>Trustora brand archive</td></tr>
+          <tr><th scope="row"><a href="/record/style/">Brand guide</a></th><td>Pencil resting on a book in shallow focus</td><td>Trustora brand archive</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="record-style-presskit-title">
+    <h2 id="record-style-presskit-title">Public email and intake.</h2>
+    <h3>Contact routing</h3>
+    <p>Public email: info@trustora.net — general and engagement inquiries. Intake: <a href="/contact/">open the contact route</a>. Source register: <a href="/record/verify/">open the verification record</a>.</p>
+    <div class="record-brief-grid">
+      <div><span class="record-chip-label">Public email</span><h3>info@trustora.net</h3><p>General and engagement inquiries. <a href="/contact/">Open the contact route</a></p></div>
+      <div><span class="record-chip-label">Intake</span><h3>D365-routed conversation</h3><p>Country, role, team, budget, and timeline context. <a href="/contact/">Start an intake</a></p></div>
+      <div><span class="record-chip-label">Source register</span><h3>Verification record</h3><p>Public identifiers and standing sources. <a href="/record/verify/">Open the register</a></p></div>
+    </div>
+  </section>
+
+  <footer class="record-sources">
+    <h2>Observable values and canonical company facts.</h2>
+    <p>Visual values and asset paths are read from the published site build and its Record Room shell. Company identifiers, status phrasing, capability boundaries, attribution rules, and roadmap language follow the canonical Trustora company record. Record reviewed {recordReviewed}. {verificationBoundaryNote}</p>
+  </footer>
+</RecordLayout>

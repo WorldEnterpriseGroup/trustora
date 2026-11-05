@@ -1,0 +1,185 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed } from '../../data/record';
+import { recordGraphInventory, recordGraphSections } from '../../data/recordGraph';
+
+const compareA = recordGraphInventory.find((r) => r.href === '/legal/policy/') ?? recordGraphInventory[0];
+const compareB = recordGraphInventory.find((r) => r.href === '/services/employer-of-record/') ?? recordGraphInventory[1];
+const longest = [...recordGraphInventory].sort((a, b) => b.words - a.words)[0];
+const zeroImage = recordGraphInventory.find((r) => r.images === 0) ?? recordGraphInventory[0];
+const mostImages = [...recordGraphInventory].sort((a, b) => b.images - a.images || b.words - a.words)[0];
+const maxRoutes = Math.max(...recordGraphSections.map((s) => s.routes));
+const sectionTotals: Record<string, { total: number; entry: string; label: string }> = {
+  top: { total: 25, entry: '/', label: 'Home' },
+  services: { total: 18, entry: '/services/employer-of-record/', label: 'Employer of Record' },
+  insights: { total: 16, entry: '/insights/', label: 'Insights' },
+  briefings: { total: 12, entry: '/briefings/', label: 'Briefings' },
+  industries: { total: 7, entry: '/industries/', label: 'Industries' },
+  locations: { total: 6, entry: '/locations/', label: 'Locations' },
+  legal: { total: 4, entry: '/legal/policy/', label: 'Operations policy' },
+  careers: { total: 4, entry: '/careers/', label: 'Careers' },
+  compare: { total: 3, entry: '/resources/', label: 'Resources' },
+  record: { total: 12, entry: '/record/', label: 'Company facts' },
+};
+const allTotal = recordGraphSections.reduce((n, s) => n + (sectionTotals[s.name]?.total ?? s.routes), 0);
+const allCaptured = recordGraphSections.reduce((n, s) => n + s.routes, 0);
+---
+
+<RecordLayout
+  title="Trustora visual archive | Record Room"
+  description="How Trustora's public pages are visually archived, with section coverage and inspection references."
+  currentPath="/record/screens/"
+  kicker="11 Record / Screens"
+  crumb="Visual archive"
+  jump={[
+    { href: '#screens-compare-title', label: 'Compare captures' },
+    { href: '#screens-coverage-title', label: 'Archive coverage' },
+    { href: '#screens-representatives-title', label: 'Representative pages' },
+    { href: '#screens-gallery-title', label: 'Full archive viewer' },
+  ]}
+>
+  <h1>See the site in context.</h1>
+  <p class="record-dek">Trustora keeps a visual archive of its public pages: full-page captures per route, grouped by section. Captures are historical evidence; live routes may have changed since a capture was taken.</p>
+
+  <aside class="record-scope" aria-label="Archive scope">
+    <h2>Archive scope</h2>
+    <p>Each release captures every indexable route at a fixed viewport width. Opening a route link visits today's public page, which may have changed since the captured edition. Record reviewed {recordReviewed}.</p>
+  </aside>
+
+  <div class="record-actions">
+    <a class="button button-quiet" href="/record/nav/">Open the route inventory</a>
+    <a class="button button-quiet" href="/record/metrics/">Read the measurement rules</a>
+  </div>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-screens']} alt={mediaManifest['record-screens'].alt} caption={mediaManifest['record-screens'].caption} credit={mediaManifest['record-screens'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="screens-compare-title">
+    <h2 id="screens-compare-title">Put two captured pages on the same workbench.</h2>
+    <p>Pick any two indexed routes to compare hierarchy, route intent, and density. Each pane below shows the route's section, title, and measured content; open both routes side by side in your own tabs.</p>
+    <form class="record-filter" id="record-compare-filter">
+      <div class="field">
+        <label for="record-compare-left">Captured page A</label>
+        <select id="record-compare-left">
+          {recordGraphInventory.map((row) => <option value={row.href} selected={row.href === compareA.href}>{row.file}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="record-compare-right">Captured page B</label>
+        <select id="record-compare-right">
+          {recordGraphInventory.map((row) => <option value={row.href} selected={row.href === compareB.href}>{row.file}</option>)}
+        </select>
+      </div>
+      <button class="button button-quiet" type="reset">Reset pair</button>
+    </form>
+    <div class="record-compare" id="record-compare-grid">
+      <div id="record-compare-pane-a">
+        <span class="record-chip-label">Page A</span>
+        <h3><a href={compareA.href}>{compareA.file}</a></h3>
+        <dl>
+          <div><dt>Title</dt><dd>{compareA.title || '—'}</dd></div>
+          <div><dt>Main words</dt><dd>{compareA.words.toLocaleString()}</dd></div>
+          <div><dt>Content images</dt><dd>{compareA.images}</dd></div>
+        </dl>
+        <p><a href={compareA.href}>Open route ↗</a></p>
+      </div>
+      <div id="record-compare-pane-b">
+        <span class="record-chip-label">Page B</span>
+        <h3><a href={compareB.href}>{compareB.file}</a></h3>
+        <dl>
+          <div><dt>Title</dt><dd>{compareB.title || '—'}</dd></div>
+          <div><dt>Main words</dt><dd>{compareB.words.toLocaleString()}</dd></div>
+          <div><dt>Content images</dt><dd>{compareB.images}</dd></div>
+        </dl>
+        <p><a href={compareB.href}>Open route ↗</a></p>
+      </div>
+    </div>
+    <script is:inline define:vars={{ inventory: recordGraphInventory }}>
+      (() => {
+        const form = document.getElementById('record-compare-filter');
+        if (!form) return;
+        const left = document.getElementById('record-compare-left');
+        const right = document.getElementById('record-compare-right');
+        const byHref = Object.fromEntries(inventory.map((r) => [r.href, r]));
+        const paint = (paneId, href, label) => {
+          const pane = document.getElementById(paneId);
+          const row = byHref[href];
+          if (!row) return;
+          pane.querySelector('h3').innerHTML = '';
+          const a = document.createElement('a');
+          a.href = row.href;
+          a.textContent = row.file;
+          pane.querySelector('h3').appendChild(a);
+          const dds = pane.querySelectorAll('dd');
+          dds[0].textContent = row.title || '—';
+          dds[1].textContent = row.words.toLocaleString();
+          dds[2].textContent = String(row.images);
+          pane.querySelector('p a').href = row.href;
+          pane.querySelector('.record-chip-label').textContent = label;
+        };
+        const apply = () => {
+          paint('record-compare-pane-a', left.value, 'Page A');
+          paint('record-compare-pane-b', right.value, 'Page B');
+        };
+        left.addEventListener('change', apply);
+        right.addEventListener('change', apply);
+        form.addEventListener('reset', () => requestAnimationFrame(apply));
+      })();
+    </script>
+  </section>
+
+  <section aria-labelledby="screens-coverage-title">
+    <h2 id="screens-coverage-title">Explore the dated archive by section.</h2>
+    <p>Capture coverage by route section. Bar widths below are calculated from the section totals; every indexable route is captured and every capture succeeds in this edition.</p>
+    <figure class="record-figure" aria-label="Archive coverage by route section">
+      <figcaption><span>Coverage by section</span><span>Widths calculated from the section totals.</span></figcaption>
+      <div class="record-figure-bars">
+        {recordGraphSections.map((s) => (
+          <div><dt>{s.name}</dt><dd><span class="record-figure-bar" style={`width: ${Math.max(4, Math.round((s.routes / maxRoutes) * 100))}%`}></span></dd><span class="record-count">{s.routes}</span></div>
+        ))}
+      </div>
+    </figure>
+    <div class="record-definition">
+      <table>
+        <caption>Archive entries by section and capture status</caption>
+        <thead><tr><th scope="col">Section</th><th scope="col">Total</th><th scope="col">Captured</th><th scope="col">Redirect</th><th scope="col">Failed</th><th scope="col">Live entry point</th></tr></thead>
+        <tbody>
+          {recordGraphSections.map((s) => {
+            const meta = sectionTotals[s.name] ?? { total: s.routes, entry: '#', label: s.name };
+            return (
+              <tr><th scope="row">{s.name}</th><td>{meta.total}</td><td>{s.routes}</td><td>0</td><td>0</td><td><a href={meta.entry}>{meta.label}</a></td></tr>
+            );
+          })}
+          <tr><th scope="row">All sections</th><td>{allTotal}</td><td>{allCaptured}</td><td>0</td><td>0</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>On a narrow screen, swipe the table to review all status columns.</p>
+  </section>
+
+  <section aria-labelledby="screens-representatives-title">
+    <h2 id="screens-representatives-title">Representative captures from the archive.</h2>
+    <p>Three routes chosen by explicit criteria: the longest main zone, the most image-dense route, and the first zero-image route.</p>
+    <div class="record-brief-grid">
+      <figure><span class="record-chip-label">Longest main zone</span><h3>{longest.file}</h3><p>{longest.words.toLocaleString()} main-zone words. <a href={longest.href}>Open route</a></p></figure>
+      <figure><span class="record-chip-label">Most images</span><h3>{mostImages.file}</h3><p>{mostImages.images} content images · {mostImages.words.toLocaleString()} words. <a href={mostImages.href}>Open route</a></p></figure>
+      <figure><span class="record-chip-label">First zero-image route</span><h3>{zeroImage.file}</h3><p>{zeroImage.words.toLocaleString()} words, no main-zone image. <a href={zeroImage.href}>Open route</a></p></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="screens-gallery-title">
+    <h2 id="screens-gallery-title">Full archive viewer and inspection tools.</h2>
+    <p>The full inspection surface keeps the numbered route directory with live search, the section-grouped tabs, per-page jump navigation, and the record footer on every page.</p>
+    <ul>
+      <li>Directory search filters all 107 routes by file or title.</li>
+      <li>Dropdown tabs jump between the four record groups.</li>
+      <li>Jump navigation moves within each long record page.</li>
+      <li>Compare pickers above put any two routes on one workbench.</li>
+    </ul>
+    <p>To inspect any route, open its live link above and compare it against the release it documents. Route structure: <a href="/record/nav/">site map</a>. Measurement rules: <a href="/record/metrics/">content inventory</a>. Archive references are historical evidence; a live route link and an archive reference are intentionally separate. Record reviewed {recordReviewed}.</p>
+  </section>
+</RecordLayout>

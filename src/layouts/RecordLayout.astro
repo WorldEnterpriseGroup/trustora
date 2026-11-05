@@ -1,0 +1,229 @@
+---
+import '../styles/global.css';
+import '../styles/record.css';
+import { site } from '../data/site';
+import { getSeoMetadata } from '../data/seo';
+import { recordNav } from '../data/record';
+import { getDirectoryEntries } from '../utils/directory';
+
+interface JumpLink {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  currentPath?: string;
+  kicker?: string;
+  crumb?: string;
+  jump?: JumpLink[];
+  directoryOpen?: boolean;
+}
+
+const {
+  title,
+  description,
+  currentPath = Astro.url.pathname,
+  kicker = 'Record Room',
+  crumb = 'Company facts',
+  jump = [],
+  directoryOpen = false,
+} = Astro.props;
+
+const resolvedSeo = getSeoMetadata(currentPath, { title, description });
+const metaTitle = resolvedSeo.title.length > 60 ? `${resolvedSeo.title.slice(0, 57).trimEnd()}…` : resolvedSeo.title;
+const metaDescription = resolvedSeo.description;
+
+const normalize = (href: string) => (href.endsWith('/') ? href : `${href}/`);
+const isCurrent = (href: string) => normalize(currentPath) === normalize(href);
+
+const interFontUrl =
+  `https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap&text=${encodeURIComponent(
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;!?'/()&@#-$%",
+  )}`;
+
+const requireHttpsEndpoint = (value: string | undefined, name: string) => {
+  if (!value) throw new Error(`${name} must be configured for D365-only form delivery`);
+  const url = new URL(value);
+  if (url.protocol !== 'https:') throw new Error(`${name} must use HTTPS`);
+  return url;
+};
+const publicIntakeEndpoint = requireHttpsEndpoint(import.meta.env.PUBLIC_TRUSTORA_INTAKE_API_URL?.trim(), 'PUBLIC_TRUSTORA_INTAKE_API_URL');
+const careersEndpoint = requireHttpsEndpoint(import.meta.env.PUBLIC_CAREERS_API_URL?.trim(), 'PUBLIC_CAREERS_API_URL');
+const apiOrigins = [...new Set([publicIntakeEndpoint.origin, careersEndpoint.origin])];
+const csp = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  `connect-src 'self' ${apiOrigins.join(' ')}`,
+  "img-src 'self' https: data:",
+  "font-src 'self' https://fonts.gstatic.com",
+  "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline'",
+  "frame-ancestors 'self'",
+  "object-src 'none'",
+  `form-action 'self' ${apiOrigins.join(' ')}`,
+  'upgrade-insecure-requests',
+].join('; ') + ';';
+
+const canonical = new URL(currentPath, site.url).toString();
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  legalName: site.legalName,
+  url: site.url,
+  description: site.description,
+  email: site.email,
+  areaServed: ['European Union', 'Australia', 'United States'],
+  serviceType: 'Employer of Record and specialist talent services',
+};
+
+const directory = await getDirectoryEntries();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="accelerometer=(), autoplay=(), camera=(), cross-origin-isolated=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), payment=(), usb=(), xr-spatial-tracking=()" />
+    <meta name="description" content={metaDescription} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0b2740" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href={interFontUrl} />
+    <link rel="stylesheet" href={interFontUrl} />
+    <noscript><link rel="stylesheet" href={interFontUrl} /></noscript>
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={metaTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(site.socialImage, site.url).toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={metaTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <title>{metaTitle}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+  </head>
+  <body class="record-body">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class:list={['record-shell', { 'record-collapsed': !directoryOpen }]} id="record-shell">
+      <aside class="record-sidebar" id="record-sidebar" aria-label="Page search and directory">
+        <div class="record-sidebar-head">
+          <a class="record-brand" href="/record/" aria-label="Trustora Record Room">
+            <img src="/images/trustora-text-logo.svg" alt="Trustora" width="180" height="42" />
+            <span>Record Room</span>
+          </a>
+          <button class="record-collapse" id="record-collapse" type="button" aria-controls="record-sidebar" aria-expanded={directoryOpen}>Hide directory <span aria-hidden="true">×</span></button>
+        </div>
+        <div class="record-search" role="search">
+          <label for="record-search-input">Search pages</label>
+          <input type="search" id="record-search-input" placeholder="Filter by file or title" autocomplete="off" />
+          <p class="record-result-count" id="record-result-count" role="status"></p>
+        </div>
+        <nav class="record-directory-wrap" aria-label="Page directory">
+          <h2>Numbered page directory</h2>
+          <ol class="record-directory" id="record-directory">
+            {directory.map((entry) => (
+              <li data-search={`${entry.number} ${entry.file} ${entry.title}`.toLowerCase()}>
+                <a href={entry.href} title={entry.title || entry.file} aria-current={isCurrent(entry.href) ? 'page' : undefined}>
+                  <span class="record-directory-number">{entry.number}</span>
+                  <span class="record-directory-file">{entry.file}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <p class="record-sidebar-foot"><a href="/">Back to trustora.net <span aria-hidden="true">↗</span></a></p>
+      </aside>
+      <div class="record-content">
+        <div class="record-topbar">
+          <button class="record-expand" id="record-expand" type="button" aria-controls="record-sidebar" hidden={directoryOpen}>Directory <span aria-hidden="true">☰</span></button>
+          <nav class="record-tab-groups" aria-label="Record Room page groups">
+            <ol>
+              {recordNav.map((section) => {
+                const active = section.links.some((link) => isCurrent(link.href));
+                return (
+                  <li>
+                    <details class="record-dropdown" open={active ? true : undefined}>
+                      <summary aria-current={active ? 'true' : undefined}><span>{section.group}</span><span aria-hidden="true">⌄</span></summary>
+                      <ul>
+                        {section.links.map((link) => (
+                          <li><a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a></li>
+                        ))}
+                      </ul>
+                    </details>
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
+        </div>
+        <nav class="record-crumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/record/">Record Room</a></li>
+            <li aria-current="page">{crumb}</li>
+          </ol>
+        </nav>
+        {jump.length > 0 && (
+          <nav class="record-jump-nav" aria-label="On this page">
+            <details class="record-jump" open>
+              <summary>On this page</summary>
+              <ol>
+                {jump.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+              </ol>
+            </details>
+          </nav>
+        )}
+        <main id="main-content">
+          <div class="record-editorial">
+            <p class="record-kicker">{kicker}</p>
+            <slot />
+          </div>
+        </main>
+        <footer class="record-footer">
+          <p><strong>Trustora Record Room</strong> · {site.legalName} · Pakistan · <a href="/">trustora.net</a> · <a href="/contact/">Contact</a> · <a href="/legal/entities/">Legal identity</a></p>
+          <p class="record-footer-note">Static reference. Registry records control at transaction time. No client names, financials, or registration numbers are published here without written approval.</p>
+        </footer>
+      </div>
+    </div>
+    <script is:inline>
+      (() => {
+        const shell = document.getElementById('record-shell');
+        const collapse = document.getElementById('record-collapse');
+        const expand = document.getElementById('record-expand');
+        const apply = (collapsed) => {
+          shell.classList.toggle('record-collapsed', collapsed);
+          collapse.setAttribute('aria-expanded', String(!collapsed));
+          expand.hidden = !collapsed;
+        };
+        collapse.addEventListener('click', () => apply(true));
+        expand.addEventListener('click', () => { apply(false); document.getElementById('record-sidebar').querySelector('a').focus(); });
+        const input = document.getElementById('record-search-input');
+        const count = document.getElementById('record-result-count');
+        const items = [...document.querySelectorAll('#record-directory > li')];
+        input.addEventListener('input', () => {
+          const q = input.value.trim().toLowerCase();
+          let visible = 0;
+          items.forEach((li) => {
+            const show = !q || li.dataset.search.includes(q);
+            li.hidden = !show;
+            if (show) visible += 1;
+          });
+          count.textContent = q ? `${visible} of ${items.length} pages` : '';
+        });
+      })();
+    </script>
+  </body>
+</html>

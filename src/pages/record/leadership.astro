@@ -1,0 +1,88 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed } from '../../data/record';
+---
+
+<RecordLayout
+  title="Trustora leadership | Record Room"
+  description="Trustora's publicly named operations lead, role boundaries, and attribution rules for individual versus company experience."
+  currentPath="/record/leadership/"
+  kicker="Record room / Leadership"
+  crumb="Leadership"
+  jump={[
+    { href: '#record-leadership-founder-name', label: 'Abdul Rehman' },
+    { href: '#record-leadership-boundary-title', label: 'Individual experience' },
+    { href: '#record-leadership-selector-title', label: 'Operating relationships' },
+    { href: '#record-leadership-experience-title', label: 'Company experience' },
+    { href: '#record-leadership-sources-title', label: 'Sources' },
+  ]}
+>
+  <h1>Leadership and operating relationships.</h1>
+  <p class="record-dek">Abdul Rehman is the publicly named Trustora operations and delivery lead. Trustora's operating model is supported by engagement terms and qualified local partners where required; only the roles and relationships stated below are included.</p>
+  <p>Trustora leadership and operating context · Record reviewed {recordReviewed}</p>
+
+  <aside class="record-scope" aria-label="Record scope">
+    <h2>Public roles and evidence categories.</h2>
+    <p>Abdul Rehman's career accomplishments belong to his prior roles. Company operating experience belongs to Trustora engagements. External operating context is presented as background, not as a Trustora subsidiary, client, or endorsement.</p>
+  </aside>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-leadership']} alt={mediaManifest['record-leadership'].alt} caption={mediaManifest['record-leadership'].caption} credit={mediaManifest['record-leadership'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-labelledby="record-leadership-founder-name">
+    <h2 id="record-leadership-founder-name">Abdul Rehman</h2>
+    <p>Operations and delivery lead</p>
+    <p>Abdul Rehman leads Trustora's operations and delivery work: intake review, employment setup, payroll coordination, employee support, and engagement decisions. Company-reported background: five-plus years coordinating operations and delivery, leading teams of more than fifty people, and owning operating decisions across client engagements.</p>
+    <dl class="record-chip-row">
+      <div><dt>Trustora role</dt><dd>Operations and delivery lead</dd></div>
+      <div><dt>Experience described</dt><dd>5+ years operations; teams of 50+ people</dd></div>
+      <div><dt>Decision scope</dt><dd>Intake, setup, payroll, support, engagements</dd></div>
+      <div><dt>Public contact</dt><dd><a href="mailto:info@trustora.net">info@trustora.net</a></dd></div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="record-leadership-boundary-title">
+    <h2 id="record-leadership-boundary-title">Career evidence and company evidence stay separate.</h2>
+    <div class="record-numbered">
+      <article><span>01</span><div><h3>Abdul Rehman's individual operating history</h3><p>Team leadership, delivery management, and client operating work from prior roles belong to those roles. They explain capability; they are not Trustora contract outcomes.</p></div></article>
+      <article><span>02</span><div><h3>Trustora's company record</h3><p>Trustora's company record consists of its Pakistan entity, statutory registrations, published policy, and current service operation. Company-reported operating experience is labeled as such in <a href="/record/ops/">business status</a>.</p></div></article>
+    </div>
+    <p>The source for the individual background is a Trustora company statement; independent employment verification is outside this static page.</p>
+  </section>
+
+  <section aria-labelledby="record-leadership-selector-title">
+    <h2 id="record-leadership-selector-title">The relationships around the operating model.</h2>
+    <p>Trustora describes itself as the employment administration layer. Named external businesses below are public-site context for the lead's background or operating corridors — not Trustora divisions or subsidiaries.</p>
+    <h3>External operating context named in this record.</h3>
+    <div class="record-entity-grid">
+      <article><span class="record-chip-label">SaaS product context</span><h3>Contract lifecycle platform</h3><p>A publicly accessible contract-lifecycle SaaS product at <a href="https://www.contractsent.com/" rel="noopener">contractsent.com</a>. Referenced as operating context only; no subsidiary, client, ownership, or endorsement relationship is asserted.</p><p>Trustora's role: none asserted beyond background context.</p></article>
+      <article><span class="record-chip-label">Marketplace context</span><h3>At-home beauty and wellness marketplace</h3><p>A publicly accessible at-home beauty and wellness marketplace at <a href="https://gopriv.com/" rel="noopener">gopriv.com</a>. Referenced as operating context only; no subsidiary, client, ownership, or endorsement relationship is asserted.</p><p>Trustora's role: none asserted beyond background context.</p></article>
+    </div>
+    <p>These are external businesses referenced for background context, not Trustora divisions or subsidiaries. The public record does not establish Trustora ownership of their operations. Client names and addresses are not published.</p>
+  </section>
+
+  <section aria-labelledby="record-leadership-experience-title">
+    <h2 id="record-leadership-experience-title">Recognizable people, unnamed clients.</h2>
+    <p>The lead above is named because the role is public. Client personnel, partner staff, and engagement teams are never named in this record: operating experience is stated at the company level in <a href="/record/ops/">business status</a>, and no individual contributor beyond the public lead is identified anywhere in the Record Room. External businesses are recognizable by their public sites only; no client, subsidiary, ownership, or endorsement relationship is asserted.</p>
+  </section>
+
+  <section class="record-sources" aria-labelledby="record-leadership-sources-title">
+    <h2 id="record-leadership-sources-title">First-party sources and limits.</h2>
+    <ul>
+      <li><a href="/legal/entities/">Legal identity and boundaries</a> — published entity, service boundary, and unpublished-information rule. Reviewed {recordReviewed}.</li>
+      <li><a href="/about/">About Trustora</a> — operating role, intelligence areas, and working principles.</li>
+      <li><a href="/careers/">Careers</a> — open roles and talent-pool routes, separate from leadership.</li>
+      <li><a href="/record/ops/">Business status</a> — company-reported operating experience with its attribution label.</li>
+    </ul>
+    <h3>What this record does not establish</h3>
+    <ul>
+      <li>It does not establish Trustora corporate past performance, customer outcomes, financials, or contract awards.</li>
+      <li>Individual background descriptions are first-party statements; this page does not independently verify employment or contract history.</li>
+      <li>Relationship descriptions are not a legal ownership chart, subsidiary statement, or live staffing feed.</li>
+    </ul>
+  </section>
+</RecordLayout>

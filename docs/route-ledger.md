@@ -1,6 +1,6 @@
 # Trustora route ledger
 
-The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts are verified against the production output; the current regression gate expects 96 HTML routes including the 404 route and 95 indexable routes, plus `robots.txt` and `sitemap.xml`. Update the gate and this ledger together when a route is intentionally added or removed.
+The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts are verified against the production output; the current regression gate expects 108 HTML routes including the 404 route and 107 indexable routes, plus `robots.txt` and `sitemap.xml`. Update the gate and this ledger together when a route is intentionally added or removed.
 
 ## Route families
 
@@ -16,6 +16,7 @@ The site is a static Astro 7.2.0 build with trailing-slash URLs. Route counts ar
 | Workplace / employee experience | 3 | Make the conditions around work visible | Workplace matrix or employee journey → library → brief |
 | Conversion / squeeze | 15 | Capture context for a brief or readiness conversation | Reduced header → working material → D365 intake |
 | Company / careers / utility / legal | 10 | Explain Trustora, segment career routes, provide contact, legal, and recovery paths | Page-specific document composition |
+| Record Room | 12 | Publish a static, verifiable company record mirroring the Ravonics Record Room IA in Trustora theme | Facts → leadership → market → briefs → registrations → sources → documents → archive → status → brand |
 
 Career entries use `status: Open`, `Talent pool`, or `Closed`. Closed entries remain available as noindex status pages without an application form and are excluded from the public sitemap; draft entries are not generated.
 

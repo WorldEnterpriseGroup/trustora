@@ -1,0 +1,72 @@
+---
+import RecordLayout from '../../layouts/RecordLayout.astro';
+import MediaFrame from '../../components/editorial/MediaFrame.astro';
+import { media } from '../../data/media';
+import { mediaManifest } from '../../data/site';
+import { recordReviewed } from '../../data/record';
+import { recordPersonas } from '../../data/recordPersonas';
+---
+
+<RecordLayout
+  title="Trustora decision briefs | Record Room"
+  description="Role-specific Trustora facts for hiring managers, reviewers, executives, and prospective employees."
+  currentPath="/record/journeys/"
+  kicker="07 Record / Journeys"
+  crumb="Decision briefs"
+  jump={[
+    { href: '#hiring-manager', label: 'Hiring managers' },
+    { href: '#reviewer', label: 'HR and finance reviewers' },
+    { href: '#executive', label: 'Executives' },
+    { href: '#employee', label: 'Prospective employees' },
+  ]}
+>
+  <h1>Role-specific facts for Trustora decisions.</h1>
+  <p class="record-dek">Four static briefs collect the public facts most relevant to hiring, review, executive, and employee decisions. Each item identifies whether it is a registry fact, a published policy statement, or a company-reported claim; the dated source links below are supplementary.</p>
+
+  <div class="record-actions" id="professional-paths">
+    <a class="button button-quiet" href="#hiring-manager">Hiring manager</a>
+    <a class="button button-quiet" href="#reviewer">Reviewer</a>
+    <a class="button button-quiet" href="#executive">Executive</a>
+    <a class="button button-quiet" href="#employee">Employee</a>
+  </div>
+
+  <figure class="record-scene">
+    <MediaFrame src={media['record-journeys']} alt={mediaManifest['record-journeys'].alt} caption={mediaManifest['record-journeys'].caption} credit={mediaManifest['record-journeys'].credit} sizes="(max-width: 900px) 100vw, 70vw" />
+  </figure>
+
+  <section aria-label="Trustora facts by role" id="professional-paths-section">
+    <h2>Trustora facts by role.</h2>
+    <div class="record-numbered">
+      <article id="hiring-manager"><span>01</span><div><h3>Hiring manager</h3><p>Scope the role and country.</p><h4>Recorded facts</h4><ul><li>Company-reported: Trustora is the employment administration layer around specialist work in AI, ML, quantum, physics, sciences, and software.</li><li>Published entity: TRUSTORA (SMC-PRIVATE) LIMITED, Pakistan; published office Faisalabad.</li><li>Client keeps day-to-day direction of the work; Trustora carries defined employment administration.</li><li>Start with country, worker, role, manager, and timing before the model is selected.</li><li>Local obligations are reviewed per engagement with qualified professionals.</li><li>No certification or US registration is asserted.</li></ul><p>Related records: <a href="/record/federal/">Registration records</a> · <a href="/country-parameters/">Country parameters</a> · <a href="/record/ops/">Business status</a></p></div></article>
+      <article id="reviewer"><span>02</span><div><h3>HR and finance reviewer</h3><p>Check standing, payroll, and boundaries.</p><h4>Recorded facts</h4><ul><li>Registry posture: SECP, FBR/NTN, EOBI, and provincial social-security registrations maintained; numbers withheld.</li><li>Published payroll rhythm: twice-monthly runs with payslips and statutory withholding per the operations policy effective 1 September 2026.</li><li>Offer letters state pay split, benefits, location, probation, and leave in writing.</li><li>Invoice-funded payroll model: client settles the invoice, Trustora runs payroll.</li><li>Service-vs-entity boundary stated in writing; no US entity held.</li><li>No audited financials or customer outcomes published in this record.</li></ul><p>Related records: <a href="/legal/policy/">Operations policy</a> · <a href="/record/files/">Document register</a> · <a href="/record/verify/">Source register</a></p></div></article>
+      <article id="executive"><span>03</span><div><h3>Executive</h3><p>Weigh the operating model and evidence limits.</p><h4>Recorded facts</h4><ul><li>Company-reported posture: EoR bridge with review points before any entity commitment.</li><li>Corridors: Pakistan entity; EU, Australia, and US by country-by-country review.</li><li>Company-reported operating experience in /record/ops/; figures are company statements, not audited results.</li><li>Policy effective 1 September 2026; 44-page PDF with pinned hash in /record/files/.</li><li>No PSEB/ISO certification, no US entity, no audited financials in this record.</li><li>Client names, addresses, and identifiers are not published.</li></ul><p>Related records: <a href="/record/leadership/">Leadership</a> · <a href="/record/marketing/">Market profile</a> · <a href="/record/metrics/">Content inventory</a></p></div></article>
+      <article id="employee"><span>04</span><div><h3>Prospective employee</h3><p>See the employment promise before accepting.</p><h4>Recorded facts</h4><ul><li>Published standards: written offer before start, local-currency pay, payslips every cycle.</li><li>Leave per statutory minimum or better; six-month default probation.</li><li>Equal opportunity and anti-harassment standards with an inquiry committee.</li><li>Data protection, access controls, and cross-border transfer terms.</li><li>Grievance path without retaliation; offboarding with final settlement.</li><li>Open roles published separately under /careers/.</li></ul><p>Related records: <a href="/record/style/">Brand guide</a> · <a href="/legal/policy/">Operations policy</a> · <a href="/record/ops/">Business status</a></p></div></article>
+    </div>
+  </section>
+
+  <footer class="record-sources">
+    <h2>Supplementary sources</h2>
+    <p><a href="/legal/entities/">Legal identity and boundaries</a>, the <a href="/legal/policy/">EoR operations policy</a>, <a href="/country-parameters/">country parameters</a>, and the <a href="/record/verify/">verification register</a> support the dated statements above. Registry records control at transaction time. Record reviewed {recordReviewed}.</p>
+  </footer>
+
+  <section aria-label="Persona journey paths">
+    <h2>Persona journey paths through the site.</h2>
+    <p>Each persona below carries the goal, the step-by-step route, and the rationale for every step — the same dataset shape as the record's journey model. Terminal steps convert to an intake or application.</p>
+    {recordPersonas.map((persona) => (
+      <article>
+        <h3>{persona.label} — {persona.goal}</h3>
+        {persona.journeys.map((journey) => (
+          <div>
+            <h4>{journey.title}</h4>
+            <ol>
+              {journey.steps.map((step, i) => (
+                <li><a href={step}>{step}</a>{journey.rationale[i] ? ` — ${journey.rationale[i]}` : ''}</li>
+              ))}
+            </ol>
+            {journey.terminal && <p><strong>Terminal:</strong> {journey.terminalNote}</p>}
+          </div>
+        ))}
+      </article>
+    ))}
+  </section>
+</RecordLayout>
